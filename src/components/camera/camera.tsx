@@ -53,6 +53,7 @@ export class Camera {
 
     if (this.hasImageCapture()) {
       this.imageCapture = new window.ImageCapture(stream.getVideoTracks()[0]);
+      // console.log(stream.getTracks()[0].getCapabilities());
     } else {
       // TODO: DO SOMETHING ELSE HERE
     }
@@ -104,6 +105,13 @@ export class Camera {
 
   flashScreen() {
     console.log('Flashing screen');
+  }
+
+  canRotate() {
+    if (!this.stream) {
+      return false;
+    }
+
   }
 
   handleShutterClick(_e: Event) {
