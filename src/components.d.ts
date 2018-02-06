@@ -6,32 +6,32 @@
 
 
 import {
-  MyComponent as MyComponent
-} from './components/my-component/my-component';
+  Camera as IonCamera
+} from './components/camera/camera';
 
 declare global {
-  interface HTMLMyComponentElement extends MyComponent, HTMLElement {
+  interface HTMLIonCameraElement extends IonCamera, HTMLElement {
   }
-  var HTMLMyComponentElement: {
-    prototype: HTMLMyComponentElement;
-    new (): HTMLMyComponentElement;
+  var HTMLIonCameraElement: {
+    prototype: HTMLIonCameraElement;
+    new (): HTMLIonCameraElement;
   };
   interface HTMLElementTagNameMap {
-    "my-component": HTMLMyComponentElement;
+    "ion-camera": HTMLIonCameraElement;
   }
   interface ElementTagNameMap {
-    "my-component": HTMLMyComponentElement;
+    "ion-camera": HTMLIonCameraElement;
   }
   namespace JSX {
     interface IntrinsicElements {
-      "my-component": JSXElements.MyComponentAttributes;
+      "ion-camera": JSXElements.IonCameraAttributes;
     }
   }
   namespace JSXElements {
-    export interface MyComponentAttributes extends HTMLAttributes {
-      first?: string;
-      last?: string;
+    export interface IonCameraAttributes extends HTMLAttributes {
+      
     }
   }
 }
 
+declare global { namespace JSX { interface StencilJSX {} } }
