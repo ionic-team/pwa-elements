@@ -15,7 +15,9 @@ export class Camera {
   stream: MediaStream;
   imageCapture: any;
   videoElement: HTMLVideoElement;
+
   @State() photo: any;
+  @State() photoSrc: any;
 
   async componentDidLoad() {
     if (this.isServer) {
@@ -77,6 +79,7 @@ export class Camera {
 
   async promptAccept(photo: any) {
     this.photo = photo;
+    this.photoSrc = URL.createObjectURL(photo);
   }
 
   rotate() {
@@ -123,16 +126,21 @@ export class Camera {
   }
 
   render() {
-    return [
-      <div class="accept">
-      </div>,
-      <div class="rotate" onClick={(e) => this.handleRotateClick(e)}>Rotate</div>,
-      <video ref={(el: HTMLVideoElement) => this.videoElement = el} autoplay></video>,
-      <div class="shutter" onClick={(e) => this.handleShutterClick(e)}>
-        <div class="shutter-ring">
-          <div class="shutter-button"></div>
+    return (
+      <div class="camera-wrapper">
+        {this.photo && (
+        <div class="accept">
+          <div class="accept-image" style={{backgroundImage: `url(${this.photoSrc})`}}></div>
+        </div>
+        )}
+        <div class="rotate" onClick={(e) => this.handleRotateClick(e)}>Rotate</div>
+        <video ref={(el: HTMLVideoElement) => this.videoElement = el} autoplay></video>
+        <div class="shutter" onClick={(e) => this.handleShutterClick(e)}>
+          <div class="shutter-ring">
+            <div class="shutter-button"></div>
+          </div>
         </div>
       </div>
-    ];
+    );
   }
 }
