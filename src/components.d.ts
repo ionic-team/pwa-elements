@@ -4,13 +4,24 @@
  * and imports for stencil collections that might be configured in your stencil.config.js file
  */
 
+import '@ionic/core';
+
+
+declare global {
+  interface HTMLStencilElement extends HTMLElement {
+    componentOnReady(): Promise<this>;
+    componentOnReady(done: (ele?: this) => void): void;
+  }
+}
+
+
 
 import {
   CameraModal as IonCameraModal
 } from './components/camera-modal/camera-modal';
 
 declare global {
-  interface HTMLIonCameraModalElement extends IonCameraModal, HTMLElement {
+  interface HTMLIonCameraModalElement extends IonCameraModal, HTMLStencilElement {
   }
   var HTMLIonCameraModalElement: {
     prototype: HTMLIonCameraModalElement;
@@ -40,7 +51,7 @@ import {
 } from './components/camera/camera';
 
 declare global {
-  interface HTMLIonCameraElement extends IonCamera, HTMLElement {
+  interface HTMLIonCameraElement extends IonCamera, HTMLStencilElement {
   }
   var HTMLIonCameraElement: {
     prototype: HTMLIonCameraElement;

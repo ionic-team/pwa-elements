@@ -71,8 +71,14 @@
     margin-top: -32px;
     margin-left: -32px;
     border-radius: 100%;
-    background-color: white;
+    background-color: #c6cdd8;
     padding: 6px;
+
+    &:active {
+      .shutter-button {
+        background-color: 9da9bb
+      }
+    }
   }
 
   .shutter-ring {

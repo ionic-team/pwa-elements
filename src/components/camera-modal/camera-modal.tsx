@@ -1,6 +1,4 @@
-import { Component, Prop, State, Event, EventEmitter } from '@stencil/core';
-
-declare var window:any;
+import { Component } from '@stencil/core';
 
 @Component({
   tag: 'ion-camera-modal',
@@ -8,6 +6,14 @@ declare var window:any;
   shadow: true
 })
 export class CameraModal {
+  componentDidLoad() {
+  }
+
   render() {
+    return (
+      <div>
+        <ion-modal-controller></ion-modal-controller>
+      </div>
+    )
   }
 }

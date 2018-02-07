@@ -1,8 +1,10 @@
 exports.config = {
   namespace: 'mycomponent',
   generateDistribution: true,
-  bundles: [
-    { components: ['ion-camera'] }
+  collections: [
+    { 
+      name: '@ionic/core'
+    }
   ]
 };
 

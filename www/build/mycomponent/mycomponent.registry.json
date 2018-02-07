@@ -1,0 +1,28 @@
+{
+  "namespace": "mycomponent",
+  "fsNamespace": "mycomponent",
+  "loader": "../mycomponent.js",
+  "global": "mycomponent.global.js",
+  "core": "mycomponent.core.js",
+  "corePolyfilled": "es5-build-disabled.js",
+  "components": {
+    "ion-animation-controller": {
+      "ios": "ion-animation-controller.ios",
+      "md": "ion-animation-controller.md"
+    },
+    "ion-camera": {
+      "$": "ion-camera"
+    },
+    "ion-camera-modal": {
+      "$": "ion-camera-modal"
+    },
+    "ion-modal": {
+      "ios": "ion-animation-controller.ios",
+      "md": "ion-animation-controller.md"
+    },
+    "ion-modal-controller": {
+      "ios": "ion-animation-controller.ios",
+      "md": "ion-animation-controller.md"
+    }
+  }
+}
