@@ -163,9 +163,7 @@ export class Camera {
         <div class="camera-footer">
           {!this.photo ? (
           <div class="shutter" onClick={(e) => this.handleShutterClick(e)}>
-            <div class="shutter-ring">
-              <div class="shutter-button"></div>
-            </div>
+            <div class="shutter-button"></div>
           </div>
           ) : (
           <section class="items">
