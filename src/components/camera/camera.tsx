@@ -33,6 +33,9 @@ export class Camera {
     await this.initCamera();
   }
 
+  /**
+   * Query the list of connected devices and figure out how many video inputs we have.
+   */
   async queryDevices() {
     const devices = await navigator.mediaDevices.enumerateDevices();
     this.hasMultipleCameras = devices.filter(d => d.kind == 'videoinput').length > 1;
@@ -119,13 +122,6 @@ export class Camera {
 
   flashScreen() {
     console.log('Flashing screen');
-  }
-
-  canRotate() {
-    if (!this.stream) {
-      return false;
-    }
-
   }
 
   handleShutterClick(_e: Event) {
