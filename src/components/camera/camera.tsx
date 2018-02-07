@@ -19,12 +19,23 @@ export class Camera {
   @State() photo: any;
   @State() photoSrc: any;
 
+  hasMultipleCameras = false;
+
   async componentDidLoad() {
     if (this.isServer) {
       return;
     }
 
+    // Figure out how many cameras we have
+    await this.queryDevices();
+
+    // Initialize the camera
     await this.initCamera();
+  }
+
+  async queryDevices() {
+    const devices = await navigator.mediaDevices.enumerateDevices();
+    this.hasMultipleCameras = devices.filter(d => d.kind == 'videoinput').length > 1;
   }
 
   async initCamera(constraints: MediaStreamConstraints = {}) {
@@ -118,6 +129,7 @@ export class Camera {
   }
 
   handleShutterClick(_e: Event) {
+    console.log()
     this.capture();
   }
 
@@ -125,26 +137,50 @@ export class Camera {
     this.rotate();
   }
 
+  handleCancelPhoto(_e: Event) {
+    this.photo = null;
+  }
+
+  handleAcceptPhoto(_e: Event) {
+    this.onPhoto.emit(this.photo);
+  }
+
   render() {
     return (
       <div class="camera-wrapper">
         <div class="camera-header">
-          <div class="rotate" onClick={(e) => this.handleRotateClick(e)}></div>
+          {this.hasMultipleCameras && (<div class="rotate" onClick={(e) => this.handleRotateClick(e)}></div>)}
         </div>
+
+        {/* Show the taken photo for the Accept UI*/}
         {this.photo && (
         <div class="accept">
           <div class="accept-image" style={{backgroundImage: `url(${this.photoSrc})`}}></div>
         </div>
         )}
-        <div class="camera-video">
+
+        {/* Only toggle visibility of the video feed to keep it responsive */}
+        <div class="camera-video" style={{display: this.photo ? 'none' : ''}}>
           <video ref={(el: HTMLVideoElement) => this.videoElement = el} autoplay></video>
         </div>
+
         <div class="camera-footer">
+          {!this.photo ? (
           <div class="shutter" onClick={(e) => this.handleShutterClick(e)}>
             <div class="shutter-ring">
               <div class="shutter-button"></div>
             </div>
           </div>
+          ) : (
+          <section>
+            <div onClick={e => this.handleCancelPhoto(e)}>
+              Cancel
+            </div>
+            <div onClick={e => this.handleAcceptPhoto(e)}>
+              Use
+            </div>
+          </section>
+          )}
         </div>
       </div>
     );

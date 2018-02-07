@@ -24,11 +24,13 @@
   }
 
   .camera-header {
+    color: white;
     background-color: black;
     height: 64px;
   }
 
   .camera-footer {
+    color: white;
     background-color: black;
     height: 128px;
   }
@@ -75,16 +77,12 @@
   }
 
   .accept {
-    z-index: 2;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    flex: 1;
 
     .accept-image {
       width: 100%;
       height: 100%;
+      background-position: center center;
       background-size: cover;
       background-repeat: no-repeat;
     }
