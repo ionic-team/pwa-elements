@@ -172,11 +172,11 @@ export class Camera {
             </div>
           </div>
           ) : (
-          <section>
-            <div onClick={e => this.handleCancelPhoto(e)}>
+          <section class="items">
+            <div class="item" onClick={e => this.handleCancelPhoto(e)}>
               Cancel
             </div>
-            <div onClick={e => this.handleAcceptPhoto(e)}>
+            <div class="item" onClick={e => this.handleAcceptPhoto(e)}>
               Use
             </div>
           </section>
