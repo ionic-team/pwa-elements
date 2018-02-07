@@ -128,16 +128,22 @@ export class Camera {
   render() {
     return (
       <div class="camera-wrapper">
+        <div class="camera-header">
+          <div class="rotate" onClick={(e) => this.handleRotateClick(e)}></div>
+        </div>
         {this.photo && (
         <div class="accept">
           <div class="accept-image" style={{backgroundImage: `url(${this.photoSrc})`}}></div>
         </div>
         )}
-        <div class="rotate" onClick={(e) => this.handleRotateClick(e)}>Rotate</div>
-        <video ref={(el: HTMLVideoElement) => this.videoElement = el} autoplay></video>
-        <div class="shutter" onClick={(e) => this.handleShutterClick(e)}>
-          <div class="shutter-ring">
-            <div class="shutter-button"></div>
+        <div class="camera-video">
+          <video ref={(el: HTMLVideoElement) => this.videoElement = el} autoplay></video>
+        </div>
+        <div class="camera-footer">
+          <div class="shutter" onClick={(e) => this.handleShutterClick(e)}>
+            <div class="shutter-ring">
+              <div class="shutter-button"></div>
+            </div>
           </div>
         </div>
       </div>
