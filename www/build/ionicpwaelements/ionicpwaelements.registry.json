@@ -3,26 +3,26 @@
   "fsNamespace": "ionicpwaelements",
   "loader": "../ionicpwaelements.js",
   "global": "ionicpwaelements.global.js",
-  "core": "ionicpwaelements.core.js",
-  "corePolyfilled": "ionicpwaelements.core.pf.js",
+  "core": "ionicpwaelements.tqlpajzn.js",
+  "corePolyfilled": "ionicpwaelements.ma4keaqv.js",
   "components": {
     "ion-animation-controller": {
-      "ios": "ion-animation-controller.ios",
-      "md": "ion-animation-controller.md"
+      "ios": "vafwjp34",
+      "md": "zodsuboy"
     },
     "ion-camera": {
-      "$": "ion-camera"
+      "$": "5hcbvy8f"
     },
     "ion-camera-modal": {
-      "$": "ion-camera-modal"
+      "$": "yagqibuq"
     },
     "ion-modal": {
-      "ios": "ion-animation-controller.ios",
-      "md": "ion-animation-controller.md"
+      "ios": "vafwjp34",
+      "md": "zodsuboy"
     },
     "ion-modal-controller": {
-      "ios": "ion-animation-controller.ios",
-      "md": "ion-animation-controller.md"
+      "ios": "vafwjp34",
+      "md": "zodsuboy"
     }
   }
 }

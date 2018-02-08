@@ -15,8 +15,6 @@
   <script src="/build/ionicpwaelements.js"></script>
 </head>
 <body>
-  <ion-camera></ion-camera>
-  <!--
   <ion-modal-controller></ion-modal-controller>
   <div id="target">
   </div>
@@ -28,13 +26,17 @@
       await c.componentOnReady();
       const e = document.createElement('ion-camera');
 
+      e.addEventListener('onPhoto', (e) => {
+        console.log('CAMERA ON PHOTO', e);
+        const photo = e.detail;
+      })
+
       const modal = await c.create({
         component: e
       })
       modal.present();
     });
   </script>
--->
 
 </body>
 </html>
