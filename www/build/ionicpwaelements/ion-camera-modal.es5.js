@@ -1,7 +1,7 @@
 /*! Built with http://stenciljs.com */
-mycomponent.loadBundle('ion-camera-modal', ['exports'], function (exports) {
-    var h = window.mycomponent.h;
-    var Context = window.mycomponent.Context;
+ionicpwaelements.loadBundle('ion-camera-modal', ['exports'], function (exports) {
+    var h = window.ionicpwaelements.h;
+    var Context = window.ionicpwaelements.Context;
     var CameraModal = /** @class */ (function () {
         function CameraModal() {
         }

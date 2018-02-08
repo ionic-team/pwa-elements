@@ -1,7 +1,7 @@
 /*! Built with http://stenciljs.com */
-mycomponent.loadBundle('ion-animation-controller.md', ['exports'], function (exports) {
-    var h = window.mycomponent.h;
-    var Context = window.mycomponent.Context;
+ionicpwaelements.loadBundle('ion-animation-controller.ios', ['exports'], function (exports) {
+    var h = window.ionicpwaelements.h;
+    var Context = window.ionicpwaelements.Context;
     var CSS_PROP = function (docEle) {
         // transform
         var transformProp = [
@@ -1489,12 +1489,12 @@ mycomponent.loadBundle('ion-animation-controller.md', ['exports'], function (exp
             configurable: true
         });
         Object.defineProperty(Modal, "style", {
-            get: function () { return "ion-modal {\n  left: 0;\n  top: 0;\n  position: absolute;\n  display: block;\n  width: 100%;\n  height: 100%;\n  contain: strict;\n}\n\nion-modal-controller {\n  display: none;\n}\n\n.modal-backdrop {\n  left: 0;\n  top: 0;\n  position: absolute;\n  z-index: 2;\n  display: block;\n  width: 100%;\n  height: 100%;\n  opacity: .01;\n  transform: translateZ(0);\n}\n\n\@media not all and (min-width: 768px) and (min-height: 600px) {\n  .modal-backdrop {\n    visibility: hidden;\n  }\n}\n\n.modal-backdrop.backdrop-no-tappable {\n  cursor: auto;\n}\n\n.modal-backdrop.hide-backdrop {\n  visibility: hidden;\n}\n\n.modal-wrapper {\n  z-index: 10;\n  height: 100%;\n  contain: strict;\n}\n\n\@media only screen and (min-width: 768px) and (min-height: 600px) {\n  .modal-wrapper {\n    left: calc(50% - (600px/2));\n    top: calc(50% - (500px/2));\n    position: absolute;\n    width: 600px;\n    height: 500px;\n  }\n}\n\n\@media only screen and (min-width: 768px) and (min-height: 768px) {\n  .modal-wrapper {\n    left: calc(50% - (600px/2));\n    top: calc(50% - (600px/2));\n    position: absolute;\n    width: 600px;\n    height: 600px;\n  }\n}\n\n.modal-backdrop-md {\n  background-color: var(--ion-backdrop-md-color, var(--ion-backdrop-color, #000));\n}\n\n.modal-wrapper-md {\n  transform: translate3d(0,  40px,  0);\n  opacity: .01;\n}\n\n\@media only screen and (min-width: 768px) and (min-height: 600px) {\n  .modal-wrapper-md {\n    border-radius: 2px;\n    overflow: hidden;\n    box-shadow: 0 28px 48px rgba(0, 0, 0, 0.4);\n  }\n}"; },
+            get: function () { return "ion-modal {\n  left: 0;\n  top: 0;\n  position: absolute;\n  display: block;\n  width: 100%;\n  height: 100%;\n  contain: strict;\n}\n\nion-modal-controller {\n  display: none;\n}\n\n.modal-backdrop {\n  left: 0;\n  top: 0;\n  position: absolute;\n  z-index: 2;\n  display: block;\n  width: 100%;\n  height: 100%;\n  opacity: .01;\n  transform: translateZ(0);\n}\n\n\@media not all and (min-width: 768px) and (min-height: 600px) {\n  .modal-backdrop {\n    visibility: hidden;\n  }\n}\n\n.modal-backdrop.backdrop-no-tappable {\n  cursor: auto;\n}\n\n.modal-backdrop.hide-backdrop {\n  visibility: hidden;\n}\n\n.modal-wrapper {\n  z-index: 10;\n  height: 100%;\n  contain: strict;\n}\n\n\@media only screen and (min-width: 768px) and (min-height: 600px) {\n  .modal-wrapper {\n    left: calc(50% - (600px/2));\n    top: calc(50% - (500px/2));\n    position: absolute;\n    width: 600px;\n    height: 500px;\n  }\n}\n\n\@media only screen and (min-width: 768px) and (min-height: 768px) {\n  .modal-wrapper {\n    left: calc(50% - (600px/2));\n    top: calc(50% - (600px/2));\n    position: absolute;\n    width: 600px;\n    height: 600px;\n  }\n}\n\n.modal-backdrop-ios {\n  background-color: var(--ion-backdrop-ios-color, var(--ion-backdrop-color, #000));\n}\n\n.modal-wrapper-ios {\n  transform: translate3d(0,  100%,  0);\n}\n\n\@media only screen and (min-width: 768px) and (min-height: 600px) {\n  .modal-wrapper-ios {\n    border-radius: 10px;\n    overflow: hidden;\n  }\n}"; },
             enumerable: true,
             configurable: true
         });
         Object.defineProperty(Modal, "styleMode", {
-            get: function () { return "md"; },
+            get: function () { return "ios"; },
             enumerable: true,
             configurable: true
         });

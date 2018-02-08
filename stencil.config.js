@@ -1,5 +1,5 @@
 exports.config = {
-  namespace: 'mycomponent',
+  namespace: 'ionicpwaelements',
   generateDistribution: true,
   collections: [
     { 

@@ -79,7 +79,7 @@ Copyright Paul Irish 2015 */
 (function(b){b.forEach(function(a){a.hasOwnProperty("remove")||Object.defineProperty(a,"remove",{configurable:!0,enumerable:!0,writable:!0,value:function(){null!==this.parentNode&&this.parentNode.removeChild(this)}})})})([Element.prototype,CharacterData.prototype,DocumentType.prototype]);
 /*! Built with http://stenciljs.com */
 (function(Context,appNamespace,hydratedCssClass,publicPath){"use strict";
-var s=document.querySelector("script[data-namespace='mycomponent']");if(s){publicPath=s.getAttribute('data-path');}
+var s=document.querySelector("script[data-namespace='ionicpwaelements']");if(s){publicPath=s.getAttribute('data-path');}
 (function(publicPath){/** @ionic/core global **/
 function isCordova() {
     var win = window;
@@ -2744,4 +2744,4 @@ this && this.__extends || function() {
     plt_1.defineComponent(cmpMeta, HostElement);
   });
 })(window, document, Context, appNamespace, publicPath);
-})({},"mycomponent","hydrated","/build/mycomponent/");
+})({},"ionicpwaelements","hydrated","/build/ionicpwaelements/");

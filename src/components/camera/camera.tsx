@@ -1,7 +1,5 @@
 import { Component, Prop, State, Event, EventEmitter } from '@stencil/core';
 
-import './imagecapture';
-
 declare var window:any;
 
 export interface MediaSettingsRange {

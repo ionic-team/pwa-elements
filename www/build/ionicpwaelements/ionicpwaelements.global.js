@@ -195,4 +195,4 @@ Ionic.mode = Context.mode = document.documentElement.getAttribute('mode') || Con
 document.documentElement.setAttribute('mode', Ionic.mode);
 
 })(publicPath);
-})("mycomponent","/build/mycomponent/");
+})("ionicpwaelements","/build/ionicpwaelements/");

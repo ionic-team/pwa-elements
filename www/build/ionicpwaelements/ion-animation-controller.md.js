@@ -1,5 +1,5 @@
 /*! Built with http://stenciljs.com */
-const { h, Context } = window.mycomponent;
+const { h, Context } = window.ionicpwaelements;
 
 let CSS_PROP = function (docEle) {
     // transform

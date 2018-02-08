@@ -1,10 +1,10 @@
 {
-  "namespace": "mycomponent",
-  "fsNamespace": "mycomponent",
-  "loader": "../mycomponent.js",
-  "global": "mycomponent.global.js",
-  "core": "mycomponent.core.js",
-  "corePolyfilled": "mycomponent.core.pf.js",
+  "namespace": "ionicpwaelements",
+  "fsNamespace": "ionicpwaelements",
+  "loader": "../ionicpwaelements.js",
+  "global": "ionicpwaelements.global.js",
+  "core": "ionicpwaelements.core.js",
+  "corePolyfilled": "ionicpwaelements.core.pf.js",
   "components": {
     "ion-animation-controller": {
       "ios": "ion-animation-controller.ios",

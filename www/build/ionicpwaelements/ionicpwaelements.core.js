@@ -1,6 +1,6 @@
 /*! Built with http://stenciljs.com */
 (function(Context,appNamespace,hydratedCssClass,publicPath){"use strict";
-var s=document.querySelector("script[data-namespace='mycomponent']");if(s){publicPath=s.getAttribute('data-path');}
+var s=document.querySelector("script[data-namespace='ionicpwaelements']");if(s){publicPath=s.getAttribute('data-path');}
 (function(publicPath){
     /** @ionic/core global **/
 
@@ -1959,4 +1959,4 @@ var s=document.querySelector("script[data-namespace='mycomponent']");if(s){publi
         plt.registerComponents(App.components).forEach(cmpMeta => plt.defineComponent(cmpMeta, class extends HTMLElement {}));
   }
 })(window, document, Context, appNamespace, publicPath);
-})({},"mycomponent","hydrated","/build/mycomponent/");
+})({},"ionicpwaelements","hydrated","/build/ionicpwaelements/");

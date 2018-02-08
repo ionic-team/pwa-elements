@@ -12,7 +12,7 @@
       margin: 0;
     }
   </style>
-  <script src="/build/mycomponent.js"></script>
+  <script src="/build/ionicpwaelements.js"></script>
 </head>
 <body>
   <ion-camera></ion-camera>
@@ -35,6 +35,16 @@
     });
   </script>
 -->
+
+
+  <script>
+    if ('serviceWorker' in navigator && location.protocol !== 'file:') {
+      // auto-unregister service worker during dev mode
+      navigator.serviceWorker.ready.then(function(registration) {
+        registration.unregister().then(function() { location.reload(true) });
+      });
+    }
+  </script>
 
 </body>
 </html>
