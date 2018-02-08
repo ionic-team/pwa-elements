@@ -38,10 +38,11 @@ export class Camera {
   @State() photo: any;
   @State() photoSrc: any;
   @State() showShutterOverlay = false;
+  @State() flashIndex = 0;
 
   hasMultipleCameras = false;
   hasFlash = false;
-  flashModes: FlashMode[];
+  flashModes: FlashMode[] = [];
 
   async componentDidLoad() {
     if (this.isServer) {
@@ -153,8 +154,13 @@ export class Camera {
     }
   }
 
-  cycleFlash() {
+  setFlashMode(mode: FlashMode) {
+    console.log('New flash mode: ', mode);
+  }
 
+  cycleFlash() {
+    this.flashIndex = this.flashIndex + 1 % this.flashModes.length;
+    this.setFlashMode(this.flashModes[this.flashIndex]);
   }
 
   async flashScreen() {
@@ -230,11 +236,9 @@ export class Camera {
           {/*this.hasMultipleCameras && (<div class="item rotate" onClick={(e) => this.handleRotateClick(e)}></div>)*/}
           ]) : (
           <section class="items">
-            <div class="item" onClick={e => this.handleCancelPhoto(e)}>
-              Cancel
+            <div class="item accept-cancel" onClick={e => this.handleCancelPhoto(e)}>
             </div>
-            <div class="item" onClick={e => this.handleAcceptPhoto(e)}>
-              Use
+            <div class="item accept-use" onClick={e => this.handleAcceptPhoto(e)}>
             </div>
           </section>
           )}

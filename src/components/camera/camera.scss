@@ -2,8 +2,9 @@ $header-height: 4em;
 $footer-height: 9em;
 $shutter-size: 6em;
 $icon-size-header: 1.5em;
-$icon-size-footer: 3em;
-$margin-size: 1.5em;
+$icon-size-footer: 2.5em;
+$margin-size-header: 1.5em;
+$margin-size-footer: 2.0em;
 
 :host {
   font-family: -apple-system, BlinkMacSystemFont,
@@ -24,6 +25,12 @@ $margin-size: 1.5em;
     .item {
       flex: 1;
       text-align: center;
+      &:first-child {
+        background-position-x: 0;
+      }
+      &:last-child {
+        background-position-x: 100%;
+      }
     }
   }
 
@@ -40,15 +47,8 @@ $margin-size: 1.5em;
     color: white;
     background-color: black;
     height: $header-height;
-
     .items {
-      padding: 0 $margin-size 0 $margin-size;
-      .item:first-child {
-        background-position-x: 0;
-      }
-      .item:last-child {
-        background-position-x: 100%;
-      }
+      padding: $margin-size-header;
     }
   }
 
@@ -57,6 +57,9 @@ $margin-size: 1.5em;
     color: white;
     background-color: black;
     height: $footer-height;
+    .items {
+      padding: $margin-size-footer;
+    }
   }
 
   .camera-video {
@@ -100,7 +103,7 @@ $margin-size: 1.5em;
 
   .rotate {
     position: absolute;
-    right: $margin-size;
+    right: $margin-size-footer;
     top: 0;
     height: 100%;
     width: $icon-size-footer;
@@ -144,6 +147,22 @@ $margin-size: 1.5em;
     height: $icon-size-header;
     background: url('/assets/flash-on.svg') no-repeat transparent;
     background-size: $icon-size-header;
+    background-position: center;
+  }
+
+  .accept-use {
+    width: $icon-size-footer;
+    height: $icon-size-footer;
+    background: url('/assets/confirm.svg') no-repeat transparent;
+    background-size: $icon-size-footer;
+    background-position: center;
+  }
+
+  .accept-cancel {
+    width: $icon-size-footer;
+    height: $icon-size-footer;
+    background: url('/assets/retake.svg') no-repeat transparent;
+    background-size: $icon-size-footer;
     background-position: center;
   }
 }
