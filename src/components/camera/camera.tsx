@@ -33,6 +33,10 @@ export class Camera {
     await this.initCamera();
   }
 
+  componentDidUnload() {
+    this.stopStream();
+  }
+
   /**
    * Query the list of connected devices and figure out how many video inputs we have.
    */
@@ -53,10 +57,6 @@ export class Camera {
     } catch(e) {
       console.error(e);
     }
-  }
-
-  componentDidUnload() {
-    this.stopStream();
   }
 
   hasImageCapture() {
@@ -120,6 +120,10 @@ export class Camera {
     }
   }
 
+  cycleFlash() {
+
+  }
+
   flashScreen() {
     console.log('Flashing screen');
   }
@@ -131,6 +135,14 @@ export class Camera {
 
   handleRotateClick(_e: Event) {
     this.rotate();
+  }
+
+  handleClose(_e: Event) {
+    this.onPhoto.emit(null);
+  }
+
+  handleFlashClick(_e: Event) {
+    this.cycleFlash();
   }
 
   handleCancelPhoto(_e: Event) {
@@ -145,7 +157,12 @@ export class Camera {
     return (
       <div class="camera-wrapper">
         <div class="camera-header">
-          {this.hasMultipleCameras && (<div class="rotate" onClick={(e) => this.handleRotateClick(e)}></div>)}
+          <section class="items">
+            <div class="item close" onClick={e => this.handleClose(e)}>
+            </div>
+            <div class="item flash" onClick={e => this.handleFlashClick(e)}>
+            </div>
+          </section>
         </div>
 
         {/* Show the taken photo for the Accept UI*/}
@@ -161,11 +178,14 @@ export class Camera {
         </div>
 
         <div class="camera-footer">
-          {!this.photo ? (
+          {!this.photo ? ([
           <div class="shutter" onClick={(e) => this.handleShutterClick(e)}>
             <div class="shutter-button"></div>
-          </div>
-          ) : (
+          </div>,
+          <div class="rotate" onClick={(e) => this.handleRotateClick(e)}>
+          </div>,
+          {/*this.hasMultipleCameras && (<div class="item rotate" onClick={(e) => this.handleRotateClick(e)}></div>)*/}
+          ]) : (
           <section class="items">
             <div class="item" onClick={e => this.handleCancelPhoto(e)}>
               Cancel

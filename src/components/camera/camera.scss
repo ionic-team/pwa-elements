@@ -1,3 +1,10 @@
+$header-height: 5em;
+$footer-height: 9em;
+$shutter-size: 6em;
+$icon-size-header: 2em;
+$icon-size-footer: 3em;
+$margin-size: 1.5em;
+
 :host {
   font-family: -apple-system, BlinkMacSystemFont,
     “Segoe UI”, “Roboto”, “Droid Sans”, “Helvetica Neue”, sans-serif;
@@ -6,15 +13,18 @@
   width: 100%;
   height: 100%;
 
-  .rotate {
-    position: absolute;;
-    right: 16px;
-    top: 16px;
-    width: 32px;
-    height: 32px;
-    color: white;
-    background: url('/assets/rotate-camera.png') no-repeat transparent;
-    background-size: 32px 32px;
+  .items {
+    box-sizing: border-box;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+
+    .item {
+      flex: 1;
+      text-align: center;
+    }
   }
 
   .camera-wrapper {
@@ -29,26 +39,24 @@
   .camera-header {
     color: white;
     background-color: black;
-    height: 64px;
+    height: $header-height;
+
+    .items {
+      padding: 0 $margin-size 0 $margin-size;
+      .item:first-child {
+        background-position-x: 0;
+      }
+      .item:last-child {
+        background-position-x: 100%;
+      }
+    }
   }
 
   .camera-footer {
+    position: relative;
     color: white;
     background-color: black;
-    height: 128px;
-
-    .items {
-      display: flex;
-      width: 100%;
-      height: 100%;
-      align-items: center;
-      justify-content: center;
-
-      .item {
-        flex: 1;
-        text-align: center;
-      }
-    }
+    height: $footer-height;
   }
 
   .camera-video {
@@ -65,14 +73,15 @@
   .shutter {
     position: absolute;
     left: 50%;
-    bottom: 32px;
-    width: 64px;
-    height: 64px;
-    margin-top: -32px;
-    margin-left: -32px;
+    top: 50%;
+    width: $shutter-size;
+    height: $shutter-size;
+    margin-top: -($shutter-size/2);
+    margin-left: -($shutter-size/2);
     border-radius: 100%;
     background-color: #c6cdd8;
-    padding: 10px;
+    padding: 12px;
+    box-sizing: border-box;
 
     &:active {
       .shutter-button {
@@ -88,6 +97,18 @@
     height: 100%;
   }
 
+  .rotate {
+    position: absolute;
+    right: $margin-size;
+    top: 0;
+    height: 100%;
+    width: $icon-size-footer;
+    color: white;
+    background: url('/assets/reverse-camera.svg') no-repeat transparent;
+    background-size: $icon-size-footer;
+    background-position: center;
+  }
+
   .accept {
     flex: 1;
 
@@ -98,5 +119,21 @@
       background-size: cover;
       background-repeat: no-repeat;
     }
+  }
+
+  .close {
+    width: $icon-size-header;
+    height: $icon-size-header;
+    background: url('/assets/exit.svg') no-repeat transparent;
+    background-size: $icon-size-header;
+    background-position: center;
+  }
+
+  .flash {
+    width: $icon-size-header;
+    height: $icon-size-header;
+    background: url('/assets/flash-on.svg') no-repeat transparent;
+    background-size: $icon-size-header;
+    background-position: center;
   }
 }

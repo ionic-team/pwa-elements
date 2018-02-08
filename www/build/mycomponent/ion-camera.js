@@ -24,6 +24,9 @@ class Camera {
             yield this.initCamera();
         });
     }
+    componentDidUnload() {
+        this.stopStream();
+    }
     /**
      * Query the list of connected devices and figure out how many video inputs we have.
      */
@@ -43,9 +46,6 @@ class Camera {
                 console.error(e);
             }
         });
-    }
-    componentDidUnload() {
-        this.stopStream();
     }
     hasImageCapture() {
         return 'ImageCapture' in window;
@@ -105,6 +105,8 @@ class Camera {
             });
         }
     }
+    cycleFlash() {
+    }
     flashScreen() {
         console.log('Flashing screen');
     }
@@ -115,6 +117,12 @@ class Camera {
     handleRotateClick(_e) {
         this.rotate();
     }
+    handleClose(_e) {
+        this.onPhoto.emit(null);
+    }
+    handleFlashClick(_e) {
+        this.cycleFlash();
+    }
     handleCancelPhoto(_e) {
         this.photo = null;
     }
@@ -123,13 +131,20 @@ class Camera {
     }
     render() {
         return (h("div", { class: "camera-wrapper" },
-            h("div", { class: "camera-header" }, this.hasMultipleCameras && (h("div", { class: "rotate", onClick: (e) => this.handleRotateClick(e) }))),
+            h("div", { class: "camera-header" },
+                h("section", { class: "items" },
+                    h("div", { class: "item close", onClick: e => this.handleClose(e) }),
+                    h("div", { class: "item flash", onClick: e => this.handleFlashClick(e) }))),
             this.photo && (h("div", { class: "accept" },
                 h("div", { class: "accept-image", style: { backgroundImage: `url(${this.photoSrc})` } }))),
             h("div", { class: "camera-video", style: { display: this.photo ? 'none' : '' } },
                 h("video", { ref: (el) => this.videoElement = el, autoplay: true })),
-            h("div", { class: "camera-footer" }, !this.photo ? (h("div", { class: "shutter", onClick: (e) => this.handleShutterClick(e) },
-                h("div", { class: "shutter-button" }))) : (h("section", { class: "items" },
+            h("div", { class: "camera-footer" }, !this.photo ? ([
+                h("div", { class: "shutter", onClick: (e) => this.handleShutterClick(e) },
+                    h("div", { class: "shutter-button" })),
+                h("div", { class: "rotate", onClick: (e) => this.handleRotateClick(e) }),
+                {}
+            ]) : (h("section", { class: "items" },
                 h("div", { class: "item", onClick: e => this.handleCancelPhoto(e) }, "Cancel"),
                 h("div", { class: "item", onClick: e => this.handleAcceptPhoto(e) }, "Use"))))));
     }
@@ -137,7 +152,7 @@ class Camera {
     static get encapsulation() { return "shadow"; }
     static get properties() { return { "isServer": { "context": "isServer" }, "photo": { "state": true }, "photoSrc": { "state": true } }; }
     static get events() { return [{ "name": "onPhoto", "method": "onPhoto", "bubbles": true, "cancelable": true, "composed": true }]; }
-    static get style() { return "\@charset \"UTF-8\";\n:host {\n  font-family: -apple-system, BlinkMacSystemFont, “Segoe UI”, “Roboto”, “Droid Sans”, “Helvetica Neue”, sans-serif;\n  display: block;\n  width: 100%;\n  height: 100%;\n}\n\n:host .rotate {\n  position: absolute;\n  right: 16px;\n  top: 16px;\n  width: 32px;\n  height: 32px;\n  color: white;\n  background: url(\"/assets/rotate-camera.png\") no-repeat transparent;\n  background-size: 32px 32px;\n}\n\n:host .camera-wrapper {\n  position: relative;\n  display: flex;\n  flex-direction: column;\n  width: 100%;\n  height: 100%;\n}\n\n:host .camera-header {\n  color: white;\n  background-color: black;\n  height: 64px;\n}\n\n:host .camera-footer {\n  color: white;\n  background-color: black;\n  height: 128px;\n}\n\n:host .camera-footer .items {\n  display: flex;\n  width: 100%;\n  height: 100%;\n  align-items: center;\n  justify-content: center;\n}\n\n:host .camera-footer .items .item {\n  flex: 1;\n  text-align: center;\n}\n\n:host .camera-video {\n  flex: 1;\n}\n\n:host video {\n  width: 100%;\n  height: 100%;\n  z-index: -1;\n  object-fit: cover;\n}\n\n:host .shutter {\n  position: absolute;\n  left: 50%;\n  bottom: 32px;\n  width: 64px;\n  height: 64px;\n  margin-top: -32px;\n  margin-left: -32px;\n  border-radius: 100%;\n  background-color: #c6cdd8;\n  padding: 10px;\n}\n\n:host .shutter:active .shutter-button {\n  background-color: #9da9bb;\n}\n\n:host .shutter-button {\n  background-color: white;\n  border-radius: 100%;\n  width: 100%;\n  height: 100%;\n}\n\n:host .accept {\n  flex: 1;\n}\n\n:host .accept .accept-image {\n  width: 100%;\n  height: 100%;\n  background-position: center center;\n  background-size: cover;\n  background-repeat: no-repeat;\n}"; }
+    static get style() { return "\@charset \"UTF-8\";\n:host {\n  font-family: -apple-system, BlinkMacSystemFont, “Segoe UI”, “Roboto”, “Droid Sans”, “Helvetica Neue”, sans-serif;\n  display: block;\n  width: 100%;\n  height: 100%;\n}\n\n:host .items {\n  box-sizing: border-box;\n  display: flex;\n  width: 100%;\n  height: 100%;\n  align-items: center;\n  justify-content: center;\n}\n\n:host .items .item {\n  flex: 1;\n  text-align: center;\n}\n\n:host .camera-wrapper {\n  position: relative;\n  display: flex;\n  flex-direction: column;\n  width: 100%;\n  height: 100%;\n}\n\n:host .camera-header {\n  color: white;\n  background-color: black;\n  height: 5em;\n}\n\n:host .camera-header .items {\n  padding: 0 1.5em 0 1.5em;\n}\n\n:host .camera-header .items .item:first-child {\n  background-position-x: 0;\n}\n\n:host .camera-header .items .item:last-child {\n  background-position-x: 100%;\n}\n\n:host .camera-footer {\n  position: relative;\n  color: white;\n  background-color: black;\n  height: 9em;\n}\n\n:host .camera-video {\n  flex: 1;\n}\n\n:host video {\n  width: 100%;\n  height: 100%;\n  z-index: -1;\n  object-fit: cover;\n}\n\n:host .shutter {\n  position: absolute;\n  left: 50%;\n  top: 50%;\n  width: 6em;\n  height: 6em;\n  margin-top: -3em;\n  margin-left: -3em;\n  border-radius: 100%;\n  background-color: #c6cdd8;\n  padding: 12px;\n  box-sizing: border-box;\n}\n\n:host .shutter:active .shutter-button {\n  background-color: #9da9bb;\n}\n\n:host .shutter-button {\n  background-color: white;\n  border-radius: 100%;\n  width: 100%;\n  height: 100%;\n}\n\n:host .rotate {\n  position: absolute;\n  right: 1.5em;\n  top: 0;\n  height: 100%;\n  width: 3em;\n  color: white;\n  background: url(\"/assets/reverse-camera.svg\") no-repeat transparent;\n  background-size: 3em;\n  background-position: center;\n}\n\n:host .accept {\n  flex: 1;\n}\n\n:host .accept .accept-image {\n  width: 100%;\n  height: 100%;\n  background-position: center center;\n  background-size: cover;\n  background-repeat: no-repeat;\n}\n\n:host .close {\n  width: 2em;\n  height: 2em;\n  background: url(\"/assets/exit.svg\") no-repeat transparent;\n  background-size: 2em;\n  background-position: center;\n}\n\n:host .flash {\n  width: 2em;\n  height: 2em;\n  background: url(\"/assets/flash-on.svg\") no-repeat transparent;\n  background-size: 2em;\n  background-position: center;\n}"; }
 }
 
 export { Camera as IonCamera };
