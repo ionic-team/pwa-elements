@@ -379,7 +379,12 @@ mycomponent.loadBundle('ion-camera', ['exports'], function (exports) {
                 return;
             }
             var c = track.getConstraints();
-            if (c.facingMode === 'environment') {
+            var facingMode = c.facingMode;
+            if (!facingMode) {
+                c = track.getCapabilities();
+                facingMode = c.facingMode[0];
+            }
+            if (facingMode === 'environment') {
                 this.initCamera({
                     video: {
                         facingMode: 'user'

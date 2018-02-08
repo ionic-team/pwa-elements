@@ -275,8 +275,13 @@ class Camera {
         if (!track) {
             return;
         }
-        const c = track.getConstraints();
-        if (c.facingMode === 'environment') {
+        let c = track.getConstraints();
+        let facingMode = c.facingMode;
+        if (!facingMode) {
+            c = track.getCapabilities();
+            facingMode = c.facingMode[0];
+        }
+        if (facingMode === 'environment') {
             this.initCamera({
                 video: {
                     facingMode: 'user'
