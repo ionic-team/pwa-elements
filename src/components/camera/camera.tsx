@@ -1,6 +1,25 @@
 import { Component, Prop, State, Event, EventEmitter } from '@stencil/core';
 
+import './imagecapture';
+
 declare var window:any;
+
+export interface MediaSettingsRange {
+  min: number;
+  max: number;
+  step: number;
+}
+
+export interface PhotoCapabilities {
+  redEyeReduction: "never" | "always" | "controllable";
+  imageHeight: MediaSettingsRange;
+  imageWidth: MediaSettingsRange;
+  fillLightMode: string[];
+}
+
+export interface FlashMode {
+  name: "auto" | "off" | "flash";
+}
 
 @Component({
   tag: 'ion-camera',
@@ -18,8 +37,11 @@ export class Camera {
 
   @State() photo: any;
   @State() photoSrc: any;
+  @State() showShutterOverlay = false;
 
   hasMultipleCameras = false;
+  hasFlash = false;
+  flashModes: FlashMode[];
 
   async componentDidLoad() {
     if (this.isServer) {
@@ -63,15 +85,24 @@ export class Camera {
     return 'ImageCapture' in window;
   }
 
-  initStream(stream: MediaStream) {
+  async initStream(stream: MediaStream) {
     this.stream = stream;
     this.videoElement.srcObject = stream;
 
     if (this.hasImageCapture()) {
       this.imageCapture = new window.ImageCapture(stream.getVideoTracks()[0]);
       // console.log(stream.getTracks()[0].getCapabilities());
+      this.initPhotoCapabilities(this.imageCapture);
     } else {
       // TODO: DO SOMETHING ELSE HERE
+    }
+  }
+
+  async initPhotoCapabilities(imageCapture: any) {
+    const c = await imageCapture.getPhotoCapabilities();
+
+    if (c.fillLightMode.length) {
+      this.flashModes = c.fillLightMode.map(m => m);
     }
   }
 
@@ -83,6 +114,8 @@ export class Camera {
     if (this.hasImageCapture()) {
       try {
         const photo = await this.imageCapture.takePhoto();
+        
+        await this.flashScreen();
 
         this.promptAccept(photo);
       } catch (e) {
@@ -124,8 +157,14 @@ export class Camera {
 
   }
 
-  flashScreen() {
-    console.log('Flashing screen');
+  async flashScreen() {
+    return new Promise((resolve, _reject) => {
+      this.showShutterOverlay = true;
+      setTimeout(() => {
+        this.showShutterOverlay = false;
+        resolve();
+      }, 100);
+    });
   }
 
   handleShutterClick(_e: Event) {
@@ -174,6 +213,10 @@ export class Camera {
 
         {/* Only toggle visibility of the video feed to keep it responsive */}
         <div class="camera-video" style={{display: this.photo ? 'none' : ''}}>
+          {this.showShutterOverlay && (
+          <div class="shutter-overlay">
+          </div>
+          )}
           <video ref={(el: HTMLVideoElement) => this.videoElement = el} autoplay></video>
         </div>
 

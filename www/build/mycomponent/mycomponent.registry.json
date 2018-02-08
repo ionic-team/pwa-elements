@@ -4,7 +4,7 @@
   "loader": "../mycomponent.js",
   "global": "mycomponent.global.js",
   "core": "mycomponent.core.js",
-  "corePolyfilled": "es5-build-disabled.js",
+  "corePolyfilled": "mycomponent.core.pf.js",
   "components": {
     "ion-animation-controller": {
       "ios": "ion-animation-controller.ios",

@@ -13,16 +13,16 @@
     "build": "stencil build",
     "dev": "sd concurrent \"stencil build --dev --watch\" \"stencil-dev-server\" ",
     "serve": "stencil-dev-server",
-    "start": "npm run dev",
+    "start": "npm run dev --es5",
     "test": "jest --no-cache",
     "test.watch": "jest --watch --no-cache"
   },
   "dependencies": {
-    "@stencil/core": "^0.4.0-1"
+    "@stencil/core": "^0.4.0-3"
   },
   "devDependencies": {
     "@ionic/core": "0.0.2-56",
-    "@stencil/dev-server": "latest",
+    "@stencil/dev-server": "0.0.18-1",
     "@stencil/utils": "latest",
     "@types/jest": "^21.1.1",
     "jest": "^21.2.1"

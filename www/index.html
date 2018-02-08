@@ -36,14 +36,5 @@
   </script>
 -->
 
-  <script>
-    if ('serviceWorker' in navigator && location.protocol !== 'file:') {
-      // auto-unregister service worker during dev mode
-      navigator.serviceWorker.ready.then(function(registration) {
-        registration.unregister().then(function() { location.reload(true) });
-      });
-    }
-  </script>
-
 </body>
 </html>

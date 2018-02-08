@@ -1,7 +1,7 @@
-$header-height: 5em;
+$header-height: 4em;
 $footer-height: 9em;
 $shutter-size: 6em;
-$icon-size-header: 2em;
+$icon-size-header: 1.5em;
 $icon-size-footer: 3em;
 $margin-size: 1.5em;
 
@@ -60,6 +60,7 @@ $margin-size: 1.5em;
   }
 
   .camera-video {
+    position: relative;
     flex: 1;
   }
 
@@ -109,7 +110,16 @@ $margin-size: 1.5em;
     background-position: center;
   }
 
+  .shutter-overlay {
+    z-index: 5;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: black;
+  }
+
   .accept {
+    background-color: black;
     flex: 1;
 
     .accept-image {
