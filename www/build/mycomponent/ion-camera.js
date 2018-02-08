@@ -76,7 +76,7 @@ if (typeof ImageCapture === 'undefined') {
                 resolve({
                     exposureCompensation: MediaSettingsRange,
                     exposureMode: 'none',
-                    fillLightMode: 'none',
+                    fillLightMode: ['none'],
                     focusMode: 'none',
                     imageHeight: MediaSettingsRange,
                     imageWidth: MediaSettingsRange,
@@ -169,8 +169,11 @@ class Camera {
     constructor() {
         this.showShutterOverlay = false;
         this.flashIndex = 0;
+        // Whether the device has multiple cameras (front/back)
         this.hasMultipleCameras = false;
+        // Whether the device has flash support
         this.hasFlash = false;
+        // Flash modes for camera
         this.flashModes = [];
     }
     componentDidLoad() {
@@ -186,6 +189,10 @@ class Camera {
     }
     componentDidUnload() {
         this.stopStream();
+        this.photoSrc && URL.revokeObjectURL(this.photoSrc);
+    }
+    hasImageCapture() {
+        return 'ImageCapture' in window;
     }
     /**
      * Query the list of connected devices and figure out how many video inputs we have.
@@ -206,9 +213,6 @@ class Camera {
                 console.error(e);
             }
         });
-    }
-    hasImageCapture() {
-        return 'ImageCapture' in window;
     }
     initStream(stream) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -324,7 +328,7 @@ class Camera {
                 h("div", { class: "accept-image", style: { backgroundImage: `url(${this.photoSrc})` } }))),
             h("div", { class: "camera-video", style: { display: this.photo ? 'none' : '' } },
                 this.showShutterOverlay && (h("div", { class: "shutter-overlay" })),
-                h("video", { ref: (el) => this.videoElement = el, autoplay: true })),
+                this.hasImageCapture() ? (h("video", { ref: (el) => this.videoElement = el, autoplay: true })) : (h("canvas", { ref: (el) => this.canvasElement = el, width: "100%", height: "100%" }))),
             h("div", { class: "camera-footer" }, !this.photo ? ([
                 h("div", { class: "shutter", onClick: (e) => this.handleShutterClick(e) },
                     h("div", { class: "shutter-button" })),
@@ -338,7 +342,7 @@ class Camera {
     static get encapsulation() { return "shadow"; }
     static get properties() { return { "flashIndex": { "state": true }, "isServer": { "context": "isServer" }, "photo": { "state": true }, "photoSrc": { "state": true }, "showShutterOverlay": { "state": true } }; }
     static get events() { return [{ "name": "onPhoto", "method": "onPhoto", "bubbles": true, "cancelable": true, "composed": true }]; }
-    static get style() { return "\@charset \"UTF-8\";\n:host {\n  font-family: -apple-system, BlinkMacSystemFont, “Segoe UI”, “Roboto”, “Droid Sans”, “Helvetica Neue”, sans-serif;\n  display: block;\n  width: 100%;\n  height: 100%;\n}\n\n:host .items {\n  box-sizing: border-box;\n  display: flex;\n  width: 100%;\n  height: 100%;\n  align-items: center;\n  justify-content: center;\n}\n\n:host .items .item {\n  flex: 1;\n  text-align: center;\n}\n\n:host .items .item:first-child {\n  background-position-x: 0;\n}\n\n:host .items .item:last-child {\n  background-position-x: 100%;\n}\n\n:host .camera-wrapper {\n  position: relative;\n  display: flex;\n  flex-direction: column;\n  width: 100%;\n  height: 100%;\n}\n\n:host .camera-header {\n  color: white;\n  background-color: black;\n  height: 4em;\n}\n\n:host .camera-header .items {\n  padding: 1.5em;\n}\n\n:host .camera-footer {\n  position: relative;\n  color: white;\n  background-color: black;\n  height: 9em;\n}\n\n:host .camera-footer .items {\n  padding: 2em;\n}\n\n:host .camera-video {\n  position: relative;\n  flex: 1;\n}\n\n:host video {\n  width: 100%;\n  height: 100%;\n  z-index: -1;\n  object-fit: cover;\n}\n\n:host .shutter {\n  position: absolute;\n  left: 50%;\n  top: 50%;\n  width: 6em;\n  height: 6em;\n  margin-top: -3em;\n  margin-left: -3em;\n  border-radius: 100%;\n  background-color: #c6cdd8;\n  padding: 12px;\n  box-sizing: border-box;\n}\n\n:host .shutter:active .shutter-button {\n  background-color: #9da9bb;\n}\n\n:host .shutter-button {\n  background-color: white;\n  border-radius: 100%;\n  width: 100%;\n  height: 100%;\n}\n\n:host .rotate {\n  position: absolute;\n  right: 2em;\n  top: 0;\n  height: 100%;\n  width: 2.5em;\n  color: white;\n  background: url(\"/assets/reverse-camera.svg\") no-repeat transparent;\n  background-size: 2.5em;\n  background-position: center;\n}\n\n:host .shutter-overlay {\n  z-index: 5;\n  position: absolute;\n  width: 100%;\n  height: 100%;\n  background-color: black;\n}\n\n:host .accept {\n  background-color: black;\n  flex: 1;\n}\n\n:host .accept .accept-image {\n  width: 100%;\n  height: 100%;\n  background-position: center center;\n  background-size: cover;\n  background-repeat: no-repeat;\n}\n\n:host .close {\n  width: 1.5em;\n  height: 1.5em;\n  background: url(\"/assets/exit.svg\") no-repeat transparent;\n  background-size: 1.5em;\n  background-position: center;\n}\n\n:host .flash {\n  width: 1.5em;\n  height: 1.5em;\n  background: url(\"/assets/flash-on.svg\") no-repeat transparent;\n  background-size: 1.5em;\n  background-position: center;\n}\n\n:host .accept-use {\n  width: 2.5em;\n  height: 2.5em;\n  background: url(\"/assets/confirm.svg\") no-repeat transparent;\n  background-size: 2.5em;\n  background-position: center;\n}\n\n:host .accept-cancel {\n  width: 2.5em;\n  height: 2.5em;\n  background: url(\"/assets/retake.svg\") no-repeat transparent;\n  background-size: 2.5em;\n  background-position: center;\n}"; }
+    static get style() { return "\@charset \"UTF-8\";\n:host {\n  font-family: -apple-system, BlinkMacSystemFont, “Segoe UI”, “Roboto”, “Droid Sans”, “Helvetica Neue”, sans-serif;\n  display: block;\n  width: 100%;\n  height: 100%;\n}\n\n:host .items {\n  box-sizing: border-box;\n  display: flex;\n  width: 100%;\n  height: 100%;\n  align-items: center;\n  justify-content: center;\n}\n\n:host .items .item {\n  flex: 1;\n  text-align: center;\n}\n\n:host .items .item:first-child {\n  background-position-x: 0;\n}\n\n:host .items .item:last-child {\n  background-position-x: 100%;\n}\n\n:host .camera-wrapper {\n  position: relative;\n  display: flex;\n  flex-direction: column;\n  width: 100%;\n  height: 100%;\n}\n\n:host .camera-header {\n  color: white;\n  background-color: black;\n  height: 4em;\n}\n\n:host .camera-header .items {\n  padding: 1.5em;\n}\n\n:host .camera-footer {\n  position: relative;\n  color: white;\n  background-color: black;\n  height: 9em;\n}\n\n:host .camera-footer .items {\n  padding: 2em;\n}\n\n:host .camera-video {\n  position: relative;\n  flex: 1;\n  overflow: hidden;\n}\n\n:host video {\n  width: 100%;\n  height: 100%;\n  max-height: 100%;\n  z-index: -1;\n  object-fit: cover;\n}\n\n:host .shutter {\n  position: absolute;\n  left: 50%;\n  top: 50%;\n  width: 6em;\n  height: 6em;\n  margin-top: -3em;\n  margin-left: -3em;\n  border-radius: 100%;\n  background-color: #c6cdd8;\n  padding: 12px;\n  box-sizing: border-box;\n}\n\n:host .shutter:active .shutter-button {\n  background-color: #9da9bb;\n}\n\n:host .shutter-button {\n  background-color: white;\n  border-radius: 100%;\n  width: 100%;\n  height: 100%;\n}\n\n:host .rotate {\n  position: absolute;\n  right: 2em;\n  top: 0;\n  height: 100%;\n  width: 2.5em;\n  color: white;\n  background: url(\"/assets/reverse-camera.svg\") no-repeat transparent;\n  background-size: 2.5em;\n  background-position: center;\n}\n\n:host .shutter-overlay {\n  z-index: 5;\n  position: absolute;\n  width: 100%;\n  height: 100%;\n  background-color: black;\n}\n\n:host .accept {\n  background-color: black;\n  flex: 1;\n}\n\n:host .accept .accept-image {\n  width: 100%;\n  height: 100%;\n  background-position: center center;\n  background-size: cover;\n  background-repeat: no-repeat;\n}\n\n:host .close {\n  width: 1.5em;\n  height: 1.5em;\n  background: url(\"/assets/exit.svg\") no-repeat transparent;\n  background-size: 1.5em;\n  background-position: center;\n}\n\n:host .flash {\n  width: 1.5em;\n  height: 1.5em;\n  background: url(\"/assets/flash-on.svg\") no-repeat transparent;\n  background-size: 1.5em;\n  background-position: center;\n}\n\n:host .accept-use {\n  width: 2.5em;\n  height: 2.5em;\n  background: url(\"/assets/confirm.svg\") no-repeat transparent;\n  background-size: 2.5em;\n  background-position: center;\n}\n\n:host .accept-cancel {\n  width: 2.5em;\n  height: 2.5em;\n  background: url(\"/assets/retake.svg\") no-repeat transparent;\n  background-size: 2.5em;\n  background-position: center;\n}"; }
 }
 
 export { Camera as IonCamera };

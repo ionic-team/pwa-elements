@@ -30,18 +30,24 @@ export class Camera {
   @Prop({ context: 'isServer' }) private isServer: boolean;
 
   @Event() onPhoto: EventEmitter;
-
-  stream: MediaStream;
-  imageCapture: any;
-  videoElement: HTMLVideoElement;
-
   @State() photo: any;
   @State() photoSrc: any;
   @State() showShutterOverlay = false;
   @State() flashIndex = 0;
 
+  // Current stream
+  stream: MediaStream;
+  // Reference to our image capture object
+  imageCapture: any;
+  // Video element when using ImageCapture native API
+  videoElement: HTMLVideoElement;
+  // Canvas element for ImageCapture polyfill
+  canvasElement: HTMLCanvasElement;
+  // Whether the device has multiple cameras (front/back)
   hasMultipleCameras = false;
+  // Whether the device has flash support
   hasFlash = false;
+  // Flash modes for camera
   flashModes: FlashMode[] = [];
 
   async componentDidLoad() {
@@ -58,6 +64,11 @@ export class Camera {
 
   componentDidUnload() {
     this.stopStream();
+    this.photoSrc && URL.revokeObjectURL(this.photoSrc);
+  }
+
+  hasImageCapture() {
+    return 'ImageCapture' in window;
   }
 
   /**
@@ -80,10 +91,6 @@ export class Camera {
     } catch(e) {
       console.error(e);
     }
-  }
-
-  hasImageCapture() {
-    return 'ImageCapture' in window;
   }
 
   async initStream(stream: MediaStream) {
@@ -223,7 +230,11 @@ export class Camera {
           <div class="shutter-overlay">
           </div>
           )}
+          {this.hasImageCapture() ? (
           <video ref={(el: HTMLVideoElement) => this.videoElement = el} autoplay></video>
+          ) : (
+          <canvas ref={(el: HTMLCanvasElement) => this.canvasElement = el} width="100%" height="100%"></canvas>
+          )}
         </div>
 
         <div class="camera-footer">
