@@ -70,7 +70,7 @@ declare global {
   }
   namespace JSXElements {
     export interface IonCameraAttributes extends HTMLAttributes {
-      
+      facingMode?: string;
     }
   }
 }

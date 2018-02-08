@@ -29,12 +29,15 @@ export interface FlashMode {
 export class Camera {
   @Prop({ context: 'isServer' }) private isServer: boolean;
 
+  @Prop() facingMode: string = 'user';
+
   @Event() onPhoto: EventEmitter;
   @State() photo: any;
   @State() photoSrc: any;
   @State() showShutterOverlay = false;
   @State() flashIndex = 0;
 
+  defaultConstraints: any;
   // Current stream
   stream: MediaStream;
   // Reference to our image capture object
@@ -54,6 +57,12 @@ export class Camera {
     if (this.isServer) {
       return;
     }
+
+    this.defaultConstraints = {
+      video: {
+        facingMode: this.facingMode
+      }
+    };
 
     // Figure out how many cameras we have
     await this.queryDevices();
@@ -79,7 +88,12 @@ export class Camera {
     this.hasMultipleCameras = devices.filter(d => d.kind == 'videoinput').length > 1;
   }
 
-  async initCamera(constraints: MediaStreamConstraints = {}) {
+  async initCamera(constraints?: MediaStreamConstraints) {
+    console.log('Initializing', constraints);
+    if (!constraints) {
+      constraints = this.defaultConstraints;
+    }
+
     try {
       const stream = await navigator.mediaDevices.getUserMedia({
         video: true,
@@ -145,8 +159,9 @@ export class Camera {
       return;
     }
 
-    const constraints = track.getConstraints();
-    if (constraints.facingMode === 'environment') {
+    const c = track.getConstraints();
+
+    if (c.facingMode === 'environment') {
       this.initCamera({
         video: {
           facingMode: 'user'
@@ -231,7 +246,7 @@ export class Camera {
           </div>
           )}
           {this.hasImageCapture() ? (
-          <video ref={(el: HTMLVideoElement) => this.videoElement = el} autoplay></video>
+          <video ref={(el: HTMLVideoElement) => this.videoElement = el} autoplay playsinline></video>
           ) : (
           <canvas ref={(el: HTMLCanvasElement) => this.canvasElement = el} width="100%" height="100%"></canvas>
           )}
