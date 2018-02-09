@@ -113,7 +113,7 @@ $margin-size-footer: 2.0em;
     height: 100%;
     width: $icon-size-footer;
     color: white;
-    background: url('/assets/reverse-camera.svg') no-repeat transparent;
+    background: url('assets/reverse-camera.svg') no-repeat transparent;
     background-size: $icon-size-footer;
     background-position: center;
   }
@@ -142,7 +142,7 @@ $margin-size-footer: 2.0em;
   .close {
     width: $icon-size-header;
     height: $icon-size-header;
-    background: url('/assets/exit.svg') no-repeat transparent;
+    background: url('assets/exit.svg') no-repeat transparent;
     background-size: $icon-size-header;
     background-position: center;
   }
@@ -150,7 +150,7 @@ $margin-size-footer: 2.0em;
   .flash {
     width: $icon-size-header;
     height: $icon-size-header;
-    background: url('/assets/flash-on.svg') no-repeat transparent;
+    background: url('assets/flash-on.svg') no-repeat transparent;
     background-size: $icon-size-header;
     background-position: center;
   }
@@ -158,7 +158,7 @@ $margin-size-footer: 2.0em;
   .accept-use {
     width: $icon-size-footer;
     height: $icon-size-footer;
-    background: url('/assets/confirm.svg') no-repeat transparent;
+    background: url('assets/confirm.svg') no-repeat transparent;
     background-size: $icon-size-footer;
     background-position: center;
   }
@@ -166,7 +166,7 @@ $margin-size-footer: 2.0em;
   .accept-cancel {
     width: $icon-size-footer;
     height: $icon-size-footer;
-    background: url('/assets/retake.svg') no-repeat transparent;
+    background: url('assets/retake.svg') no-repeat transparent;
     background-size: $icon-size-footer;
     background-position: center;
   }
