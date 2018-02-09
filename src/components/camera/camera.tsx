@@ -22,10 +22,12 @@ export interface FlashMode {
 @Component({
   tag: 'ion-camera',
   styleUrl: 'camera.scss',
+  assetsDir: 'icons',
   shadow: true
 })
 export class Camera {
   @Prop({ context: 'isServer' }) private isServer: boolean;
+  @Prop({ context: 'publicPath'}) private publicPath: string;
 
   @Prop() facingMode: string = 'user';
 
@@ -52,6 +54,7 @@ export class Camera {
   flashModes: FlashMode[] = [];
 
   async componentDidLoad() {
+    console.log('CAMERA PUBLIC PATH', this.publicPath);
     if (this.isServer) {
       return;
     }
@@ -230,8 +233,10 @@ export class Camera {
         <div class="camera-header">
           <section class="items">
             <div class="item close" onClick={e => this.handleClose(e)}>
+              <img src={`${this.publicPath}icons/exit.svg`} />
             </div>
             <div class="item flash" onClick={e => this.handleFlashClick(e)}>
+              <img src={`${this.publicPath}icons/flash-on.svg`} />
             </div>
           </section>
         </div>
@@ -262,13 +267,16 @@ export class Camera {
             <div class="shutter-button"></div>
           </div>,
           <div class="rotate" onClick={(e) => this.handleRotateClick(e)}>
+            <img src={`${this.publicPath}icons/reverse-camera.svg`} />
           </div>,
           {/*this.hasMultipleCameras && (<div class="item rotate" onClick={(e) => this.handleRotateClick(e)}></div>)*/}
           ]) : (
           <section class="items">
             <div class="item accept-cancel" onClick={e => this.handleCancelPhoto(e)}>
+              <img src={`${this.publicPath}icons/retake.svg`} />
             </div>
             <div class="item accept-use" onClick={e => this.handleAcceptPhoto(e)}>
+              <img src={`${this.publicPath}icons/confirm.svg`} />
             </div>
           </section>
           )}

@@ -26,10 +26,10 @@ $margin-size-footer: 2.0em;
       flex: 1;
       text-align: center;
       &:first-child {
-        background-position-x: 0;
+        text-align: left;
       }
       &:last-child {
-        background-position-x: 100%;
+        text-align: right;
       }
     }
   }
@@ -107,15 +107,18 @@ $margin-size-footer: 2.0em;
   }
 
   .rotate {
+    display: flex;
+    align-items: center;
     position: absolute;
     right: $margin-size-footer;
     top: 0;
     height: 100%;
     width: $icon-size-footer;
     color: white;
-    background: url('assets/reverse-camera.svg') no-repeat transparent;
-    background-size: $icon-size-footer;
-    background-position: center;
+    img {
+      width: $icon-size-footer;
+      height: $icon-size-footer;
+    }
   }
 
   .shutter-overlay {
@@ -140,34 +143,30 @@ $margin-size-footer: 2.0em;
   }
 
   .close {
-    width: $icon-size-header;
-    height: $icon-size-header;
-    background: url('assets/exit.svg') no-repeat transparent;
-    background-size: $icon-size-header;
-    background-position: center;
+    img {
+      width: $icon-size-header;
+      height: $icon-size-header;
+    }
   }
 
   .flash {
-    width: $icon-size-header;
-    height: $icon-size-header;
-    background: url('assets/flash-on.svg') no-repeat transparent;
-    background-size: $icon-size-header;
-    background-position: center;
+    img {
+      width: $icon-size-header;
+      height: $icon-size-header;
+    }
   }
 
   .accept-use {
-    width: $icon-size-footer;
-    height: $icon-size-footer;
-    background: url('assets/confirm.svg') no-repeat transparent;
-    background-size: $icon-size-footer;
-    background-position: center;
+    img {
+      width: $icon-size-footer;
+      height: $icon-size-footer;
+    }
   }
 
   .accept-cancel {
-    width: $icon-size-footer;
-    height: $icon-size-footer;
-    background: url('assets/retake.svg') no-repeat transparent;
-    background-size: $icon-size-footer;
-    background-position: center;
+    img {
+      width: $icon-size-footer;
+      height: $icon-size-footer;
+    }
   }
 }
