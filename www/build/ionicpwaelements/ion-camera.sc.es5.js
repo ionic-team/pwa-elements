@@ -58,6 +58,8 @@ ionicpwaelements.loadBundle('ion-camera', ['exports'], function (exports) {
             this.hasFlash = false;
             // Flash modes for camera
             this.flashModes = [];
+            // Current flash mode
+            this.flashMode = 'off';
         }
         Camera.prototype.componentDidLoad = function () {
             return __awaiter(this, void 0, void 0, function () {
@@ -118,7 +120,6 @@ ionicpwaelements.loadBundle('ion-camera', ['exports'], function (exports) {
                 return __generator(this, function (_a) {
                     switch (_a.label) {
                         case 0:
-                            console.log('Initializing', constraints);
                             if (!constraints) {
                                 constraints = this.defaultConstraints;
                             }
@@ -144,6 +145,7 @@ ionicpwaelements.loadBundle('ion-camera', ['exports'], function (exports) {
                 return __generator(this, function (_a) {
                     this.stream = stream;
                     this.videoElement.srcObject = stream;
+                    console.log(stream.getVideoTracks()[0]);
                     if (this.hasImageCapture()) {
                         this.imageCapture = new window.ImageCapture(stream.getVideoTracks()[0]);
                         // console.log(stream.getTracks()[0].getCapabilities());
@@ -152,6 +154,8 @@ ionicpwaelements.loadBundle('ion-camera', ['exports'], function (exports) {
                     else {
                         // TODO: DO SOMETHING ELSE HERE
                     }
+                    // Always re-render
+                    this.el.forceUpdate();
                     return [2 /*return*/];
                 });
             });
@@ -164,8 +168,17 @@ ionicpwaelements.loadBundle('ion-camera', ['exports'], function (exports) {
                         case 0: return [4 /*yield*/, imageCapture.getPhotoCapabilities()];
                         case 1:
                             c = _a.sent();
+                            console.log(c);
                             if (c.fillLightMode.length) {
                                 this.flashModes = c.fillLightMode.map(function (m) { return m; });
+                                // Try to recall the current flash mode
+                                if (this.flashMode) {
+                                    this.flashMode = this.flashModes[this.flashModes.indexOf(this.flashMode)] || 'off';
+                                    this.flashIndex = this.flashModes.indexOf(this.flashMode) || 0;
+                                }
+                                else {
+                                    this.flashIndex = 0;
+                                }
                             }
                             return [2 /*return*/];
                     }
@@ -240,10 +253,13 @@ ionicpwaelements.loadBundle('ion-camera', ['exports'], function (exports) {
         };
         Camera.prototype.setFlashMode = function (mode) {
             console.log('New flash mode: ', mode);
+            this.flashMode = mode;
         };
         Camera.prototype.cycleFlash = function () {
-            this.flashIndex = this.flashIndex + 1 % this.flashModes.length;
-            this.setFlashMode(this.flashModes[this.flashIndex]);
+            if (this.flashModes.length > 0) {
+                this.flashIndex = (this.flashIndex + 1) % this.flashModes.length;
+                this.setFlashMode(this.flashModes[this.flashIndex]);
+            }
         };
         Camera.prototype.flashScreen = function () {
             return __awaiter(this, void 0, void 0, function () {
@@ -280,7 +296,7 @@ ionicpwaelements.loadBundle('ion-camera', ['exports'], function (exports) {
         };
         Camera.prototype.render = function () {
             var _this = this;
-            return (h("div", { class: "camera-wrapper" }, h("div", { class: "camera-header" }, h("section", { class: "items" }, h("div", { class: "item close", onClick: function (e) { return _this.handleClose(e); } }, h("img", { src: this.publicPath + "icons/exit.svg" })), h("div", { class: "item flash", onClick: function (e) { return _this.handleFlashClick(e); } }, h("img", { src: this.publicPath + "icons/flash-on.svg" })))), this.photo && (h("div", { class: "accept" }, h("div", { class: "accept-image", style: { backgroundImage: "url(" + this.photoSrc + ")" } }))), h("div", { class: "camera-video", style: { display: this.photo ? 'none' : '' } }, this.showShutterOverlay && (h("div", { class: "shutter-overlay" })), this.hasImageCapture() ? (h("video", { ref: function (el) { return _this.videoElement = el; }, autoplay: true, playsinline: true })) : (h("canvas", { ref: function (el) { return _this.canvasElement = el; }, width: "100%", height: "100%" }))), h("div", { class: "camera-footer" }, !this.photo ? ([
+            return (h("div", { class: "camera-wrapper" }, h("div", { class: "camera-header" }, h("section", { class: "items" }, h("div", { class: "item close", onClick: function (e) { return _this.handleClose(e); } }, h("img", { src: this.publicPath + "icons/exit.svg" })), h("div", { class: "item flash", onClick: function (e) { return _this.handleFlashClick(e); } }, this.flashModes.length > 0 && (h("div", null, this.flashMode == 'off' ? h("img", { src: this.publicPath + "icons/flash-off.svg" }) : '', this.flashMode == 'auto' ? h("img", { src: this.publicPath + "icons/flash-auto.svg" }) : '', this.flashMode == 'flash' ? h("img", { src: this.publicPath + "icons/flash-on.svg" }) : ''))))), this.photo && (h("div", { class: "accept" }, h("div", { class: "accept-image", style: { backgroundImage: "url(" + this.photoSrc + ")" } }))), h("div", { class: "camera-video", style: { display: this.photo ? 'none' : '' } }, this.showShutterOverlay && (h("div", { class: "shutter-overlay" })), this.hasImageCapture() ? (h("video", { ref: function (el) { return _this.videoElement = el; }, autoplay: true, playsinline: true })) : (h("canvas", { ref: function (el) { return _this.canvasElement = el; }, width: "100%", height: "100%" }))), h("div", { class: "camera-footer" }, !this.photo ? ([
                 h("div", { class: "shutter", onClick: function (e) { return _this.handleShutterClick(e); } }, h("div", { class: "shutter-button" })),
                 h("div", { class: "rotate", onClick: function (e) { return _this.handleRotateClick(e); } }, h("img", { src: this.publicPath + "icons/reverse-camera.svg" })),
                 {}
@@ -297,7 +313,7 @@ ionicpwaelements.loadBundle('ion-camera', ['exports'], function (exports) {
             configurable: true
         });
         Object.defineProperty(Camera, "properties", {
-            get: function () { return { "facingMode": { "type": String, "attr": "facing-mode" }, "flashIndex": { "state": true }, "isServer": { "context": "isServer" }, "photo": { "state": true }, "photoSrc": { "state": true }, "publicPath": { "context": "publicPath" }, "showShutterOverlay": { "state": true } }; },
+            get: function () { return { "el": { "elementRef": true }, "facingMode": { "type": String, "attr": "facing-mode" }, "flashIndex": { "state": true }, "isServer": { "context": "isServer" }, "photo": { "state": true }, "photoSrc": { "state": true }, "publicPath": { "context": "publicPath" }, "showShutterOverlay": { "state": true } }; },
             enumerable: true,
             configurable: true
         });

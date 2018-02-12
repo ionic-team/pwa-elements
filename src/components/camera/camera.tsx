@@ -1,4 +1,4 @@
-import { Component, Prop, State, Event, EventEmitter } from '@stencil/core';
+import { Component, Element, Prop, State, Event, EventEmitter } from '@stencil/core';
 
 declare var window:any;
 
@@ -15,9 +15,7 @@ export interface PhotoCapabilities {
   fillLightMode: string[];
 }
 
-export interface FlashMode {
-  name: "auto" | "off" | "flash";
-}
+export type FlashMode = "auto" | "off" | "flash";
 
 @Component({
   tag: 'ion-camera',
@@ -26,6 +24,8 @@ export interface FlashMode {
   shadow: true
 })
 export class Camera {
+  @Element() el;
+
   @Prop({ context: 'isServer' }) private isServer: boolean;
   @Prop({ context: 'publicPath'}) private publicPath: string;
 
@@ -52,6 +52,8 @@ export class Camera {
   hasFlash = false;
   // Flash modes for camera
   flashModes: FlashMode[] = [];
+  // Current flash mode
+  flashMode: FlashMode = 'off';
 
   async componentDidLoad() {
     console.log('CAMERA PUBLIC PATH', this.publicPath);
@@ -90,7 +92,6 @@ export class Camera {
   }
 
   async initCamera(constraints?: MediaStreamConstraints) {
-    console.log('Initializing', constraints);
     if (!constraints) {
       constraints = this.defaultConstraints;
     }
@@ -112,6 +113,8 @@ export class Camera {
     this.stream = stream;
     this.videoElement.srcObject = stream;
 
+    console.log(stream.getVideoTracks()[0]);
+
     if (this.hasImageCapture()) {
       this.imageCapture = new window.ImageCapture(stream.getVideoTracks()[0]);
       // console.log(stream.getTracks()[0].getCapabilities());
@@ -119,13 +122,26 @@ export class Camera {
     } else {
       // TODO: DO SOMETHING ELSE HERE
     }
+
+    // Always re-render
+    this.el.forceUpdate();
   }
 
   async initPhotoCapabilities(imageCapture: any) {
     const c = await imageCapture.getPhotoCapabilities();
 
+    console.log(c);
+
     if (c.fillLightMode.length) {
       this.flashModes = c.fillLightMode.map(m => m);
+
+      // Try to recall the current flash mode
+      if (this.flashMode) {
+        this.flashMode = this.flashModes[this.flashModes.indexOf(this.flashMode)] || 'off';
+        this.flashIndex = this.flashModes.indexOf(this.flashMode) || 0;
+      } else {
+        this.flashIndex = 0;
+      }
     }
   }
 
@@ -185,11 +201,14 @@ export class Camera {
 
   setFlashMode(mode: FlashMode) {
     console.log('New flash mode: ', mode);
+    this.flashMode = mode;
   }
 
   cycleFlash() {
-    this.flashIndex = this.flashIndex + 1 % this.flashModes.length;
-    this.setFlashMode(this.flashModes[this.flashIndex]);
+    if (this.flashModes.length > 0) {
+      this.flashIndex = (this.flashIndex + 1) % this.flashModes.length;
+      this.setFlashMode(this.flashModes[this.flashIndex]);
+    }
   }
 
   async flashScreen() {
@@ -236,7 +255,13 @@ export class Camera {
               <img src={`${this.publicPath}icons/exit.svg`} />
             </div>
             <div class="item flash" onClick={e => this.handleFlashClick(e)}>
-              <img src={`${this.publicPath}icons/flash-on.svg`} />
+              {this.flashModes.length > 0 && (
+              <div>
+                {this.flashMode == 'off' ? <img src={`${this.publicPath}icons/flash-off.svg`} /> : ''}
+                {this.flashMode == 'auto' ? <img src={`${this.publicPath}icons/flash-auto.svg`} /> : ''}
+                {this.flashMode == 'flash' ? <img src={`${this.publicPath}icons/flash-on.svg`} /> : ''}
+              </div>
+              )}
             </div>
           </section>
         </div>
