@@ -4,7 +4,7 @@ import { Component } from '@stencil/core';
   tag: 'ion-camera-modal',
   shadow: true
 })
-export class Camera {
+export class CameraModal {
 
   render() {
     return (
