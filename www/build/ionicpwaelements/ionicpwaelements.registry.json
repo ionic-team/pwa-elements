@@ -3,34 +3,20 @@
   "fsNamespace": "ionicpwaelements",
   "loader": "../ionicpwaelements.js",
   "global": "ionicpwaelements.global.js",
-  "core": "ionicpwaelements.y8bce0fl.js",
-  "corePolyfilled": "ionicpwaelements.wybnh9ov.js",
+  "core": "ionicpwaelements.oadyae3g.js",
+  "corePolyfilled": "ionicpwaelements.948q8ii9.js",
   "components": {
-    "ion-action-sheet": {
-      "md": "nbyooord",
-      "ios": "xsc0fsyb"
-    },
     "ion-action-sheet-controller": {
-      "md": "nbyooord",
-      "ios": "xsc0fsyb"
+      "$": "m8akctuw"
     },
     "ion-camera": {
-      "$": "f6hjo55v"
+      "$": "z6gmr6xu"
     },
     "ion-camera-modal": {
-      "$": "f6hjo55v"
-    },
-    "ion-icon": {
-      "md": "nbyooord",
-      "ios": "xsc0fsyb"
-    },
-    "ion-modal": {
-      "md": "nbyooord",
-      "ios": "xsc0fsyb"
+      "$": "4u5blsul"
     },
     "ion-modal-controller": {
-      "md": "nbyooord",
-      "ios": "xsc0fsyb"
+      "$": "m8akctuw"
     }
   }
 }
