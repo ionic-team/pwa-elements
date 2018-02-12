@@ -334,7 +334,6 @@ ionicpwaelements.loadBundle('ion-camera', ['exports'], function (exports) {
                         case 0: return [4 /*yield*/, imageCapture.getPhotoCapabilities()];
                         case 1:
                             c = _a.sent();
-                            console.log(c);
                             if (c.fillLightMode.length > 1) {
                                 this.flashModes = c.fillLightMode.map(function (m) { return m; });
                                 // Try to recall the current flash mode

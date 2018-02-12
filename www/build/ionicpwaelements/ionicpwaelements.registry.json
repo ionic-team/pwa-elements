@@ -6,23 +6,28 @@
   "core": "ionicpwaelements.core.js",
   "corePolyfilled": "ionicpwaelements.core.pf.js",
   "components": {
-    "ion-animation-controller": {
-      "ios": "ion-animation-controller.ios",
-      "md": "ion-animation-controller.md"
+    "ion-action-sheet": {
+      "ios": "ion-action-sheet.ios",
+      "md": "ion-action-sheet.md"
+    },
+    "ion-action-sheet-controller": {
+      "ios": "ion-action-sheet.ios",
+      "md": "ion-action-sheet.md"
     },
     "ion-camera": {
       "$": "ion-camera"
     },
-    "ion-camera-modal": {
-      "$": "ion-camera-modal"
+    "ion-icon": {
+      "ios": "ion-action-sheet.ios",
+      "md": "ion-action-sheet.md"
     },
     "ion-modal": {
-      "ios": "ion-animation-controller.ios",
-      "md": "ion-animation-controller.md"
+      "ios": "ion-action-sheet.ios",
+      "md": "ion-action-sheet.md"
     },
     "ion-modal-controller": {
-      "ios": "ion-animation-controller.ios",
-      "md": "ion-animation-controller.md"
+      "ios": "ion-action-sheet.ios",
+      "md": "ion-action-sheet.md"
     }
   }
 }
