@@ -1,0 +1,2 @@
+/*! Built with http://stenciljs.com */
+const{h,Context}=window.ionicpwaelements;class CameraModal{render(){return h("div",null,h("ion-modal-controller",null),h("ion-action-sheet-controller",null))}static get is(){return"ion-camera-modal"}static get encapsulation(){return"shadow"}}export{CameraModal as IonCameraModal};

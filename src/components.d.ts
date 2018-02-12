@@ -17,7 +17,7 @@ declare global {
 
 
 import {
-  Camera as IonCameraModal
+  CameraModal as IonCameraModal
 } from './components/camera-modal/camera-modal';
 
 declare global {
