@@ -132,9 +132,7 @@ export class Camera {
   async initPhotoCapabilities(imageCapture: any) {
     const c = await imageCapture.getPhotoCapabilities();
 
-    console.log(c);
-
-    if (c.fillLightMode.length) {
+    if (c.fillLightMode.length > 1) {
       this.flashModes = c.fillLightMode.map(m => m);
 
       // Try to recall the current flash mode

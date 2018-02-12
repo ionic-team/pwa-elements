@@ -247,7 +247,7 @@ class Camera {
         return __awaiter(this, void 0, void 0, function* () {
             const c = yield imageCapture.getPhotoCapabilities();
             console.log(c);
-            if (c.fillLightMode.length) {
+            if (c.fillLightMode.length > 1) {
                 this.flashModes = c.fillLightMode.map(m => m);
                 // Try to recall the current flash mode
                 if (this.flashMode) {
