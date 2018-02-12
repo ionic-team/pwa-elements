@@ -1,5 +1,7 @@
 import { Component, Element, Prop, State, Event, EventEmitter } from '@stencil/core';
 
+import './imagecapture';
+
 declare var window:any;
 
 export interface MediaSettingsRange {
@@ -118,7 +120,7 @@ export class Camera {
     if (this.hasImageCapture()) {
       this.imageCapture = new window.ImageCapture(stream.getVideoTracks()[0]);
       // console.log(stream.getTracks()[0].getCapabilities());
-      this.initPhotoCapabilities(this.imageCapture);
+      await this.initPhotoCapabilities(this.imageCapture);
     } else {
       // TODO: DO SOMETHING ELSE HERE
     }
@@ -152,7 +154,9 @@ export class Camera {
   async capture() {
     if (this.hasImageCapture()) {
       try {
-        const photo = await this.imageCapture.takePhoto();
+        const photo = await this.imageCapture.takePhoto({
+          fillLightMode: this.flashMode
+        });
         
         await this.flashScreen();
 
