@@ -7,27 +7,30 @@
   "corePolyfilled": "ionicpwaelements.wybnh9ov.js",
   "components": {
     "ion-action-sheet": {
-      "ios": "xsc0fsyb",
-      "md": "nbyooord"
+      "md": "nbyooord",
+      "ios": "xsc0fsyb"
     },
     "ion-action-sheet-controller": {
-      "ios": "xsc0fsyb",
-      "md": "nbyooord"
+      "md": "nbyooord",
+      "ios": "xsc0fsyb"
     },
     "ion-camera": {
-      "$": "z6gmr6xu"
+      "$": "f6hjo55v"
+    },
+    "ion-camera-modal": {
+      "$": "f6hjo55v"
     },
     "ion-icon": {
-      "ios": "xsc0fsyb",
-      "md": "nbyooord"
+      "md": "nbyooord",
+      "ios": "xsc0fsyb"
     },
     "ion-modal": {
-      "ios": "xsc0fsyb",
-      "md": "nbyooord"
+      "md": "nbyooord",
+      "ios": "xsc0fsyb"
     },
     "ion-modal-controller": {
-      "ios": "xsc0fsyb",
-      "md": "nbyooord"
+      "md": "nbyooord",
+      "ios": "xsc0fsyb"
     }
   }
 }

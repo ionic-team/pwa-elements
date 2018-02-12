@@ -23,7 +23,23 @@ importScripts(
 self.__precacheManifest = [
   {
     "url": "build/ionicpwaelements.js",
-    "revision": "9abc82adc6a59663a86807eada3aa85b"
+    "revision": "7bd10167f62f140dcef19514361754c2"
+  },
+  {
+    "url": "build/ionicpwaelements/f6hjo55v.es5.js",
+    "revision": "021937ec7092feabc34c616c26972c7c"
+  },
+  {
+    "url": "build/ionicpwaelements/f6hjo55v.js",
+    "revision": "d395cab41219d7c81283c910c3535fac"
+  },
+  {
+    "url": "build/ionicpwaelements/f6hjo55v.sc.es5.js",
+    "revision": "01c4b9611144f339ad244dd2808efe9b"
+  },
+  {
+    "url": "build/ionicpwaelements/f6hjo55v.sc.js",
+    "revision": "38808757c5dbc3124b61f00624768d4c"
   },
   {
     "url": "build/ionicpwaelements/icons/confirm.svg",
@@ -59,7 +75,7 @@ self.__precacheManifest = [
   },
   {
     "url": "build/ionicpwaelements/ionicpwaelements.registry.json",
-    "revision": "8f9bd5937deb579d14049e089446efbc"
+    "revision": "58fe7542ca97196d1e63b7dfc896eb46"
   },
   {
     "url": "build/ionicpwaelements/ionicpwaelements.wybnh9ov.js",
@@ -2876,22 +2892,6 @@ self.__precacheManifest = [
   {
     "url": "build/ionicpwaelements/xsc0fsyb.js",
     "revision": "d7cc756f9dca006d3888f0659740838f"
-  },
-  {
-    "url": "build/ionicpwaelements/z6gmr6xu.es5.js",
-    "revision": "a1c036e6eafcb4c50687b511b5dfc2b6"
-  },
-  {
-    "url": "build/ionicpwaelements/z6gmr6xu.js",
-    "revision": "91ce9b56aefd9179c8fb41289bca844f"
-  },
-  {
-    "url": "build/ionicpwaelements/z6gmr6xu.sc.es5.js",
-    "revision": "4d5c4ed30680c8eba8c4215080ec748a"
-  },
-  {
-    "url": "build/ionicpwaelements/z6gmr6xu.sc.js",
-    "revision": "9c54359e735ba1859ae3a3ade8adc9ff"
   },
   {
     "url": "index.html",

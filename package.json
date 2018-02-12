@@ -1,6 +1,6 @@
 {
   "name": "@ionic/pwa-elements",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Stencil Component Starter",
   "main": "dist/ionicpwaelements.js",
   "types": "dist/types/index.d.ts",
