@@ -20,12 +20,12 @@ export interface PhotoCapabilities {
 export type FlashMode = "auto" | "off" | "flash";
 
 @Component({
-  tag: 'ion-camera',
+  tag: 'ion-pwa-camera',
   styleUrl: 'camera.scss',
   assetsDir: 'icons',
   shadow: true
 })
-export class Camera {
+export class CameraPWA {
   @Element() el;
 
   @Prop({ context: 'isServer' }) private isServer: boolean;
@@ -58,7 +58,6 @@ export class Camera {
   flashMode: FlashMode = 'off';
 
   async componentDidLoad() {
-    console.log('CAMERA PUBLIC PATH', this.publicPath);
     if (this.isServer) {
       return;
     }
@@ -153,7 +152,7 @@ export class Camera {
     if (this.hasImageCapture()) {
       try {
         const photo = await this.imageCapture.takePhoto({
-          fillLightMode: this.flashMode
+          fillLightMode: this.flashModes.length > 1 ? this.flashMode : undefined
         });
         
         await this.flashScreen();

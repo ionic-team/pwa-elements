@@ -17,29 +17,89 @@ declare global {
 
 
 import {
-  Camera as IonCamera
-} from './components/camera/camera';
+  ActionSheetPWA as IonPwaActionSheet
+} from './components/action-sheet/action-sheet';
 
 declare global {
-  interface HTMLIonCameraElement extends IonCamera, HTMLStencilElement {
+  interface HTMLIonPwaActionSheetElement extends IonPwaActionSheet, HTMLStencilElement {
   }
-  var HTMLIonCameraElement: {
-    prototype: HTMLIonCameraElement;
-    new (): HTMLIonCameraElement;
+  var HTMLIonPwaActionSheetElement: {
+    prototype: HTMLIonPwaActionSheetElement;
+    new (): HTMLIonPwaActionSheetElement;
   };
   interface HTMLElementTagNameMap {
-    "ion-camera": HTMLIonCameraElement;
+    "ion-pwa-action-sheet": HTMLIonPwaActionSheetElement;
   }
   interface ElementTagNameMap {
-    "ion-camera": HTMLIonCameraElement;
+    "ion-pwa-action-sheet": HTMLIonPwaActionSheetElement;
   }
   namespace JSX {
     interface IntrinsicElements {
-      "ion-camera": JSXElements.IonCameraAttributes;
+      "ion-pwa-action-sheet": JSXElements.IonPwaActionSheetAttributes;
     }
   }
   namespace JSXElements {
-    export interface IonCameraAttributes extends HTMLAttributes {
+    export interface IonPwaActionSheetAttributes extends HTMLAttributes {
+      
+    }
+  }
+}
+
+
+import {
+  CameraModalPWA as IonPwaCameraModal
+} from './components/camera-modal/camera-modal';
+
+declare global {
+  interface HTMLIonPwaCameraModalElement extends IonPwaCameraModal, HTMLStencilElement {
+  }
+  var HTMLIonPwaCameraModalElement: {
+    prototype: HTMLIonPwaCameraModalElement;
+    new (): HTMLIonPwaCameraModalElement;
+  };
+  interface HTMLElementTagNameMap {
+    "ion-pwa-camera-modal": HTMLIonPwaCameraModalElement;
+  }
+  interface ElementTagNameMap {
+    "ion-pwa-camera-modal": HTMLIonPwaCameraModalElement;
+  }
+  namespace JSX {
+    interface IntrinsicElements {
+      "ion-pwa-camera-modal": JSXElements.IonPwaCameraModalAttributes;
+    }
+  }
+  namespace JSXElements {
+    export interface IonPwaCameraModalAttributes extends HTMLAttributes {
+      
+    }
+  }
+}
+
+
+import {
+  CameraPWA as IonPwaCamera
+} from './components/camera/camera';
+
+declare global {
+  interface HTMLIonPwaCameraElement extends IonPwaCamera, HTMLStencilElement {
+  }
+  var HTMLIonPwaCameraElement: {
+    prototype: HTMLIonPwaCameraElement;
+    new (): HTMLIonPwaCameraElement;
+  };
+  interface HTMLElementTagNameMap {
+    "ion-pwa-camera": HTMLIonPwaCameraElement;
+  }
+  interface ElementTagNameMap {
+    "ion-pwa-camera": HTMLIonPwaCameraElement;
+  }
+  namespace JSX {
+    interface IntrinsicElements {
+      "ion-pwa-camera": JSXElements.IonPwaCameraAttributes;
+    }
+  }
+  namespace JSXElements {
+    export interface IonPwaCameraAttributes extends HTMLAttributes {
       facingMode?: string;
     }
   }
