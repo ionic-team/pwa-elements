@@ -17,36 +17,6 @@ declare global {
 
 
 import {
-  CameraModal as IonCameraModal
-} from './components/camera-modal/camera-modal';
-
-declare global {
-  interface HTMLIonCameraModalElement extends IonCameraModal, HTMLStencilElement {
-  }
-  var HTMLIonCameraModalElement: {
-    prototype: HTMLIonCameraModalElement;
-    new (): HTMLIonCameraModalElement;
-  };
-  interface HTMLElementTagNameMap {
-    "ion-camera-modal": HTMLIonCameraModalElement;
-  }
-  interface ElementTagNameMap {
-    "ion-camera-modal": HTMLIonCameraModalElement;
-  }
-  namespace JSX {
-    interface IntrinsicElements {
-      "ion-camera-modal": JSXElements.IonCameraModalAttributes;
-    }
-  }
-  namespace JSXElements {
-    export interface IonCameraModalAttributes extends HTMLAttributes {
-      
-    }
-  }
-}
-
-
-import {
   Camera as IonCamera
 } from './components/camera/camera';
 
