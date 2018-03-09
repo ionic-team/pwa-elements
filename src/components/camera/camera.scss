@@ -129,6 +129,15 @@ $margin-size-footer: 2.0em;
     background-color: black;
   }
 
+  .error {
+    width: 100%;
+    height: 100%;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
   .accept {
     background-color: black;
     flex: 1;

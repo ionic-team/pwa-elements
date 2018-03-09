@@ -1,3 +1,5 @@
+const sass = require('@stencil/sass');
+
 exports.config = {
   namespace: 'ionicpwaelements',
   generateDistribution: true,
@@ -11,6 +13,9 @@ exports.config = {
     { 
       name: '@ionic/core'
     }
+  ],
+  plugins: [
+    sass()
   ]
 };
 
