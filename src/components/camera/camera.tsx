@@ -1,3 +1,4 @@
+import '@ionic/core';
 import { Component, Element, Prop, State, Event, EventEmitter } from '@stencil/core';
 
 import './imagecapture';
@@ -190,7 +191,7 @@ export class CameraPWA {
       return;
     }
 
-    let c = track.getConstraints();
+    let c: any = track.getConstraints();
     let facingMode = c.facingMode;
 
     if (!facingMode) {

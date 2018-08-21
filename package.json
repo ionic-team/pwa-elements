@@ -2,28 +2,25 @@
   "name": "@ionic/pwa-elements",
   "version": "0.0.14",
   "description": "Stencil Component Starter",
-  "main": "dist/ionicpwaelements.js",
-  "types": "dist/types/index.d.ts",
+  "module": "dist/esm/index.js",
+  "main": "dist/index.js",
+  "types": "dist/types/components.d.ts",
   "collection": "dist/collection/collection-manifest.json",
   "files": [
     "dist/"
   ],
-  "browser": "dist/ionicpwaelements.js",
   "scripts": {
-    "build": "stencil build",
-    "dev": "sd concurrent \"stencil build --dev --watch\" \"stencil-dev-server\" ",
-    "serve": "stencil-dev-server",
-    "start": "npm run dev --es5",
-    "test": "jest --no-cache",
-    "test.watch": "jest --watch --no-cache"
+    "build": "stencil build --docs",
+    "start": "stencil build --dev --watch --serve",
+    "test": "jest",
+    "test.watch": "jest --watch"
   },
   "dependencies": {
-    "@stencil/core": "^0.6.18",
-    "@stencil/sass": "0.0.3"
+    "@ionic/core": "^4.0.0-beta.3"
   },
   "devDependencies": {
-    "@ionic/core": "^0.1.3",
-    "@stencil/dev-server": "0.0.19-0",
+    "@stencil/core": "^0.12.0-1",
+    "@stencil/sass": "^0.1.0",
     "@stencil/utils": "latest",
     "@types/jest": "^21.1.1",
     "jest": "^21.2.1"
