@@ -267,14 +267,14 @@ export class CameraPWA {
         <div class="camera-header">
           <section class="items">
             <div class="item close" onClick={e => this.handleClose(e)}>
-              <img src={`${this.publicPath}icons/exit.svg`} />
+              <ion-icon src={`${this.publicPath}icons/exit.svg`} size={'large'} />
             </div>
             <div class="item flash" onClick={e => this.handleFlashClick(e)}>
               {this.flashModes.length > 0 && (
               <div>
-                {this.flashMode == 'off' ? <img src={`${this.publicPath}icons/flash-off.svg`} /> : ''}
-                {this.flashMode == 'auto' ? <img src={`${this.publicPath}icons/flash-auto.svg`} /> : ''}
-                {this.flashMode == 'flash' ? <img src={`${this.publicPath}icons/flash-on.svg`} /> : ''}
+                {this.flashMode == 'off' ? <ion-icon src={`${this.publicPath}icons/flash-off.svg`} size={'large'}/> : ''}
+                {this.flashMode == 'auto' ? <ion-icon src={`${this.publicPath}icons/flash-auto.svg`} size={'large'}/> : ''}
+                {this.flashMode == 'flash' ? <ion-icon src={`${this.publicPath}icons/flash-on.svg`} size={'large'}/> : ''}
               </div>
               )}
             </div>
@@ -313,16 +313,16 @@ export class CameraPWA {
             <div class="shutter-button"></div>
           </div>,
           <div class="rotate" onClick={(e) => this.handleRotateClick(e)}>
-            <img src={`${this.publicPath}icons/reverse-camera.svg`} />
+            <ion-icon src={`${this.publicPath}icons/reverse-camera.svg`} size={'large'}/>
           </div>,
           {/*this.hasMultipleCameras && (<div class="item rotate" onClick={(e) => this.handleRotateClick(e)}></div>)*/}
           ]) : (
           <section class="items">
             <div class="item accept-cancel" onClick={e => this.handleCancelPhoto(e)}>
-              <img src={`${this.publicPath}icons/retake.svg`} />
+              <ion-icon src={`${this.publicPath}icons/retake.svg`} size={'large'}/>
             </div>
             <div class="item accept-use" onClick={e => this.handleAcceptPhoto(e)}>
-              <img src={`${this.publicPath}icons/confirm.svg`} />
+              <ion-icon src={`${this.publicPath}icons/confirm.svg`} size={'large'}/>
             </div>
           </section>
           )}
