@@ -1,6 +1,5 @@
+import '@ionic/core';
 import { Event, EventEmitter, Component, Method } from '@stencil/core';
-
-import { Modal } from '@ionic/core';
 
 @Component({
   tag: 'ion-pwa-camera-modal',
@@ -9,11 +8,11 @@ import { Modal } from '@ionic/core';
 export class CameraModalPWA {
   @Event() onPhoto: EventEmitter;
 
-  _modal: Modal;
+  _modal: HTMLIonModalElement;
 
   @Method()
   async present() {
-    var modalController: any = document.querySelector('ion-modal-controller');
+    let modalController: HTMLIonModalControllerElement = document.querySelector('ion-modal-controller');
 
     if (!modalController) {
       modalController = document.createElement('ion-modal-controller');

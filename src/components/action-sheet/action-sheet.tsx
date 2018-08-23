@@ -1,3 +1,4 @@
+import '@ionic/core';
 import { Component } from '@stencil/core';
 
 @Component({
