@@ -10,12 +10,10 @@
     "dist/"
   ],
   "scripts": {
-    "build": "stencil build",
-    "dev": "sd concurrent \"stencil build --dev --watch\" \"stencil-dev-server\" ",
-    "serve": "stencil-dev-server",
-    "start": "npm run dev --es5",
-    "test": "jest --no-cache",
-    "test.watch": "jest --watch --no-cache"
+    "build": "stencil build --prerender",
+    "start": "stencil build --dev --watch --serve",
+    "test": "stencil test --spec --e2e",
+    "test.watch": "stencil test --spec --e2e --watchAll"
   },
   "dependencies": {
     "@ionic/core": "4.0.0-beta.12",
