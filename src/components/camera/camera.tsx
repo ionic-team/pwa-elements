@@ -1,27 +1,14 @@
 import { Component, Element, Prop, State, Event, EventEmitter } from '@stencil/core';
 
+import { FlashMode } from '../../definitions';
+
 import './imagecapture';
 
 declare var window:any;
 
-export interface MediaSettingsRange {
-  min: number;
-  max: number;
-  step: number;
-}
-
-export interface PhotoCapabilities {
-  redEyeReduction: "never" | "always" | "controllable";
-  imageHeight: MediaSettingsRange;
-  imageWidth: MediaSettingsRange;
-  fillLightMode: string[];
-}
-
-export type FlashMode = "auto" | "off" | "flash";
-
 @Component({
   tag: 'ion-pwa-camera',
-  styleUrl: 'camera.scss',
+  styleUrl: 'camera.css',
   assetsDir: 'icons',
   shadow: true
 })
@@ -194,7 +181,7 @@ export class CameraPWA {
     let facingMode = c.facingMode;
 
     if (!facingMode) {
-      c = track.getCapabilities();
+      let c = track.getCapabilities();
       facingMode = c.facingMode[0];
     }
 

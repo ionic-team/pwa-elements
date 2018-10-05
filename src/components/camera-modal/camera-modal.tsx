@@ -1,6 +1,6 @@
 import { Event, EventEmitter, Component, Method } from '@stencil/core';
 
-import { Modal } from '@ionic/core';
+import { Modal } from '@ionic/core/dist/esm/es2017';
 
 @Component({
   tag: 'ion-pwa-camera-modal',
