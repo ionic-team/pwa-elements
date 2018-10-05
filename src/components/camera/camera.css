@@ -87,8 +87,8 @@ video {
   top: 50%;
   width: var(--shutter-size);
   height: var(--shutter-size);
-  margin-top: -(var(--shutter-size)/2);
-  margin-left: -(var(--shutter-size)/2);
+  margin-top: calc(var(--shutter-size) / -2);
+  margin-left: calc(var(--shutter-size) / -2);
   border-radius: 100%;
   background-color: #c6cdd8;
   padding: 12px;

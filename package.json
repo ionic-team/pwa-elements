@@ -10,21 +10,14 @@
     "dist/"
   ],
   "scripts": {
-    "build": "stencil build --prerender",
+    "build": "stencil build",
     "start": "stencil build --dev --watch --serve",
     "test": "stencil test --spec --e2e",
     "test.watch": "stencil test --spec --e2e --watchAll"
   },
   "dependencies": {
     "@ionic/core": "4.0.0-beta.12",
-    "@stencil/core": "0.13.2",
-    "@stencil/sass": "0.0.3"
-  },
-  "devDependencies": {
-    "@stencil/utils": "latest",
-    "@types/jest": "^21.1.1",
-    "jest": "^21.2.1",
-    "workbox-build": "3.4.1"
+    "@stencil/core": "~0.13.2"
   },
   "repository": {
     "type": "git",
@@ -48,5 +41,8 @@
       "json",
       "jsx"
     ]
+  },
+  "devDependencies": {
+    "workbox-build": "3.4.1"
   }
 }
