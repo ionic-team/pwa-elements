@@ -16,8 +16,8 @@
     "test.watch": "stencil test --spec --e2e --watchAll"
   },
   "dependencies": {
-    "@ionic/core": "4.0.0-beta.12",
-    "@stencil/core": "~0.13.2"
+    "@ionic/core": "4.0.0-beta.15",
+    "@stencil/core": "0.15.2"
   },
   "repository": {
     "type": "git",
