@@ -1,7 +1,7 @@
 {
-  "name": "@ionic/pwa-elements",
+  "name": "yankedev-pwa-elements",
   "version": "1.0.1",
-  "description": "Stencil Component Starter",
+  "description": "My fork of @ionic/pwa-elements",
   "main": "dist/index.js",
   "types": "dist/types/index.d.ts",
   "module": "dist/esm/es5/index.js",
@@ -21,14 +21,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ionic-team/ionic-pwa-elements.git"
+    "url": "git+https://github.com/yankedev/ionic-pwa-elements.git"
   },
   "author": "Ionic Team",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/ionic-team/ionic-pwa-elements"
+    "url": "https://github.com/yankedev/ionic-pwa-elements"
   },
-  "homepage": "https://github.com/ionic-team/ionic-pwa-elements",
+  "homepage": "https://github.com/yankedev/ionic-pwa-elements",
   "devDependencies": {
     "workbox-build": "3.4.1"
   }
