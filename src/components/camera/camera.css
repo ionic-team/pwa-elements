@@ -69,6 +69,8 @@
   flex: 1;
   overflow: hidden;
   background-color: black;
+  -webkit-transform: scaleX(-1);
+  transform: scaleX(-1);
 }
 
 video {
