@@ -1,13 +1,13 @@
-import { Component, Element, Prop, State, Event, EventEmitter } from '@stencil/core';
+import { Component, Element, Prop, State } from '@stencil/core';
 
 import { FlashMode } from '../../definitions';
 
 import './imagecapture';
 
-declare var window:any;
+declare var window: any;
 
 @Component({
-  tag: 'ion-pwa-camera',
+  tag: 'pwa-camera',
   styleUrl: 'camera.css',
   assetsDir: 'icons',
   shadow: true
@@ -20,7 +20,9 @@ export class CameraPWA {
 
   @Prop() facingMode: string = 'user';
 
-  @Event() onPhoto: EventEmitter;
+  // @Event() onPhoto: EventEmitter;
+  @Prop() onPhoto: (e: any) => void;
+
   @State() photo: any;
   @State() photoSrc: any;
   @State() showShutterOverlay = false;
@@ -232,7 +234,7 @@ export class CameraPWA {
   }
 
   handleClose(_e: Event) {
-    this.onPhoto.emit(null);
+    this.onPhoto && this.onPhoto(null);
   }
 
   handleFlashClick(_e: Event) {
@@ -244,7 +246,8 @@ export class CameraPWA {
   }
 
   handleAcceptPhoto(_e: Event) {
-    this.onPhoto.emit(this.photo);
+    console.log('Accepting photoi', this.photo);
+    this.onPhoto && this.onPhoto(this.photo);
   }
 
   render() {

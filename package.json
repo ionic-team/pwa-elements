@@ -1,6 +1,6 @@
 {
   "name": "@ionic/pwa-elements",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "Stencil Component Starter",
   "main": "dist/index.js",
   "types": "dist/types/index.d.ts",
@@ -16,11 +16,7 @@
     "test.watch": "stencil test --spec --e2e --watchAll"
   },
   "dependencies": {
-    "@ionic/core": "^4.4.0",
     "@stencil/core": "0.18.0"
-  },
-  "peerDependencies": {
-    "@ionic/core": "^4.1.0"
   },
   "repository": {
     "type": "git",

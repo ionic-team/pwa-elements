@@ -17,11 +17,12 @@
 <body>
   <div id="target">
   </div>
-  <button id="button">Open</button>
+  <button id="camera-button">Open Camera</button>
+  <button id="toast-button">Open Toast</button>
   <script>
-    var b = document.querySelector('#button');
+    var b = document.querySelector('#camera-button');
     b.addEventListener('click', async (ev) => {
-      const camera = document.createElement('ion-pwa-camera-modal');
+      const camera = document.createElement('pwa-camera-modal');
 
       document.body.appendChild(camera);
 
@@ -32,12 +33,31 @@
         const photo = e.detail;
         console.log('CAMERA ON PHOTO', photo);
 
+        if (photo) {
+          const url = window.URL.createObjectURL(photo);
+
+          const img = document.querySelector('#img') || document.createElement('img');
+          img.src = url;
+          img.id = 'img';
+
+          img.parentNode && img.parentNode.removeChild(img);
+
+          document.body.appendChild(img);
+        }
+
         // Hide the modal
         await camera.dismiss();
         document.body.removeChild(camera);
       })
 
       camera.present();
+    });
+
+    var b = document.querySelector('#toast-button');
+    b.addEventListener('click', async (ev) => {
+      const toast = document.createElement('pwa-toast');
+      toast.message = 'Hello, Moto!';
+      document.body.appendChild(toast);
     });
   </script>
 

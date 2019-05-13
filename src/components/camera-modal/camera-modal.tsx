@@ -1,46 +1,37 @@
 import { Event, EventEmitter, Component, Method } from '@stencil/core';
 
-import { Modal } from '@ionic/core/dist/esm/es2017';
-
 @Component({
-  tag: 'ion-pwa-camera-modal',
+  tag: 'pwa-camera-modal',
+  styleUrl: 'camera-modal.css',
   shadow: true
 })
-export class CameraModalPWA {
+export class PWACameraModal {
   @Event() onPhoto: EventEmitter;
 
-  _modal: Modal;
+  _modal: HTMLElement;
 
   @Method()
   async present() {
-    var modalController: any = document.querySelector('ion-modal-controller');
-
-    if (!modalController) {
-      modalController = document.createElement('ion-modal-controller');
-      document.body.appendChild(modalController)
-    }
-
-    await modalController.componentOnReady();
-
-    const camera = document.createElement('ion-pwa-camera');
+    const camera = document.createElement('pwa-camera-modal-instance');
 
     camera.addEventListener('onPhoto', async (e: any) => {
+      if (!this._modal) {
+        return;
+      }
       const photo = e.detail;
       this.onPhoto.emit(photo);
-    })
-
-    const modal = await modalController.create({
-      component: camera
     });
 
-    this._modal = modal;
+    document.body.append(camera);
 
-    modal.present();
+    this._modal = camera;
   }
 
   @Method()
   async dismiss() {
-    this._modal && this._modal.dismiss();
+    if (!this._modal) { return; }
+    this._modal && this._modal.parentNode.removeChild(this._modal);
+    this._modal = null;
   }
 
   render() {

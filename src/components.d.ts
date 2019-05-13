@@ -7,74 +7,95 @@
 
 import '@stencil/core';
 
-import '@ionic/core';
-import 'ionicons';
+
 
 
 export namespace Components {
 
-  interface IonPwaActionSheet {}
-  interface IonPwaActionSheetAttributes extends StencilHTMLAttributes {}
+  interface PwaCameraModalInstance {}
+  interface PwaCameraModalInstanceAttributes extends StencilHTMLAttributes {
+    'onOnPhoto'?: (event: CustomEvent) => void;
+  }
 
-  interface IonPwaCameraModal {
+  interface PwaCameraModal {
     'dismiss': () => Promise<void>;
     'present': () => Promise<void>;
   }
-  interface IonPwaCameraModalAttributes extends StencilHTMLAttributes {
+  interface PwaCameraModalAttributes extends StencilHTMLAttributes {
     'onOnPhoto'?: (event: CustomEvent) => void;
   }
 
-  interface IonPwaCamera {
+  interface PwaCamera {
     'facingMode': string;
+    'onPhoto': (e: any) => void;
   }
-  interface IonPwaCameraAttributes extends StencilHTMLAttributes {
+  interface PwaCameraAttributes extends StencilHTMLAttributes {
     'facingMode'?: string;
-    'onOnPhoto'?: (event: CustomEvent) => void;
+    'onPhoto'?: (e: any) => void;
+  }
+
+  interface PwaToast {
+    'duration': number;
+    'message': string;
+  }
+  interface PwaToastAttributes extends StencilHTMLAttributes {
+    'duration'?: number;
+    'message'?: string;
   }
 }
 
 declare global {
   interface StencilElementInterfaces {
-    'IonPwaActionSheet': Components.IonPwaActionSheet;
-    'IonPwaCameraModal': Components.IonPwaCameraModal;
-    'IonPwaCamera': Components.IonPwaCamera;
+    'PwaCameraModalInstance': Components.PwaCameraModalInstance;
+    'PwaCameraModal': Components.PwaCameraModal;
+    'PwaCamera': Components.PwaCamera;
+    'PwaToast': Components.PwaToast;
   }
 
   interface StencilIntrinsicElements {
-    'ion-pwa-action-sheet': Components.IonPwaActionSheetAttributes;
-    'ion-pwa-camera-modal': Components.IonPwaCameraModalAttributes;
-    'ion-pwa-camera': Components.IonPwaCameraAttributes;
+    'pwa-camera-modal-instance': Components.PwaCameraModalInstanceAttributes;
+    'pwa-camera-modal': Components.PwaCameraModalAttributes;
+    'pwa-camera': Components.PwaCameraAttributes;
+    'pwa-toast': Components.PwaToastAttributes;
   }
 
 
-  interface HTMLIonPwaActionSheetElement extends Components.IonPwaActionSheet, HTMLStencilElement {}
-  var HTMLIonPwaActionSheetElement: {
-    prototype: HTMLIonPwaActionSheetElement;
-    new (): HTMLIonPwaActionSheetElement;
+  interface HTMLPwaCameraModalInstanceElement extends Components.PwaCameraModalInstance, HTMLStencilElement {}
+  var HTMLPwaCameraModalInstanceElement: {
+    prototype: HTMLPwaCameraModalInstanceElement;
+    new (): HTMLPwaCameraModalInstanceElement;
   };
 
-  interface HTMLIonPwaCameraModalElement extends Components.IonPwaCameraModal, HTMLStencilElement {}
-  var HTMLIonPwaCameraModalElement: {
-    prototype: HTMLIonPwaCameraModalElement;
-    new (): HTMLIonPwaCameraModalElement;
+  interface HTMLPwaCameraModalElement extends Components.PwaCameraModal, HTMLStencilElement {}
+  var HTMLPwaCameraModalElement: {
+    prototype: HTMLPwaCameraModalElement;
+    new (): HTMLPwaCameraModalElement;
   };
 
-  interface HTMLIonPwaCameraElement extends Components.IonPwaCamera, HTMLStencilElement {}
-  var HTMLIonPwaCameraElement: {
-    prototype: HTMLIonPwaCameraElement;
-    new (): HTMLIonPwaCameraElement;
+  interface HTMLPwaCameraElement extends Components.PwaCamera, HTMLStencilElement {}
+  var HTMLPwaCameraElement: {
+    prototype: HTMLPwaCameraElement;
+    new (): HTMLPwaCameraElement;
+  };
+
+  interface HTMLPwaToastElement extends Components.PwaToast, HTMLStencilElement {}
+  var HTMLPwaToastElement: {
+    prototype: HTMLPwaToastElement;
+    new (): HTMLPwaToastElement;
   };
 
   interface HTMLElementTagNameMap {
-    'ion-pwa-action-sheet': HTMLIonPwaActionSheetElement
-    'ion-pwa-camera-modal': HTMLIonPwaCameraModalElement
-    'ion-pwa-camera': HTMLIonPwaCameraElement
+    'pwa-camera-modal-instance': HTMLPwaCameraModalInstanceElement
+    'pwa-camera-modal': HTMLPwaCameraModalElement
+    'pwa-camera': HTMLPwaCameraElement
+    'pwa-toast': HTMLPwaToastElement
   }
 
   interface ElementTagNameMap {
-    'ion-pwa-action-sheet': HTMLIonPwaActionSheetElement;
-    'ion-pwa-camera-modal': HTMLIonPwaCameraModalElement;
-    'ion-pwa-camera': HTMLIonPwaCameraElement;
+    'pwa-camera-modal-instance': HTMLPwaCameraModalInstanceElement;
+    'pwa-camera-modal': HTMLPwaCameraModalElement;
+    'pwa-camera': HTMLPwaCameraElement;
+    'pwa-toast': HTMLPwaToastElement;
   }
 
 
