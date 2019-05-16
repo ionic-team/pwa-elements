@@ -4,7 +4,7 @@
   "description": "Stencil Component Starter",
   "main": "dist/index.js",
   "types": "dist/types/index.d.ts",
-  "module": "dist/esm/es5/index.js",
+  "module": "dist/index.mjs",
   "collection": "dist/collection/collection-manifest.json",
   "files": [
     "dist/"
@@ -14,9 +14,6 @@
     "start": "stencil build --dev --watch --serve",
     "test": "stencil test --spec --e2e",
     "test.watch": "stencil test --spec --e2e --watchAll"
-  },
-  "dependencies": {
-    "@stencil/core": "0.18.0"
   },
   "repository": {
     "type": "git",
@@ -29,6 +26,7 @@
   },
   "homepage": "https://github.com/ionic-team/ionic-pwa-elements",
   "devDependencies": {
-    "workbox-build": "3.4.1"
+    "@stencil/core": "1.0.0-beta.0",
+    "workbox-build": "4.3.1"
   }
 }

@@ -2,9 +2,9 @@ import { newE2EPage } from '@stencil/core/testing';
 
 describe('PWA Camera', () => {
   it('should render', async () => {
-    const page = await newE2EPage({ html: '<ion-pwa-camera></ion-pwa-camera>' });
+    const page = await newE2EPage({ html: '<pwa-camera></pwa-camera>' });
 
-    const camera = await page.find('ion-pwa-camera');
+    const camera = await page.find('pwa-camera');
     expect(camera).not.toBeNull();
 
     const expectedElements = [
@@ -18,7 +18,7 @@ describe('PWA Camera', () => {
     ];
 
     for (const selector of expectedElements) {
-      const element = await page.find(`ion-pwa-camera >>> ${selector}`);
+      const element = await page.find(`pwa-camera >>> ${selector}`);
       expect(await element.isVisible()).toBe(true);
     }
   });
