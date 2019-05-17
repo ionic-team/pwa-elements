@@ -1,4 +1,4 @@
-import { h, Component, Element, Prop, State } from '@stencil/core';
+import { h, Component, Host, Prop, State, Build, getAssetPath } from '@stencil/core';
 
 import { FlashMode } from '../../definitions';
 
@@ -6,17 +6,16 @@ import './imagecapture';
 
 declare var window: any;
 
+const assetPath = getAssetPath('.');
+
 @Component({
   tag: 'pwa-camera',
   styleUrl: 'camera.css',
-  assetsDir: 'icons',
+  assetsDirs: ['icons'],
   shadow: true
 })
-export class CameraPWA {
-  @Element() el;
-
-  @Prop({ context: 'isServer' }) private isServer: boolean;
-  @Prop({ context: 'publicPath'}) private publicPath: string;
+export class PWACamera {
+  el: HTMLPwaCameraElement;
 
   @Prop() facingMode: string = 'user';
 
@@ -50,7 +49,7 @@ export class CameraPWA {
   flashMode: FlashMode = 'off';
 
   async componentDidLoad() {
-    if (this.isServer) {
+    if (!Build.isBrowser) {
       return;
     }
 
@@ -156,7 +155,7 @@ export class CameraPWA {
         const photo = await this.imageCapture.takePhoto({
           fillLightMode: this.flashModes.length > 1 ? this.flashMode : undefined
         });
-        
+
         await this.flashScreen();
 
         this.promptAccept(photo);
@@ -250,20 +249,20 @@ export class CameraPWA {
     this.onPhoto && this.onPhoto(this.photo);
   }
 
-  render() {
-    return (
+  render = () => (
+    <Host ref={(el: HTMLPwaCameraElement) => (this.el = el)}>
       <div class="camera-wrapper">
         <div class="camera-header">
           <section class="items">
             <div class="item close" onClick={e => this.handleClose(e)}>
-              <img src={`${this.publicPath}icons/exit.svg`} />
+              <img src={`${assetPath}icons/exit.svg`} />
             </div>
             <div class="item flash" onClick={e => this.handleFlashClick(e)}>
               {this.flashModes.length > 0 && (
               <div>
-                {this.flashMode == 'off' ? <img src={`${this.publicPath}icons/flash-off.svg`} /> : ''}
-                {this.flashMode == 'auto' ? <img src={`${this.publicPath}icons/flash-auto.svg`} /> : ''}
-                {this.flashMode == 'flash' ? <img src={`${this.publicPath}icons/flash-on.svg`} /> : ''}
+                {this.flashMode == 'off' ? <img src={`${assetPath}icons/flash-off.svg`} /> : ''}
+                {this.flashMode == 'auto' ? <img src={`${assetPath}icons/flash-auto.svg`} /> : ''}
+                {this.flashMode == 'flash' ? <img src={`${assetPath}icons/flash-on.svg`} /> : ''}
               </div>
               )}
             </div>
@@ -302,21 +301,21 @@ export class CameraPWA {
             <div class="shutter-button"></div>
           </div>,
           <div class="rotate" onClick={(e) => this.handleRotateClick(e)}>
-            <img src={`${this.publicPath}icons/reverse-camera.svg`} />
+            <img src={`${assetPath}icons/reverse-camera.svg`} />
           </div>,
           {/*this.hasMultipleCameras && (<div class="item rotate" onClick={(e) => this.handleRotateClick(e)}></div>)*/}
           ]) : (
           <section class="items">
             <div class="item accept-cancel" onClick={e => this.handleCancelPhoto(e)}>
-              <img src={`${this.publicPath}icons/retake.svg`} />
+              <img src={`${assetPath}icons/retake.svg`} />
             </div>
             <div class="item accept-use" onClick={e => this.handleAcceptPhoto(e)}>
-              <img src={`${this.publicPath}icons/confirm.svg`} />
+              <img src={`${assetPath}icons/confirm.svg`} />
             </div>
           </section>
           )}
         </div>
       </div>
-    );
-  }
+    </Host>
+  );
 }

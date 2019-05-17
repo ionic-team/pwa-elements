@@ -8,7 +8,7 @@ import { h, Event, EventEmitter, Component, Method } from '@stencil/core';
 export class PWACameraModal {
   @Event() onPhoto: EventEmitter;
 
-  _modal: HTMLElement;
+  _modal: HTMLPwaCameraModalInstanceElement;
 
   @Method()
   async present() {

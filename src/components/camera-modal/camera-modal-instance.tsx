@@ -1,12 +1,13 @@
-import { h, Event, EventEmitter, Component, Listen, Element } from '@stencil/core';
+import { h, Event, EventEmitter, Component, Listen, Host } from '@stencil/core';
 
 @Component({
   tag: 'pwa-camera-modal-instance',
   styleUrl: 'camera-modal-instance.css',
   shadow: true
 })
-export class PWACameraModal {
-  @Element() el;
+export class PWACameraModalInstance {
+  el: HTMLPwaCameraModalInstanceElement;
+
   @Event() onPhoto: EventEmitter;
 
   async handlePhoto(photo: any) {
@@ -30,8 +31,8 @@ export class PWACameraModal {
     }
   }
 
-  render() {
-    return (
+  render = () => (
+    <Host ref={(el: HTMLPwaCameraModalInstanceElement) => (this.el = el)}>
       <div class="wrapper" onClick={e => this.handleBackdropClick(e)}>
         <div class="content">
           <pwa-camera
@@ -39,6 +40,6 @@ export class PWACameraModal {
             onPhoto={(photo) => this.handlePhoto(photo)} />
         </div>
       </div>
-    );
-  }
+    </Host>
+  );
 }

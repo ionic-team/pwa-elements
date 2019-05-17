@@ -1,4 +1,4 @@
-import { h, Component, Prop, Element, State } from '@stencil/core';
+import { h, Component, Prop, Host, State } from '@stencil/core';
 
 @Component({
   tag: 'pwa-toast',
@@ -6,26 +6,13 @@ import { h, Component, Prop, Element, State } from '@stencil/core';
   shadow: true
 })
 export class PWAToast {
-  @Element() el: HTMLElement;
+  el: HTMLPwaToastElement;
 
   @Prop() message: string;
 
   @Prop() duration: number = 2000;
 
   @State() closing = null;
-
-  hostData() {
-    const classes = {
-      out: !!this.closing
-    }
-
-    if (this.closing !== null) {
-      classes['in'] = !this.closing;
-    }
-    return {
-      class: classes
-    }
-  }
 
   componentDidLoad() {
     setTimeout(() => {
@@ -43,13 +30,16 @@ export class PWAToast {
     }, 1000);
   }
 
-  render() {
-    return (
+  render = () => (
+    <Host ref={(el: HTMLPwaToastElement) => (this.el = el)} class={{
+      in: this.closing !== null && !this.closing,
+      out: !!this.closing,
+    }}>
       <div class="wrapper">
         <div class="toast">
           {this.message}
         </div>
       </div>
-    );
-  }
+    </Host>
+  );
 }
