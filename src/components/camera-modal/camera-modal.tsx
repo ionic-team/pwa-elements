@@ -1,4 +1,4 @@
-import { Event, EventEmitter, Component, Method } from '@stencil/core';
+import { h, Event, EventEmitter, Component, Method } from '@stencil/core';
 
 @Component({
   tag: 'pwa-camera-modal',

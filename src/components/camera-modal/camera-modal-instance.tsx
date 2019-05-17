@@ -1,4 +1,4 @@
-import { Event, EventEmitter, Component, Listen, Element } from '@stencil/core';
+import { h, Event, EventEmitter, Component, Listen, Element } from '@stencil/core';
 
 @Component({
   tag: 'pwa-camera-modal-instance',
@@ -23,7 +23,7 @@ export class PWACameraModal {
     e.stopPropagation();
   }
 
-  @Listen('body:keyup')
+  @Listen('keyup', { target: 'body' })
   handleBackdropKeyUp(e: KeyboardEvent) {
     if (e.key === "Escape") {
       this.onPhoto.emit(null);

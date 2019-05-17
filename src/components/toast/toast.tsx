@@ -1,4 +1,4 @@
-import { Component, Prop, Element, State } from '@stencil/core';
+import { h, Component, Prop, Element, State } from '@stencil/core';
 
 @Component({
   tag: 'pwa-toast',
