@@ -249,7 +249,7 @@ export class PWACamera {
     this.onPhoto && this.onPhoto(this.photo);
   }
 
-  render () {
+  render() {
     return (
       <div class="camera-wrapper">
         <div class="camera-header">
