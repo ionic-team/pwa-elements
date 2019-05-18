@@ -30,13 +30,15 @@ export class PWAToast {
     }, 1000);
   }
 
-  render = () => (
-    <Host class={{ in: this.closing !== null && !this.closing, out: !!this.closing }}>
-      <div class="wrapper">
-        <div class="toast">
-          {this.message}
+  render() {
+    return (
+      <Host class={{ in: this.closing !== null && !this.closing, out: !!this.closing }}>
+        <div class="wrapper">
+          <div class="toast">
+            {this.message}
+          </div>
         </div>
-      </div>
-    </Host>
-  );
+      </Host>
+    );
+  }
 }
