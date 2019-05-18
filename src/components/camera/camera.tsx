@@ -1,4 +1,4 @@
-import { h, Component, Host, Prop, State, Build, getAssetPath } from '@stencil/core';
+import { h, Component, Element, Prop, State, Build, getAssetPath } from '@stencil/core';
 
 import { FlashMode } from '../../definitions';
 
@@ -15,7 +15,7 @@ const assetPath = getAssetPath('.');
   shadow: true
 })
 export class PWACamera {
-  el: HTMLPwaCameraElement;
+  @Element() el: HTMLPwaCameraElement;
 
   @Prop() facingMode: string = 'user';
 
@@ -249,8 +249,8 @@ export class PWACamera {
     this.onPhoto && this.onPhoto(this.photo);
   }
 
-  render = () => (
-    <Host ref={(el: HTMLPwaCameraElement) => (this.el = el)}>
+  render () {
+    return (
       <div class="camera-wrapper">
         <div class="camera-header">
           <section class="items">
@@ -316,6 +316,6 @@ export class PWACamera {
           )}
         </div>
       </div>
-    </Host>
-  );
+    );
+  }
 }

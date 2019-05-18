@@ -1,4 +1,4 @@
-import { h, Component, Prop, Host, State } from '@stencil/core';
+import { h, Component, Prop, Element, Host, State } from '@stencil/core';
 
 @Component({
   tag: 'pwa-toast',
@@ -6,7 +6,7 @@ import { h, Component, Prop, Host, State } from '@stencil/core';
   shadow: true
 })
 export class PWAToast {
-  el: HTMLPwaToastElement;
+  @Element() el: HTMLPwaToastElement;
 
   @Prop() message: string;
 
@@ -31,10 +31,7 @@ export class PWAToast {
   }
 
   render = () => (
-    <Host ref={(el: HTMLPwaToastElement) => (this.el = el)} class={{
-      in: this.closing !== null && !this.closing,
-      out: !!this.closing,
-    }}>
+    <Host class={{ in: this.closing !== null && !this.closing, out: !!this.closing }}>
       <div class="wrapper">
         <div class="toast">
           {this.message}
