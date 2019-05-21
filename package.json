@@ -1,8 +1,9 @@
 {
   "name": "@ionic/pwa-elements",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Stencil Component Starter",
   "main": "dist/index.js",
+  "unpkg": "dist/ionicpwaelements/ionicpwaelements.js",
   "types": "dist/types/index.d.ts",
   "module": "dist/index.mjs",
   "collection": "dist/collection/collection-manifest.json",
