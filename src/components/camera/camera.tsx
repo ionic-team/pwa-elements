@@ -1,4 +1,4 @@
-import { h, Component, Element, Prop, State } from '@stencil/core';
+import { h, Component, Element, Prop, State, Build } from '@stencil/core';
 
 import { FlashMode } from '../../definitions';
 
@@ -116,11 +116,12 @@ export class CameraPWA {
     this.stream = stream;
     this.videoElement.srcObject = stream;
 
-    console.log(stream.getVideoTracks()[0]);
+    if (Build.isDev) {
+      console.log(stream.getVideoTracks()[0]);
+    }
 
     if (this.hasImageCapture()) {
       this.imageCapture = new window.ImageCapture(stream.getVideoTracks()[0]);
-      // console.log(stream.getTracks()[0].getCapabilities());
       await this.initPhotoCapabilities(this.imageCapture);
     } else {
       // TODO: DO SOMETHING ELSE HERE
@@ -156,7 +157,7 @@ export class CameraPWA {
         const photo = await this.imageCapture.takePhoto({
           fillLightMode: this.flashModes.length > 1 ? this.flashMode : undefined
         });
-        
+
         await this.flashScreen();
 
         this.promptAccept(photo);
@@ -203,7 +204,6 @@ export class CameraPWA {
   }
 
   setFlashMode(mode: FlashMode) {
-    console.log('New flash mode: ', mode);
     this.flashMode = mode;
   }
 
@@ -225,7 +225,6 @@ export class CameraPWA {
   }
 
   handleShutterClick(_e: Event) {
-    console.log()
     this.capture();
   }
 
@@ -246,7 +245,9 @@ export class CameraPWA {
   }
 
   handleAcceptPhoto(_e: Event) {
-    console.log('Accepting photoi', this.photo);
+    if (Build.isDev) {
+      console.log('Accepting photo', this.photo);
+    }
     this.onPhoto && this.onPhoto(this.photo);
   }
 
