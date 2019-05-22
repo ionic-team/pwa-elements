@@ -1,4 +1,5 @@
 dist/
+loader/
 
 *~
 *.sw[mnpcod]
