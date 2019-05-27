@@ -27,9 +27,6 @@ export class CameraPWA {
   @State() showShutterOverlay = false;
   @State() flashIndex = 0;
 
-  @State() cameraError = false;
-  @State() cameraErrorString;
-
   offscreenCanvas: HTMLCanvasElement;
 
   defaultConstraints: any;
@@ -81,8 +78,12 @@ export class CameraPWA {
    * Query the list of connected devices and figure out how many video inputs we have.
    */
   async queryDevices() {
-    const devices = await navigator.mediaDevices.enumerateDevices();
-    this.hasMultipleCameras = devices.filter(d => d.kind == 'videoinput').length > 1;
+    try {
+      const devices = await navigator.mediaDevices.enumerateDevices();
+      this.hasMultipleCameras = devices.filter(d => d.kind == 'videoinput').length > 1;
+    } catch(e) {
+      this.onPhoto(e);
+    }
   }
 
   async initCamera(constraints?: MediaStreamConstraints) {
@@ -99,18 +100,8 @@ export class CameraPWA {
 
       this.initStream(stream);
     } catch(e) {
-      this.cameraError = true;
-      this.cameraErrorString = this.buildError(e);
-      console.error(e);
+      this.onPhoto(e);
     }
-  }
-
-  buildError(e) {
-    switch (e.name) {
-      case "DevicesNotFoundError":
-        return "No Camera found";
-    }
-    return "Unable to initialize Camera";
   }
 
   async initStream(stream: MediaStream) {
@@ -310,12 +301,6 @@ export class CameraPWA {
 
         {/* Only toggle visibility of the video feed to keep it responsive */}
         <div class="camera-video" style={{display: this.photo ? 'none' : ''}}>
-          {this.cameraError && (
-          <div class="error">
-            {this.cameraErrorString}
-          </div>
-          )}
-
           {this.showShutterOverlay && (
           <div class="shutter-overlay">
           </div>
