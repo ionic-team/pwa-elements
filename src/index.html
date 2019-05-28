@@ -34,7 +34,7 @@
         const photo = e.detail;
         console.log('CAMERA ON PHOTO', photo);
 
-        if (photo) {
+        if (photo && !photo instanceof Error) {
           const url = window.URL.createObjectURL(photo);
 
           const img = document.querySelector('#img') || document.createElement('img');
@@ -44,6 +44,8 @@
           img.parentNode && img.parentNode.removeChild(img);
 
           document.body.appendChild(img);
+        } else if (photo) {
+          console.error(photo.message);
         }
 
         // Hide the modal
