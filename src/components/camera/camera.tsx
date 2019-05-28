@@ -1,4 +1,4 @@
-import { h, Component, Element, Prop, State, Build } from '@stencil/core';
+import { h, Component, Element, Prop, State } from '@stencil/core';
 
 import { FlashMode } from '../../definitions';
 
@@ -116,10 +116,6 @@ export class CameraPWA {
   async initStream(stream: MediaStream) {
     this.stream = stream;
     this.videoElement.srcObject = stream;
-
-    if (Build.isDev) {
-      console.log(stream.getVideoTracks()[0]);
-    }
 
     if (this.hasImageCapture()) {
       this.imageCapture = new window.ImageCapture(stream.getVideoTracks()[0]);
