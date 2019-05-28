@@ -18,4 +18,4 @@ Ionic PWA Elements were built primarily for developers using [Capacitor](http://
 
 Ionic PWA Elements offer web-UI experiences for Capacitor apps running in a browser as PWA, such that the API is identical for the PWA and the native app store app.
 
-See the [Capacitor PWA Elements](https://capacitor.ionicframework.com/docs/getting-started/pwa-elements/) page for more information on using this library in your Capacitor apps.
+See the [Capacitor PWA Elements](https://capacitor.ionicframework.com/docs/pwa-elements) page for more information on using this library in your Capacitor apps.
