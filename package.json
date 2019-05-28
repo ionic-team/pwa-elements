@@ -1,6 +1,6 @@
 {
   "name": "@ionic/pwa-elements",
-  "version": "1.2.3",
+  "version": "1.2.7",
   "description": "Stencil Component Starter",
   "main": "dist/index.js",
   "unpkg": "dist/ionicpwaelements/ionicpwaelements.js",
@@ -9,13 +9,15 @@
   "collection": "dist/collection/collection-manifest.json",
   "files": [
     "dist/",
-    "dist/loader/"
+    "loader/"
   ],
   "scripts": {
     "build": "stencil build",
     "start": "stencil build --dev --watch --serve",
     "test": "stencil test --spec --e2e",
-    "test.watch": "stencil test --spec --e2e --watchAll"
+    "test.watch": "stencil test --spec --e2e --watchAll",
+    "release": "np",
+    "version": "npm run build"
   },
   "repository": {
     "type": "git",
@@ -28,7 +30,13 @@
   },
   "homepage": "https://github.com/ionic-team/ionic-pwa-elements",
   "devDependencies": {
-    "@stencil/core": "1.0.0-beta.2",
+    "@stencil/core": "1.0.0-beta.5",
+    "@types/jest": "23.3.14",
+    "@types/puppeteer": "1.12.4",
+    "jest": "23.6.0",
+    "jest-cli": "23.6.0",
+    "np": "^5.0.2",
+    "puppeteer": "1.14.0",
     "workbox-build": "4.3.1"
   }
 }
