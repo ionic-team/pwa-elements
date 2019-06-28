@@ -10,7 +10,7 @@ declare var window: any;
   tag: 'pwa-camera',
   styleUrl: 'camera.css',
   assetsDirs: ['icons'],
-  shadow: true,
+  shadow: true
 })
 export class PWACamera {
   @Element() el: HTMLPwaCameraElement;
@@ -52,8 +52,8 @@ export class PWACamera {
 
     this.defaultConstraints = {
       video: {
-        facingMode: this.facingMode,
-      },
+        facingMode: this.facingMode
+      }
     };
 
     // Figure out how many cameras we have
@@ -79,7 +79,7 @@ export class PWACamera {
     try {
       const devices = await navigator.mediaDevices.enumerateDevices();
       this.hasMultipleCameras = devices.filter(d => d.kind == 'videoinput').length > 1;
-    } catch (e) {
+    } catch(e) {
       this.onPhoto(e);
     }
   }
@@ -144,7 +144,7 @@ export class PWACamera {
     if (this.hasImageCapture()) {
       try {
         const photo = await this.imageCapture.takePhoto({
-          fillLightMode: this.flashModes.length > 1 ? this.flashMode : undefined,
+          fillLightMode: this.flashModes.length > 1 ? this.flashMode : undefined
         });
 
         await this.flashScreen();
@@ -180,14 +180,14 @@ export class PWACamera {
     if (facingMode === 'environment') {
       this.initCamera({
         video: {
-          facingMode: 'user',
-        },
+          facingMode: 'user'
+        }
       });
     } else {
       this.initCamera({
         video: {
-          facingMode: 'environment',
-        },
+          facingMode: 'environment'
+        }
       });
     }
   }
@@ -215,7 +215,6 @@ export class PWACamera {
   }
 
   handleShutterClick(_e: Event) {
-    console.log();
     this.capture();
   }
 
@@ -292,40 +291,33 @@ export class PWACamera {
         {/* Show the taken photo for the Accept UI*/}
         {this.photo && (
           <div class="accept">
-            <div class="accept-image" style={{ backgroundImage: `url(${this.photoSrc})` }} />
+            <div class="accept-image" style={{backgroundImage: `url(${this.photoSrc})`}}></div>
           </div>
         )}
 
         {/* Only toggle visibility of the video feed to keep it responsive */}
         <div class="camera-video" style={{ display: this.photo ? 'none' : '' }}>
-          {this.showShutterOverlay && <div class="shutter-overlay" />}
-          {this.hasImageCapture() ? (
-            <video
-              style={videoStreamStyle}
-              ref={(el: HTMLVideoElement) => (this.videoElement = el)}
-              autoplay
-              playsinline
-            />
-          ) : (
-            <canvas ref={(el: HTMLCanvasElement) => (this.canvasElement = el)} width="100%" height="100%" />
+          {this.showShutterOverlay && (
+            <div class="shutter-overlay"></div>
           )}
-          <canvas class="offscreen-image-render" ref={e => (this.offscreenCanvas = e)} width="100%" height="100%" />
+          {this.hasImageCapture() ? (
+            <video style={videoStreamStyle} ref={el => (this.videoElement = el)} autoplay playsinline />
+          ) : (
+            <canvas ref={el => this.canvasElement = el} width="100%" height="100%"></canvas>
+          )}
+          <canvas class="offscreen-image-render" ref={el => this.offscreenCanvas = el} width="100%" height="100%" />
         </div>
 
         <div class="camera-footer">
-          {!this.photo ? (
-            [
-              <div class="shutter" onClick={e => this.handleShutterClick(e)}>
-                <div class="shutter-button" />
-              </div>,
-              <div class="rotate" onClick={e => this.handleRotateClick(e)}>
-                <img src={this.iconReverseCamera()} />
-              </div>,
-              {
-                /*this.hasMultipleCameras && (<div class="item rotate" onClick={(e) => this.handleRotateClick(e)}></div>)*/
-              },
-            ]
-          ) : (
+          {!this.photo ? ([
+            <div class="shutter" onClick={(e) => this.handleShutterClick(e)}>
+              <div class="shutter-button"></div>
+            </div>,
+            <div class="rotate" onClick={(e) => this.handleRotateClick(e)}>
+              <img src={this.iconReverseCamera()} />
+            </div>,
+            {/*this.hasMultipleCameras && (<div class="item rotate" onClick={(e) => this.handleRotateClick(e)}></div>)*/}
+            ]) : (
             <section class="items">
               <div class="item accept-cancel" onClick={e => this.handleCancelPhoto(e)}>
                 <img src={this.iconRetake()} />
