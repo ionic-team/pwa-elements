@@ -93,11 +93,11 @@ export class PWACamera {
       const stream = await navigator.mediaDevices.getUserMedia({
         video: true,
         audio: false,
-        ...constraints,
+        ...constraints
       });
 
       this.initStream(stream);
-    } catch (e) {
+    } catch(e) {
       this.onPhoto(e);
     }
   }
@@ -267,7 +267,7 @@ export class PWACamera {
   }
 
   render() {
-    const videoStreamStyle = this.facingMode == 'user' ? { transform: 'scaleX(-1)' } : {};
+    const videoStreamStyle = this.facingMode == "user" ? { transform: 'scaleX(-1)' } : {};
 
     return (
       <div class="camera-wrapper">
@@ -301,7 +301,7 @@ export class PWACamera {
             <div class="shutter-overlay"></div>
           )}
           {this.hasImageCapture() ? (
-            <video style={videoStreamStyle} ref={el => (this.videoElement = el)} autoplay playsinline />
+            <video style={videoStreamStyle} ref={el => (this.videoElement = el)} autoplay playsinline></video>
           ) : (
             <canvas ref={el => this.canvasElement = el} width="100%" height="100%"></canvas>
           )}
