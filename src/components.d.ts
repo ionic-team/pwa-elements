@@ -92,7 +92,5 @@ declare global {
     'pwa-camera-modal-instance': HTMLPwaCameraModalInstanceElement;
     'pwa-toast': HTMLPwaToastElement;
   }
-
-  interface ElementTagNameMap extends HTMLElementTagNameMap {}
 }
 
