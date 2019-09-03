@@ -24,42 +24,7 @@ export namespace Components {
   }
 }
 
-declare namespace LocalJSX {
-  interface PwaCamera extends JSXBase.HTMLAttributes {
-    'facingMode'?: string;
-    'onPhoto'?: (e: any) => void;
-  }
-  interface PwaCameraModal extends JSXBase.HTMLAttributes {
-    'onOnPhoto'?: (event: CustomEvent<any>) => void;
-  }
-  interface PwaCameraModalInstance extends JSXBase.HTMLAttributes {
-    'onOnPhoto'?: (event: CustomEvent<any>) => void;
-  }
-  interface PwaToast extends JSXBase.HTMLAttributes {
-    'duration'?: number;
-    'message'?: string;
-  }
-
-  interface IntrinsicElements {
-    'pwa-camera': PwaCamera;
-    'pwa-camera-modal': PwaCameraModal;
-    'pwa-camera-modal-instance': PwaCameraModalInstance;
-    'pwa-toast': PwaToast;
-  }
-}
-
-export { LocalJSX as JSX };
-
-
-declare module "@stencil/core" {
-  export namespace JSX {
-    interface IntrinsicElements extends LocalJSX.IntrinsicElements {}
-  }
-}
-
-
 declare global {
-
 
 
   interface HTMLPwaCameraElement extends Components.PwaCamera, HTMLStencilElement {}
@@ -85,14 +50,45 @@ declare global {
     prototype: HTMLPwaToastElement;
     new (): HTMLPwaToastElement;
   };
-
   interface HTMLElementTagNameMap {
     'pwa-camera': HTMLPwaCameraElement;
     'pwa-camera-modal': HTMLPwaCameraModalElement;
     'pwa-camera-modal-instance': HTMLPwaCameraModalInstanceElement;
     'pwa-toast': HTMLPwaToastElement;
   }
-
-  interface ElementTagNameMap extends HTMLElementTagNameMap {}
 }
+
+declare namespace LocalJSX {
+  interface PwaCamera extends JSXBase.HTMLAttributes<HTMLPwaCameraElement> {
+    'facingMode'?: string;
+    'onPhoto'?: (e: any) => void;
+  }
+  interface PwaCameraModal extends JSXBase.HTMLAttributes<HTMLPwaCameraModalElement> {
+    'onOnPhoto'?: (event: CustomEvent<any>) => void;
+  }
+  interface PwaCameraModalInstance extends JSXBase.HTMLAttributes<HTMLPwaCameraModalInstanceElement> {
+    'onOnPhoto'?: (event: CustomEvent<any>) => void;
+  }
+  interface PwaToast extends JSXBase.HTMLAttributes<HTMLPwaToastElement> {
+    'duration'?: number;
+    'message'?: string;
+  }
+
+  interface IntrinsicElements {
+    'pwa-camera': PwaCamera;
+    'pwa-camera-modal': PwaCameraModal;
+    'pwa-camera-modal-instance': PwaCameraModalInstance;
+    'pwa-toast': PwaToast;
+  }
+}
+
+export { LocalJSX as JSX };
+
+
+declare module "@stencil/core" {
+  export namespace JSX {
+    interface IntrinsicElements extends LocalJSX.IntrinsicElements {}
+  }
+}
+
 
