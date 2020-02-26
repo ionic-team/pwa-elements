@@ -12,7 +12,6 @@ import {
 
 export namespace Components {
   interface PwaActionSheet {
-    'message': string;
     'options': ActionSheetOption[];
     'title': string;
   }
@@ -74,7 +73,6 @@ declare global {
 
 declare namespace LocalJSX {
   interface PwaActionSheet extends JSXBase.HTMLAttributes<HTMLPwaActionSheetElement> {
-    'message'?: string;
     'onOnSelection'?: (event: CustomEvent<any>) => void;
     'options'?: ActionSheetOption[];
     'title'?: string;

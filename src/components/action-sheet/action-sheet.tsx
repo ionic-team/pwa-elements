@@ -1,4 +1,4 @@
-import { h, Component, Prop, Element, Event, EventEmitter } from '@stencil/core';
+import { h, Component, Prop, Element, Event, EventEmitter, State } from '@stencil/core';
 import { ActionSheetOption } from '../../definitions';
 
 @Component({
@@ -12,14 +12,23 @@ export class PWAActionSheet {
 
   @Prop() title: string;
 
-  @Prop() message: string;
-
   @Prop() options: ActionSheetOption[] = [];
 
   @Event() onSelection: EventEmitter;
 
+  @State() open = false;
+
+  componentDidLoad() {
+    requestAnimationFrame(() => {
+      this.open = true;
+    });
+  }
+
   close() {
-    this.el.parentNode.removeChild(this.el);
+    this.open = false;
+    setTimeout(() => {
+      this.el.parentNode.removeChild(this.el);
+    }, 500);
   }
 
   handleOptionClick(e: MouseEvent, i: number) {
@@ -30,7 +39,7 @@ export class PWAActionSheet {
 
   render() {
     return (
-      <div class="wrapper" onClick={() => this.close()}>
+      <div class={`wrapper${this.open ? ' open' : ''}`} onClick={() => this.close()}>
         <div class="content">
           <div class="title">{this.title}</div>
           {
