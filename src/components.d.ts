@@ -6,9 +6,16 @@
 
 
 import { HTMLStencilElement, JSXBase } from '@stencil/core/internal';
-
+import {
+  ActionSheetOption,
+} from './definitions';
 
 export namespace Components {
+  interface PwaActionSheet {
+    'message': string;
+    'options': ActionSheetOption[];
+    'title': string;
+  }
   interface PwaCamera {
     'facingMode': string;
     'onPhoto': (e: any) => void;
@@ -26,6 +33,12 @@ export namespace Components {
 
 declare global {
 
+
+  interface HTMLPwaActionSheetElement extends Components.PwaActionSheet, HTMLStencilElement {}
+  var HTMLPwaActionSheetElement: {
+    prototype: HTMLPwaActionSheetElement;
+    new (): HTMLPwaActionSheetElement;
+  };
 
   interface HTMLPwaCameraElement extends Components.PwaCamera, HTMLStencilElement {}
   var HTMLPwaCameraElement: {
@@ -51,6 +64,7 @@ declare global {
     new (): HTMLPwaToastElement;
   };
   interface HTMLElementTagNameMap {
+    'pwa-action-sheet': HTMLPwaActionSheetElement;
     'pwa-camera': HTMLPwaCameraElement;
     'pwa-camera-modal': HTMLPwaCameraModalElement;
     'pwa-camera-modal-instance': HTMLPwaCameraModalInstanceElement;
@@ -59,6 +73,12 @@ declare global {
 }
 
 declare namespace LocalJSX {
+  interface PwaActionSheet extends JSXBase.HTMLAttributes<HTMLPwaActionSheetElement> {
+    'message'?: string;
+    'onOnSelection'?: (event: CustomEvent<any>) => void;
+    'options'?: ActionSheetOption[];
+    'title'?: string;
+  }
   interface PwaCamera extends JSXBase.HTMLAttributes<HTMLPwaCameraElement> {
     'facingMode'?: string;
     'onPhoto'?: (e: any) => void;
@@ -75,6 +95,7 @@ declare namespace LocalJSX {
   }
 
   interface IntrinsicElements {
+    'pwa-action-sheet': PwaActionSheet;
     'pwa-camera': PwaCamera;
     'pwa-camera-modal': PwaCameraModal;
     'pwa-camera-modal-instance': PwaCameraModalInstance;
