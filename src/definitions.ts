@@ -12,3 +12,7 @@ export interface PhotoCapabilities {
 }
 
 export type FlashMode = "auto" | "off" | "flash";
+
+export interface ActionSheetOption {
+  title: string;
+}

@@ -20,6 +20,7 @@
   </div>
   <button id="camera-button">Open Camera</button>
   <button id="toast-button">Open Toast</button>
+  <button id="action-sheet-button">Open Action Sheet</button>
   <script>
     var b = document.querySelector('#camera-button');
     b.addEventListener('click', async (ev) => {
@@ -61,6 +62,18 @@
       const toast = document.createElement('pwa-toast');
       toast.message = 'Hello, Moto!';
       document.body.appendChild(toast);
+    });
+
+    var b = document.querySelector('#action-sheet-button');
+    b.addEventListener('click', async (ev) => {
+      const actionSheet = document.createElement('pwa-action-sheet');
+      actionSheet.title = 'choose option';
+      actionSheet.options = [{title: 'hi'},{title: 'bye', style: "DESTRUCTIVE"},{title: 'cancel', style: "CANCEL"}]
+      document.body.appendChild(actionSheet);
+      actionSheet.addEventListener('onSelection', async (e) => {
+        const selection = e.detail;
+        console.log('selected', selection);
+      })
     });
   </script>
 
