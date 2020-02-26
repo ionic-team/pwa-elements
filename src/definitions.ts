@@ -13,14 +13,6 @@ export interface PhotoCapabilities {
 
 export type FlashMode = "auto" | "off" | "flash";
 
-
-export enum ActionSheetOptionStyle {
-  Default = 'DEFAULT',
-  Destructive = 'DESTRUCTIVE',
-  Cancel = 'CANCEL'
-}
-
 export interface ActionSheetOption {
   title: string;
-  style?: ActionSheetOptionStyle;
 }

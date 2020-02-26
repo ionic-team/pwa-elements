@@ -7,8 +7,6 @@
   height: 100%;
   display: flex;
   contain: strict;
-
-  --radius: 15px;
 }
 
 .wrapper {
@@ -21,47 +19,40 @@
 
 .title {
   color: #999;
-  height: 30px;
-  text-align: center;
-  line-height: 30px;
-  background-color: #fff;
+  height: 23px;
+  line-height: 23px;
+  padding-bottom: 17px;
+  padding-inline-end: 16px;
+  padding-inline-start: 16px;
+  padding-left: 16px;
+  padding-right: 16px;
+  padding-top: 20px;
 }
 
 .content {
-  width: 350px;
+  width: 568px;
   align-self: flex-end;
-  border-radius: var(--radius);
-  overflow: hidden;
-  margin-bottom: 20px;
-}
-
-@media only screen and (max-width: 400px) {
-  .content {
-    width: 90%;
-  }
-}
-
-
-.action-sheet-button {
-  color: #3171e0;
-  text-align: center;
-  width: 100%;
-  height: 44px;
-  line-height: 44px;
   background-color:#fff;
 }
 
-.separation div:nth-last-child(2) {
-  border-radius: 0 0 var(--radius) var(--radius);
-  overflow: hidden;
+@media only screen and (max-width: 568px) {
+  .content {
+    width: 100%;
+  }
 }
 
-.destructive {
-  color: #eb445a;
+.action-sheet-option {
+  height: 52px;
+  line-height: 52px;
 }
 
-.cancel {
-  margin-top: 4px;
-  border-radius: var(--radius);
+.action-sheet-button {
+  color: rgb(38, 38, 38);
+  font-size: 16px;
+  padding-inline-end: 16px;
+  padding-inline-start: 16px;
+  padding-left: 16px;
+  padding-right: 16px;
+  padding-top: 0px;
 }
 

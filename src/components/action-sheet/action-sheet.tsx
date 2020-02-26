@@ -1,5 +1,5 @@
 import { h, Component, Prop, Element, Event, EventEmitter } from '@stencil/core';
-import { ActionSheetOption, ActionSheetOptionStyle } from '../../definitions';
+import { ActionSheetOption } from '../../definitions';
 
 @Component({
   tag: 'pwa-action-sheet',
@@ -29,28 +29,16 @@ export class PWAActionSheet {
   }
 
   render() {
-    let contentClass = 'content';
-    let containsCancel = this.options.find(option => option.style === ActionSheetOptionStyle.Cancel);
-    if (containsCancel) {
-      contentClass += " separation";
-    }
     return (
       <div class="wrapper" onClick={() => this.close()}>
-        <div class={contentClass}>
+        <div class="content">
           <div class="title">{this.title}</div>
           {
-            this.options.map((option, i) => {
-              let buttonClass = 'action-sheet-button';
-              if (option.style === ActionSheetOptionStyle.Destructive) {
-                buttonClass += ' destructive'
-              }
-              if (option.style === ActionSheetOptionStyle.Cancel) {
-                buttonClass += ' cancel'
-              }
-              return  <div class="action-sheet-option" onClick={(e) => this.handleOptionClick(e, i)}>
-                        <div class={buttonClass}>{option.title}</div>
-                      </div>
-            })
+            this.options.map((option, i) => 
+              <div class="action-sheet-option" onClick={(e) => this.handleOptionClick(e, i)}>
+                <div class="action-sheet-button">{option.title}</div>
+              </div>
+            )
           }
         </div>
       </div>
