@@ -10,7 +10,7 @@ import { ActionSheetOption } from '../../definitions';
 export class PWAActionSheet {
   @Element() el: HTMLElement;
 
-  @Prop() title: string;
+  @Prop() header: string;
 
   @Prop() options: ActionSheetOption[] = [];
 
@@ -41,7 +41,7 @@ export class PWAActionSheet {
     return (
       <div class={`wrapper${this.open ? ' open' : ''}`} onClick={() => this.close()}>
         <div class="content">
-          <div class="title">{this.title}</div>
+          <div class="title">{this.header}</div>
           {
             this.options.map((option, i) => 
               <div class="action-sheet-option" onClick={(e) => this.handleOptionClick(e, i)}>
