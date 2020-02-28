@@ -12,6 +12,8 @@ export class PWAActionSheet {
 
   @Prop() header: string;
 
+  @Prop() cancelable: boolean = true;
+
   @Prop() options: ActionSheetOption[] = [];
 
   @Event() onSelection: EventEmitter;
@@ -22,6 +24,12 @@ export class PWAActionSheet {
     requestAnimationFrame(() => {
       this.open = true;
     });
+  }
+
+  dismiss() {
+    if (this.cancelable) {
+      this.close();
+    }
   }
 
   close() {
@@ -39,7 +47,7 @@ export class PWAActionSheet {
 
   render() {
     return (
-      <div class={`wrapper${this.open ? ' open' : ''}`} onClick={() => this.close()}>
+      <div class={`wrapper${this.open ? ' open' : ''}`} onClick={() => this.dismiss()}>
         <div class="content">
           <div class="title">{this.header}</div>
           {

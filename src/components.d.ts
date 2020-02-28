@@ -12,6 +12,7 @@ import {
 
 export namespace Components {
   interface PwaActionSheet {
+    'cancelable': boolean;
     'header': string;
     'options': ActionSheetOption[];
   }
@@ -73,6 +74,7 @@ declare global {
 
 declare namespace LocalJSX {
   interface PwaActionSheet extends JSXBase.HTMLAttributes<HTMLPwaActionSheetElement> {
+    'cancelable'?: boolean;
     'header'?: string;
     'onOnSelection'?: (event: CustomEvent<any>) => void;
     'options'?: ActionSheetOption[];
