@@ -67,7 +67,7 @@
     var b = document.querySelector('#action-sheet-button');
     b.addEventListener('click', async (ev) => {
       const actionSheet = document.createElement('pwa-action-sheet');
-      actionSheet.title = 'choose option';
+      actionSheet.header = 'choose option';
       actionSheet.options = [{title: 'hi'},{title: 'bye', style: "DESTRUCTIVE"},{title: 'cancel', style: "CANCEL"}]
       document.body.appendChild(actionSheet);
       actionSheet.addEventListener('onSelection', async (e) => {

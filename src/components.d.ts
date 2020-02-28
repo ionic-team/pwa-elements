@@ -12,8 +12,8 @@ import {
 
 export namespace Components {
   interface PwaActionSheet {
+    'header': string;
     'options': ActionSheetOption[];
-    'title': string;
   }
   interface PwaCamera {
     'facingMode': string;
@@ -73,9 +73,9 @@ declare global {
 
 declare namespace LocalJSX {
   interface PwaActionSheet extends JSXBase.HTMLAttributes<HTMLPwaActionSheetElement> {
+    'header'?: string;
     'onOnSelection'?: (event: CustomEvent<any>) => void;
     'options'?: ActionSheetOption[];
-    'title'?: string;
   }
   interface PwaCamera extends JSXBase.HTMLAttributes<HTMLPwaCameraElement> {
     'facingMode'?: string;
