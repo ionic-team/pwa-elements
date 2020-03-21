@@ -321,7 +321,6 @@ export class CameraPWA {
           <div class="rotate" onClick={(e) => this.handleRotateClick(e)}>
             <img src={this.iconReverseCamera()} />
           </div>,
-          {/*this.hasMultipleCameras && (<div class="item rotate" onClick={(e) => this.handleRotateClick(e)}></div>)*/}
           ]) : (
           <section class="items">
             <div class="item accept-cancel" onClick={e => this.handleCancelPhoto(e)}>
