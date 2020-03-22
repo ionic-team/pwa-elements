@@ -34,8 +34,6 @@ export class CameraPWA {
   stream: MediaStream;
   // Reference to our image capture object
   imageCapture: any;
-  // Video element when using ImageCapture native API
-  videoElement: HTMLVideoElement;
   // Canvas element for ImageCapture polyfill
   canvasElement: HTMLCanvasElement;
   // Whether the device has multiple cameras (front/back)
@@ -106,7 +104,8 @@ export class CameraPWA {
 
   async initStream(stream: MediaStream) {
     this.stream = stream;
-    this.videoElement.srcObject = stream;
+    let video = this.el.shadowRoot.getElementById("pwa-elements-video")
+    video.srcObject = stream;
 
     console.log(stream.getVideoTracks()[0]);
 
@@ -156,6 +155,7 @@ export class CameraPWA {
         console.error('Unable to take photo!', e);
       }
     }
+    this.stopStream();
   }
 
   async promptAccept(photo: any) {
@@ -235,6 +235,7 @@ export class CameraPWA {
 
   handleCancelPhoto(_e: Event) {
     this.photo = null;
+    this.initCamera();
   }
 
   handleAcceptPhoto(_e: Event) {
@@ -306,7 +307,7 @@ export class CameraPWA {
           </div>
           )}
           {this.hasImageCapture() ? (
-          <video style={videoStreamStyle} ref={(el: HTMLVideoElement) => this.videoElement = el} autoplay playsinline></video>
+          <video style={videoStreamStyle} id="pwa-elements-video" autoplay playsinline></video>
           ) : (
           <canvas ref={(el: HTMLCanvasElement) => this.canvasElement = el} width="100%" height="100%"></canvas>
           )}
