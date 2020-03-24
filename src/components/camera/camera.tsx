@@ -156,6 +156,7 @@ export class CameraPWA {
         console.error('Unable to take photo!', e);
       }
     }
+    this.stopStream();
   }
 
   async promptAccept(photo: any) {
@@ -235,6 +236,7 @@ export class CameraPWA {
 
   handleCancelPhoto(_e: Event) {
     this.photo = null;
+    this.initCamera();
   }
 
   handleAcceptPhoto(_e: Event) {
@@ -293,26 +295,24 @@ export class CameraPWA {
         </div>
 
         {/* Show the taken photo for the Accept UI*/}
-        {this.photo && (
+        {this.photo ? (
         <div class="accept">
           <div class="accept-image" style={{backgroundImage: `url(${this.photoSrc})`}}></div>
         </div>
-        )}
-
-        {/* Only toggle visibility of the video feed to keep it responsive */}
-        <div class="camera-video" style={{display: this.photo ? 'none' : ''}}>
-          {this.showShutterOverlay && (
-          <div class="shutter-overlay">
+        ) : (
+          <div class="camera-video">
+            {this.showShutterOverlay && (
+            <div class="shutter-overlay">
+            </div>
+            )}
+            {this.hasImageCapture() ? (
+            <video style={videoStreamStyle} ref={(el: HTMLVideoElement) => this.videoElement = el} autoplay playsinline></video>
+            ) : (
+            <canvas ref={(el: HTMLCanvasElement) => this.canvasElement = el} width="100%" height="100%"></canvas>
+            )}
+            <canvas class="offscreen-image-render" ref={e => this.offscreenCanvas = e} width="100%" height="100%" />
           </div>
-          )}
-          {this.hasImageCapture() ? (
-          <video style={videoStreamStyle} ref={(el: HTMLVideoElement) => this.videoElement = el} autoplay playsinline></video>
-          ) : (
-          <canvas ref={(el: HTMLCanvasElement) => this.canvasElement = el} width="100%" height="100%"></canvas>
-          )}
-          <canvas class="offscreen-image-render" ref={e => this.offscreenCanvas = e} width="100%" height="100%" />
-        </div>
-
+        )}
         <div class="camera-footer">
           {!this.photo ? ([
           <div class="shutter" onClick={(e) => this.handleShutterClick(e)}>
