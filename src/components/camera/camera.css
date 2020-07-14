@@ -175,6 +175,7 @@ video {
 }
 
 .close img {
+  cursor: pointer;
   width: var(--icon-size-header);
   height: var(--icon-size-header);
 }

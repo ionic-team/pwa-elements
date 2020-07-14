@@ -95,13 +95,13 @@ declare namespace LocalJSX {
   }
   interface PwaCameraModal {
     'onNoDeviceError'?: (event: CustomEvent<any>) => void;
-    'onPhoto'?: (event: CustomEvent<any>) => void;
+    'onOnPhoto'?: (event: CustomEvent<any>) => void;
   }
   interface PwaCameraModalInstance {
     'noDevicesButtonText'?: string;
     'noDevicesText'?: string;
     'onNoDeviceError'?: (event: CustomEvent<any>) => void;
-    'onPhoto'?: (event: CustomEvent<any>) => void;
+    'onOnPhoto'?: (event: CustomEvent<any>) => void;
   }
   interface PwaToast {
     'duration'?: number;
