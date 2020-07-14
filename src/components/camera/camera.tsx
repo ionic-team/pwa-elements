@@ -83,7 +83,7 @@ export class CameraPWA {
       const devices = await navigator.mediaDevices.enumerateDevices();
       this.hasMultipleCameras = devices.filter(d => d.kind == 'videoinput').length > 1;
     } catch(e) {
-      this.handleNoDeviceError(e);
+      this.handleNoDeviceError && this.handleNoDeviceError(e);
     }
   }
 
@@ -101,7 +101,7 @@ export class CameraPWA {
 
       this.initStream(stream);
     } catch(e) {
-      this.handleNoDeviceError(e);
+      this.handleNoDeviceError && this.handleNoDeviceError(e);
     }
   }
 
@@ -117,7 +117,7 @@ export class CameraPWA {
       await this.initPhotoCapabilities(this.imageCapture);
     } else {
       // TODO: DO SOMETHING ELSE HERE
-      this.handleNoDeviceError();
+      this.handleNoDeviceError && this.handleNoDeviceError();
       return;
     }
 
