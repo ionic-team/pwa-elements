@@ -12,7 +12,7 @@ export class PWACameraModal {
   @Prop() noDevicesText = 'No camera found';
   @Prop() noDevicesButtonText = 'Choose file';
 
-  handlePhoto = async (photo: any) => {
+  handlePhoto = async (photo: Blob) => {
     this.onPhoto.emit(photo);
   }
 

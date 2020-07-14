@@ -24,6 +24,7 @@
   box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
   width: var(--inset-width);
   height: var(--inset-height);
+  max-height: 100%;
 }
 
 @media only screen and (max-width: 600px) {

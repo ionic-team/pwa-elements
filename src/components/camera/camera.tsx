@@ -2,6 +2,8 @@ import { h, Component, Element, Prop, State } from '@stencil/core';
 
 import { FlashMode } from '../../definitions';
 
+import ExifReader from 'exifreader';
+
 import './imagecapture';
 
 declare var window: any;
@@ -19,8 +21,7 @@ export class CameraPWA {
 
   @Prop() facingMode: string = 'user';
 
-  // @Event() onPhoto: EventEmitter;
-  @Prop() handlePhoto: (e: any) => void;
+  @Prop() handlePhoto: (photo: Blob) => void;
   @Prop() handleNoDeviceError: (e?: any) => void;
   @Prop() noDevicesText = 'No camera found';
   @Prop() noDevicesButtonText = 'Choose file';
@@ -30,6 +31,9 @@ export class CameraPWA {
   @State() showShutterOverlay = false;
   @State() flashIndex = 0;
   @State() hasCamera: boolean | null = null;
+  @State() rotation = 0;
+
+  exifData: any;
 
   offscreenCanvas: HTMLCanvasElement;
 
@@ -88,6 +92,8 @@ export class CameraPWA {
     try {
       const devices = await navigator.mediaDevices.enumerateDevices();
       const videoDevices = devices.filter(d => d.kind == 'videoinput')
+
+      console.log('Loaded video devices', videoDevices);
 
       this.hasCamera = !!videoDevices.length;
       this.hasMultipleCameras = videoDevices.length > 1;
@@ -171,7 +177,36 @@ export class CameraPWA {
 
   async promptAccept(photo: any) {
     this.photo = photo;
-    this.photoSrc = URL.createObjectURL(photo);
+
+    const fr = new FileReader();
+    fr.addEventListener('load', () => {
+      const exif = ExifReader.load(fr.result as ArrayBuffer);
+      this.exifData = exif;
+
+      if (exif.Orientation) {
+        switch (exif.Orientation.value) {
+          case 1:
+          case 2:
+            this.rotation = 0;
+            break;
+          case 3:
+          case 4:
+            this.rotation = 180;
+            break;
+          case 5:
+          case 6:
+            this.rotation = 90;
+            break;
+          case 7:
+          case 8:
+            this.rotation = 270;
+            break;
+        }
+      }
+
+      this.photoSrc = URL.createObjectURL(photo);
+    });
+    fr.readAsArrayBuffer(photo);
   }
 
   rotate() {
@@ -256,9 +291,14 @@ export class CameraPWA {
   handleFileInputChange = (e: InputEvent) => {
     const input = e.target as HTMLInputElement;
     const file = input.files[0];
+
+
     this.handlePhoto && this.handlePhoto(file);
   }
 
+  handleVideoMetadata = (e: Event) => {
+    console.log('Video metadata', e);
+  }
 
   iconExit() {
     return `data:image/svg+xml,%3Csvg version='1.1' id='Layer_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewBox='0 0 512 512' enable-background='new 0 0 512 512' xml:space='preserve'%3E%3Cg id='Icon_5_'%3E%3Cg%3E%3Cpath fill='%23FFFFFF' d='M402.2,134L378,109.8c-1.6-1.6-4.1-1.6-5.7,0L258.8,223.4c-1.6,1.6-4.1,1.6-5.7,0L139.6,109.8 c-1.6-1.6-4.1-1.6-5.7,0L109.8,134c-1.6,1.6-1.6,4.1,0,5.7l113.5,113.5c1.6,1.6,1.6,4.1,0,5.7L109.8,372.4c-1.6,1.6-1.6,4.1,0,5.7 l24.1,24.1c1.6,1.6,4.1,1.6,5.7,0l113.5-113.5c1.6-1.6,4.1-1.6,5.7,0l113.5,113.5c1.6,1.6,4.1,1.6,5.7,0l24.1-24.1 c1.6-1.6,1.6-4.1,0-5.7L288.6,258.8c-1.6-1.6-1.6-4.1,0-5.7l113.5-113.5C403.7,138.1,403.7,135.5,402.2,134z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E`;
@@ -290,6 +330,8 @@ export class CameraPWA {
 
 
   render() {
+    const acceptStyles = { transform: `rotate(${this.rotation}deg)` };
+
     return (
       <div class="camera-wrapper">
         <div class="camera-header">
@@ -326,7 +368,12 @@ export class CameraPWA {
         {/* Show the taken photo for the Accept UI*/}
         {this.photo ? (
         <div class="accept">
-          <div class="accept-image" style={{backgroundImage: `url(${this.photoSrc})`}}></div>
+          <div
+            class="accept-image"
+            style={{
+              backgroundImage: `url(${this.photoSrc})`,
+              ...acceptStyles
+            }} />
         </div>
         ) : (
           <div class="camera-video">
@@ -335,7 +382,11 @@ export class CameraPWA {
             </div>
             )}
             {this.hasImageCapture() ? (
-            <video ref={(el: HTMLVideoElement) => this.videoElement = el} autoplay playsinline></video>
+            <video
+              ref={(el: HTMLVideoElement) => this.videoElement = el}
+              onLoadedMetaData={this.handleVideoMetadata}
+              autoplay
+              playsinline />
             ) : (
             <canvas ref={(el: HTMLCanvasElement) => this.canvasElement = el} width="100%" height="100%"></canvas>
             )}
