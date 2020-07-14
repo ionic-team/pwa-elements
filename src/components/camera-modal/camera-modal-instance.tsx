@@ -1,4 +1,4 @@
-import { h, Event, EventEmitter, Component, Listen, Element } from '@stencil/core';
+import { h, Event, EventEmitter, Component, Listen, Element, Prop } from '@stencil/core';
 
 @Component({
   tag: 'pwa-camera-modal-instance',
@@ -9,6 +9,8 @@ export class PWACameraModal {
   @Element() el;
   @Event() photo: EventEmitter;
   @Event() noDeviceError: EventEmitter;
+  @Prop() noDevicesText = 'No camera found';
+  @Prop() noDevicesButtonText = 'Choose file';
 
   handlePhoto = async (photo: any) => {
     this.photo.emit(photo);
@@ -42,7 +44,9 @@ export class PWACameraModal {
           <pwa-camera
             onClick={e => this.handleComponentClick(e)}
             handlePhoto={this.handlePhoto}
-            handleNoDeviceError={this.handleNoDeviceError} />
+            handleNoDeviceError={this.handleNoDeviceError}
+            noDevicesButtonText={this.noDevicesButtonText}
+            noDevicesText={this.noDevicesText} />
         </div>
       </div>
     );

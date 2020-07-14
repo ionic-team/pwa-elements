@@ -38,7 +38,7 @@
         const photo = e.detail;
         console.log('CAMERA ON PHOTO', photo);
 
-        if (photo && !photo instanceof Error) {
+        if (photo && !(photo instanceof Error)) {
           const url = window.URL.createObjectURL(photo);
 
           const img = document.querySelector('#img') || document.createElement('img');

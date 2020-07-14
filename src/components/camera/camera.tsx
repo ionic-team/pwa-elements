@@ -22,11 +22,14 @@ export class CameraPWA {
   // @Event() onPhoto: EventEmitter;
   @Prop() handlePhoto: (e: any) => void;
   @Prop() handleNoDeviceError: (e?: any) => void;
+  @Prop() noDevicesText = 'No camera found';
+  @Prop() noDevicesButtonText = 'Choose file';
 
   @State() photo: any;
   @State() photoSrc: any;
   @State() showShutterOverlay = false;
   @State() flashIndex = 0;
+  @State() hasCamera: boolean | null = null;
 
   offscreenCanvas: HTMLCanvasElement;
 
@@ -47,6 +50,9 @@ export class CameraPWA {
   flashModes: FlashMode[] = [];
   // Current flash mode
   flashMode: FlashMode = 'off';
+
+  noDevicesTimeout?: any;
+  noDevicesTimeoutDelay = 1500;
 
   async componentDidLoad() {
     if (this.isServer) {
@@ -81,9 +87,11 @@ export class CameraPWA {
   async queryDevices() {
     try {
       const devices = await navigator.mediaDevices.enumerateDevices();
-      this.hasMultipleCameras = devices.filter(d => d.kind == 'videoinput').length > 1;
+      const videoDevices = devices.filter(d => d.kind == 'videoinput')
+
+      this.hasCamera = !!videoDevices.length;
+      this.hasMultipleCameras = videoDevices.length > 1;
     } catch(e) {
-      this.handleNoDeviceError && this.handleNoDeviceError(e);
     }
   }
 
@@ -118,7 +126,6 @@ export class CameraPWA {
     } else {
       // TODO: DO SOMETHING ELSE HERE
       this.handleNoDeviceError && this.handleNoDeviceError();
-      return;
     }
 
     // Always re-render
@@ -246,6 +253,13 @@ export class CameraPWA {
     this.handlePhoto && this.handlePhoto(this.photo);
   }
 
+  handleFileInputChange = (e: InputEvent) => {
+    const input = e.target as HTMLInputElement;
+    const file = input.files[0];
+    this.handlePhoto && this.handlePhoto(file);
+  }
+
+
   iconExit() {
     return `data:image/svg+xml,%3Csvg version='1.1' id='Layer_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewBox='0 0 512 512' enable-background='new 0 0 512 512' xml:space='preserve'%3E%3Cg id='Icon_5_'%3E%3Cg%3E%3Cpath fill='%23FFFFFF' d='M402.2,134L378,109.8c-1.6-1.6-4.1-1.6-5.7,0L258.8,223.4c-1.6,1.6-4.1,1.6-5.7,0L139.6,109.8 c-1.6-1.6-4.1-1.6-5.7,0L109.8,134c-1.6,1.6-1.6,4.1,0,5.7l113.5,113.5c1.6,1.6,1.6,4.1,0,5.7L109.8,372.4c-1.6,1.6-1.6,4.1,0,5.7 l24.1,24.1c1.6,1.6,4.1,1.6,5.7,0l113.5-113.5c1.6-1.6,4.1-1.6,5.7,0l113.5,113.5c1.6,1.6,4.1,1.6,5.7,0l24.1-24.1 c1.6-1.6,1.6-4.1,0-5.7L288.6,258.8c-1.6-1.6-1.6-4.1,0-5.7l113.5-113.5C403.7,138.1,403.7,135.5,402.2,134z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E`;
   }
@@ -297,6 +311,20 @@ export class CameraPWA {
           </section>
         </div>
 
+        {this.hasCamera === false && (
+          <div class="no-device">
+            <h2>{this.noDevicesText}</h2>
+
+            <label htmlFor="_pwa-elements-camera-input">
+              {this.noDevicesButtonText}
+            </label>
+            <input
+              type="file"
+              id="_pwa-elements-camera-input"
+              onChange={this.handleFileInputChange}
+              class="select-file-button" />
+          </div>
+        )}
         {/* Show the taken photo for the Accept UI*/}
         {this.photo ? (
         <div class="accept">
@@ -316,6 +344,8 @@ export class CameraPWA {
             <canvas class="offscreen-image-render" ref={e => this.offscreenCanvas = e} width="100%" height="100%" />
           </div>
         )}
+
+        {this.hasCamera && (
         <div class="camera-footer">
           {!this.photo ? ([
           <div class="shutter" onClick={(e) => this.handleShutterClick(e)}>
@@ -335,6 +365,7 @@ export class CameraPWA {
           </section>
           )}
         </div>
+        )}
       </div>
     );
   }
