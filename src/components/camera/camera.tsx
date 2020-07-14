@@ -290,8 +290,6 @@ export class CameraPWA {
 
 
   render() {
-    const videoStreamStyle = this.facingMode == "user" ? { transform: 'scaleX(-1)' } : {};
-
     return (
       <div class="camera-wrapper">
         <div class="camera-header">
@@ -337,7 +335,7 @@ export class CameraPWA {
             </div>
             )}
             {this.hasImageCapture() ? (
-            <video style={videoStreamStyle} ref={(el: HTMLVideoElement) => this.videoElement = el} autoplay playsinline></video>
+            <video ref={(el: HTMLVideoElement) => this.videoElement = el} autoplay playsinline></video>
             ) : (
             <canvas ref={(el: HTMLCanvasElement) => this.canvasElement = el} width="100%" height="100%"></canvas>
             )}
