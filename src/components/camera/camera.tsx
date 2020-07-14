@@ -20,7 +20,8 @@ export class CameraPWA {
   @Prop() facingMode: string = 'user';
 
   // @Event() onPhoto: EventEmitter;
-  @Prop() onPhoto: (e: any) => void;
+  @Prop() handlePhoto: (e: any) => void;
+  @Prop() handleNoDeviceError: (e?: any) => void;
 
   @State() photo: any;
   @State() photoSrc: any;
@@ -82,7 +83,7 @@ export class CameraPWA {
       const devices = await navigator.mediaDevices.enumerateDevices();
       this.hasMultipleCameras = devices.filter(d => d.kind == 'videoinput').length > 1;
     } catch(e) {
-      this.onPhoto(e);
+      this.handleNoDeviceError(e);
     }
   }
 
@@ -100,7 +101,7 @@ export class CameraPWA {
 
       this.initStream(stream);
     } catch(e) {
-      this.onPhoto(e);
+      this.handleNoDeviceError(e);
     }
   }
 
@@ -116,6 +117,8 @@ export class CameraPWA {
       await this.initPhotoCapabilities(this.imageCapture);
     } else {
       // TODO: DO SOMETHING ELSE HERE
+      this.handleNoDeviceError();
+      return;
     }
 
     // Always re-render
@@ -227,7 +230,7 @@ export class CameraPWA {
   }
 
   handleClose(_e: Event) {
-    this.onPhoto && this.onPhoto(null);
+    this.handlePhoto && this.handlePhoto(null);
   }
 
   handleFlashClick(_e: Event) {
@@ -240,7 +243,7 @@ export class CameraPWA {
   }
 
   handleAcceptPhoto(_e: Event) {
-    this.onPhoto && this.onPhoto(this.photo);
+    this.handlePhoto && this.handlePhoto(this.photo);
   }
 
   iconExit() {

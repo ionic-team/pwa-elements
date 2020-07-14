@@ -7,15 +7,20 @@ import { h, Event, EventEmitter, Component, Listen, Element } from '@stencil/cor
 })
 export class PWACameraModal {
   @Element() el;
-  @Event() onPhoto: EventEmitter;
+  @Event() photo: EventEmitter;
+  @Event() noDeviceError: EventEmitter;
 
-  async handlePhoto(photo: any) {
-    this.onPhoto.emit(photo);
+  handlePhoto = async (photo: any) => {
+    this.photo.emit(photo);
+  }
+
+  handleNoDeviceError = async (photo: any) => {
+    this.noDeviceError.emit(photo);
   }
 
   handleBackdropClick(e: MouseEvent) {
     if (e.target !== this.el) {
-      this.onPhoto.emit(null);
+      this.photo.emit(null);
     }
   }
 
@@ -26,7 +31,7 @@ export class PWACameraModal {
   @Listen('keyup', { target: 'body' })
   handleBackdropKeyUp(e: KeyboardEvent) {
     if (e.key === "Escape") {
-      this.onPhoto.emit(null);
+      this.photo.emit(null);
     }
   }
 
@@ -36,7 +41,8 @@ export class PWACameraModal {
         <div class="content">
           <pwa-camera
             onClick={e => this.handleComponentClick(e)}
-            onPhoto={(photo) => this.handlePhoto(photo)} />
+            handlePhoto={this.handlePhoto}
+            handleNoDeviceError={this.handleNoDeviceError} />
         </div>
       </div>
     );

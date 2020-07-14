@@ -30,8 +30,11 @@
 
       await camera.componentOnReady();
 
+      camera.addEventListener('noDeviceError', async (e) => {
+        console.log('NO DEVICE', e);
+      });
 
-      camera.addEventListener('onPhoto', async (e) => {
+      camera.addEventListener('photo', async (e) => {
         const photo = e.detail;
         console.log('CAMERA ON PHOTO', photo);
 
