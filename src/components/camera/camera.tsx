@@ -2,8 +2,6 @@ import { h, Component, Element, Prop, State } from '@stencil/core';
 
 import { FlashMode } from '../../definitions';
 
-import ExifReader from 'exifreader';
-
 import './imagecapture';
 
 declare var window: any;
@@ -55,9 +53,6 @@ export class CameraPWA {
   // Current flash mode
   flashMode: FlashMode = 'off';
 
-  noDevicesTimeout?: any;
-  noDevicesTimeoutDelay = 1500;
-
   async componentDidLoad() {
     if (this.isServer) {
       return;
@@ -93,8 +88,6 @@ export class CameraPWA {
       const devices = await navigator.mediaDevices.enumerateDevices();
       const videoDevices = devices.filter(d => d.kind == 'videoinput')
 
-      console.log('Loaded video devices', videoDevices);
-
       this.hasCamera = !!videoDevices.length;
       this.hasMultipleCameras = videoDevices.length > 1;
     } catch(e) {
@@ -123,14 +116,10 @@ export class CameraPWA {
     this.stream = stream;
     this.videoElement.srcObject = stream;
 
-    console.log(stream.getVideoTracks()[0]);
-
     if (this.hasImageCapture()) {
       this.imageCapture = new window.ImageCapture(stream.getVideoTracks()[0]);
-      // console.log(stream.getTracks()[0].getCapabilities());
       await this.initPhotoCapabilities(this.imageCapture);
     } else {
-      // TODO: DO SOMETHING ELSE HERE
       this.handleNoDeviceError && this.handleNoDeviceError();
     }
 
@@ -178,35 +167,75 @@ export class CameraPWA {
   async promptAccept(photo: any) {
     this.photo = photo;
 
-    const fr = new FileReader();
-    fr.addEventListener('load', () => {
-      const exif = ExifReader.load(fr.result as ArrayBuffer);
-      this.exifData = exif;
+    const orientation = await this.getOrientation(photo);
 
-      if (exif.Orientation) {
-        switch (exif.Orientation.value) {
-          case 1:
-          case 2:
-            this.rotation = 0;
-            break;
-          case 3:
-          case 4:
-            this.rotation = 180;
-            break;
-          case 5:
-          case 6:
-            this.rotation = 90;
-            break;
-          case 7:
-          case 8:
-            this.rotation = 270;
-            break;
-        }
+    console.log('Got orientation', orientation);
+
+    if (orientation) {
+      switch (orientation) {
+        case 1:
+        case 2:
+          this.rotation = 0;
+          break;
+        case 3:
+        case 4:
+          this.rotation = 180;
+          break;
+        case 5:
+        case 6:
+          this.rotation = 90;
+          break;
+        case 7:
+        case 8:
+          this.rotation = 270;
+          break;
       }
+    }
+    
+    console.log('Rotating photo', this.rotation);
+    //const newBlob = await this.rotateImage(photo, this.rotation);
 
-      this.photoSrc = URL.createObjectURL(photo);
+    this.photoSrc = URL.createObjectURL(photo);
+    console.log('Photo src', this.photoSrc);
+  }
+
+  private getOrientation(file) {
+    return new Promise(resolve => {
+      const reader = new FileReader();
+
+      reader.onload = (event) => {
+        const view = new DataView((event.target as any).result as ArrayBuffer);
+
+        if (view.getUint16(0, false) !== 0xFFD8) { return resolve(-2); }
+
+        const length = view.byteLength;
+        let offset = 2;
+
+        while (offset < length) {
+          const marker = view.getUint16(offset, false);
+          offset += 2;
+
+          if (marker === 0xFFE1) {
+            if (view.getUint32(offset += 2, false) !== 0x45786966) {
+              return resolve(-1);
+            }
+            const little = view.getUint16(offset += 6, false) === 0x4949;
+            offset += view.getUint32(offset + 4, little);
+            const tags = view.getUint16(offset, little);
+            offset += 2;
+
+            for (let i = 0; i < tags; i++) {
+              if (view.getUint16(offset + (i * 12), little) === 0x0112) {
+                return resolve(view.getUint16(offset + (i * 12) + 8, little));
+              }
+            }
+          } else if ((marker & 0xFF00) !== 0xFF00) { break; } else { offset += view.getUint16(offset, false); }
+        }
+        return resolve(-1);
+      };
+
+      reader.readAsArrayBuffer(file.slice(0, 64 * 1024));
     });
-    fr.readAsArrayBuffer(photo);
   }
 
   rotate() {
@@ -280,8 +309,19 @@ export class CameraPWA {
   }
 
   handleCancelPhoto(_e: Event) {
+    const track = this.stream && this.stream.getTracks()[0];
+    let c = track && track.getConstraints();
     this.photo = null;
-    this.initCamera();
+
+    if (c) {
+      this.initCamera({
+        video: {
+          facingMode: c.facingMode
+        }
+      });
+    } else {
+      this.initCamera();
+    }
   }
 
   handleAcceptPhoto(_e: Event) {
@@ -330,7 +370,8 @@ export class CameraPWA {
 
 
   render() {
-    const acceptStyles = { transform: `rotate(${this.rotation}deg)` };
+    const acceptStyles = { transform: `rotate(${-this.rotation}deg)` };
+    // const acceptStyles = {};
 
     return (
       <div class="camera-wrapper">
