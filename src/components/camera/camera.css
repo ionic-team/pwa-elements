@@ -94,6 +94,28 @@ video {
   background-color: black;
 }
 
+.pick-image {
+  display: flex;
+  align-items: center;
+  position: absolute;
+  left: var(--margin-size-footer);
+  top: 0;
+  height: 100%;
+  width: var(--icon-size-footer);
+  color: white;
+}
+
+.pick-image input {
+  visibility: hidden;
+}
+
+.pick-image svg {
+  cursor: pointer;
+  fill: white;
+  width: var(--icon-size-footer);
+  height: var(--icon-size-footer);
+}
+
 .shutter {
   position: absolute;
   left: 50%;
@@ -129,6 +151,7 @@ video {
   width: var(--icon-size-footer);
   color: white;
 }
+
 .rotate img {
   width: var(--icon-size-footer);
   height: var(--icon-size-footer);
