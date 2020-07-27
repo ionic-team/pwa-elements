@@ -22,7 +22,7 @@ export class CameraPWA {
   @Prop() handlePhoto: (photo: Blob) => void;
   @Prop() handleNoDeviceError: (e?: any) => void;
   @Prop() noDevicesText = 'No camera found';
-  @Prop() noDevicesButtonText = 'Choose file';
+  @Prop() noDevicesButtonText = 'Choose image';
 
   @State() photo: any;
   @State() photoSrc: any;
@@ -30,6 +30,10 @@ export class CameraPWA {
   @State() flashIndex = 0;
   @State() hasCamera: boolean | null = null;
   @State() rotation = 0;
+  @State() deviceError: any | null = null;
+
+  // The orientation of the current photo
+  photoOrientation: number;
 
   exifData: any;
 
@@ -91,6 +95,7 @@ export class CameraPWA {
       this.hasCamera = !!videoDevices.length;
       this.hasMultipleCameras = videoDevices.length > 1;
     } catch(e) {
+      this.deviceError = e;
     }
   }
 
@@ -108,6 +113,7 @@ export class CameraPWA {
 
       this.initStream(stream);
     } catch(e) {
+      this.deviceError = e;
       this.handleNoDeviceError && this.handleNoDeviceError(e);
     }
   }
@@ -120,6 +126,7 @@ export class CameraPWA {
       this.imageCapture = new window.ImageCapture(stream.getVideoTracks()[0]);
       await this.initPhotoCapabilities(this.imageCapture);
     } else {
+      this.deviceError = 'No image capture';
       this.handleNoDeviceError && this.handleNoDeviceError();
     }
 
@@ -171,6 +178,8 @@ export class CameraPWA {
 
     console.log('Got orientation', orientation);
 
+    this.photoOrientation = orientation;
+
     if (orientation) {
       switch (orientation) {
         case 1:
@@ -192,14 +201,10 @@ export class CameraPWA {
       }
     }
     
-    console.log('Rotating photo', this.rotation);
-    //const newBlob = await this.rotateImage(photo, this.rotation);
-
     this.photoSrc = URL.createObjectURL(photo);
-    console.log('Photo src', this.photoSrc);
   }
 
-  private getOrientation(file) {
+  private getOrientation(file): Promise<number> {
     return new Promise(resolve => {
       const reader = new FileReader();
 
@@ -331,10 +336,16 @@ export class CameraPWA {
     this.handlePhoto && this.handlePhoto(this.photo);
   }
 
-  handleFileInputChange = (e: InputEvent) => {
+  handleFileInputChange = async (e: InputEvent) => {
     const input = e.target as HTMLInputElement;
     const file = input.files[0];
 
+    try {
+      const orientation = await this.getOrientation(file);
+      console.log('Got orientation', orientation);
+      this.photoOrientation = orientation;
+    } catch (e) {
+    }
 
     this.handlePhoto && this.handlePhoto(file);
   }
@@ -379,8 +390,8 @@ export class CameraPWA {
 
 
   render() {
-    const acceptStyles = { transform: `rotate(${-this.rotation}deg)` };
-    // const acceptStyles = {};
+    // const acceptStyles = { transform: `rotate(${-this.rotation}deg)` };
+    const acceptStyles = {};
 
     return (
       <div class="camera-wrapper">
@@ -401,7 +412,7 @@ export class CameraPWA {
           </section>
         </div>
 
-        {this.hasCamera === false && (
+        {(this.hasCamera === false || !!this.deviceError) && (
           <div class="no-device">
             <h2>{this.noDevicesText}</h2>
 
