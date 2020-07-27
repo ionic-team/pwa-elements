@@ -20,7 +20,7 @@ export namespace Components {
   interface PwaCamera {
     'facingMode': string;
     'handleNoDeviceError': (e?: any) => void;
-    'handlePhoto': (e: any) => void;
+    'handlePhoto': (photo: Blob) => void;
     'noDevicesButtonText': string;
     'noDevicesText': string;
   }
@@ -89,7 +89,7 @@ declare namespace LocalJSX {
   interface PwaCamera {
     'facingMode'?: string;
     'handleNoDeviceError'?: (e?: any) => void;
-    'handlePhoto'?: (e: any) => void;
+    'handlePhoto'?: (photo: Blob) => void;
     'noDevicesButtonText'?: string;
     'noDevicesText'?: string;
   }

@@ -19,17 +19,23 @@ export class CameraPWA {
 
   @Prop() facingMode: string = 'user';
 
-  // @Event() onPhoto: EventEmitter;
-  @Prop() handlePhoto: (e: any) => void;
+  @Prop() handlePhoto: (photo: Blob) => void;
   @Prop() handleNoDeviceError: (e?: any) => void;
   @Prop() noDevicesText = 'No camera found';
-  @Prop() noDevicesButtonText = 'Choose file';
+  @Prop() noDevicesButtonText = 'Choose image';
 
   @State() photo: any;
   @State() photoSrc: any;
   @State() showShutterOverlay = false;
   @State() flashIndex = 0;
   @State() hasCamera: boolean | null = null;
+  @State() rotation = 0;
+  @State() deviceError: any | null = null;
+
+  // The orientation of the current photo
+  photoOrientation: number;
+
+  exifData: any;
 
   offscreenCanvas: HTMLCanvasElement;
 
@@ -50,9 +56,6 @@ export class CameraPWA {
   flashModes: FlashMode[] = [];
   // Current flash mode
   flashMode: FlashMode = 'off';
-
-  noDevicesTimeout?: any;
-  noDevicesTimeoutDelay = 1500;
 
   async componentDidLoad() {
     if (this.isServer) {
@@ -92,6 +95,7 @@ export class CameraPWA {
       this.hasCamera = !!videoDevices.length;
       this.hasMultipleCameras = videoDevices.length > 1;
     } catch(e) {
+      this.deviceError = e;
     }
   }
 
@@ -109,6 +113,7 @@ export class CameraPWA {
 
       this.initStream(stream);
     } catch(e) {
+      this.deviceError = e;
       this.handleNoDeviceError && this.handleNoDeviceError(e);
     }
   }
@@ -117,14 +122,11 @@ export class CameraPWA {
     this.stream = stream;
     this.videoElement.srcObject = stream;
 
-    console.log(stream.getVideoTracks()[0]);
-
     if (this.hasImageCapture()) {
       this.imageCapture = new window.ImageCapture(stream.getVideoTracks()[0]);
-      // console.log(stream.getTracks()[0].getCapabilities());
       await this.initPhotoCapabilities(this.imageCapture);
     } else {
-      // TODO: DO SOMETHING ELSE HERE
+      this.deviceError = 'No image capture';
       this.handleNoDeviceError && this.handleNoDeviceError();
     }
 
@@ -171,7 +173,74 @@ export class CameraPWA {
 
   async promptAccept(photo: any) {
     this.photo = photo;
+
+    const orientation = await this.getOrientation(photo);
+
+    console.log('Got orientation', orientation);
+
+    this.photoOrientation = orientation;
+
+    if (orientation) {
+      switch (orientation) {
+        case 1:
+        case 2:
+          this.rotation = 0;
+          break;
+        case 3:
+        case 4:
+          this.rotation = 180;
+          break;
+        case 5:
+        case 6:
+          this.rotation = 90;
+          break;
+        case 7:
+        case 8:
+          this.rotation = 270;
+          break;
+      }
+    }
+    
     this.photoSrc = URL.createObjectURL(photo);
+  }
+
+  private getOrientation(file): Promise<number> {
+    return new Promise(resolve => {
+      const reader = new FileReader();
+
+      reader.onload = (event) => {
+        const view = new DataView((event.target as any).result as ArrayBuffer);
+
+        if (view.getUint16(0, false) !== 0xFFD8) { return resolve(-2); }
+
+        const length = view.byteLength;
+        let offset = 2;
+
+        while (offset < length) {
+          const marker = view.getUint16(offset, false);
+          offset += 2;
+
+          if (marker === 0xFFE1) {
+            if (view.getUint32(offset += 2, false) !== 0x45786966) {
+              return resolve(-1);
+            }
+            const little = view.getUint16(offset += 6, false) === 0x4949;
+            offset += view.getUint32(offset + 4, little);
+            const tags = view.getUint16(offset, little);
+            offset += 2;
+
+            for (let i = 0; i < tags; i++) {
+              if (view.getUint16(offset + (i * 12), little) === 0x0112) {
+                return resolve(view.getUint16(offset + (i * 12) + 8, little));
+              }
+            }
+          } else if ((marker & 0xFF00) !== 0xFF00) { break; } else { offset += view.getUint16(offset, false); }
+        }
+        return resolve(-1);
+      };
+
+      reader.readAsArrayBuffer(file.slice(0, 64 * 1024));
+    });
   }
 
   rotate() {
@@ -227,41 +296,72 @@ export class CameraPWA {
     });
   }
 
-  handleShutterClick(_e: Event) {
+  handlePickFile = (_e: Event) => {
+  }
+
+  handleShutterClick = (_e: Event) => {
     console.log()
     this.capture();
   }
 
-  handleRotateClick(_e: Event) {
+  handleRotateClick = (_e: Event) => {
     this.rotate();
   }
 
-  handleClose(_e: Event) {
+  handleClose = (_e: Event) => {
     this.handlePhoto && this.handlePhoto(null);
   }
 
-  handleFlashClick(_e: Event) {
+  handleFlashClick = (_e: Event) => {
     this.cycleFlash();
   }
 
-  handleCancelPhoto(_e: Event) {
+  handleCancelPhoto = (_e: Event) => {
+    const track = this.stream && this.stream.getTracks()[0];
+    let c = track && track.getConstraints();
     this.photo = null;
-    this.initCamera();
+
+    if (c) {
+      this.initCamera({
+        video: {
+          facingMode: c.facingMode
+        }
+      });
+    } else {
+      this.initCamera();
+    }
   }
 
-  handleAcceptPhoto(_e: Event) {
+  handleAcceptPhoto = (_e: Event) => {
     this.handlePhoto && this.handlePhoto(this.photo);
   }
 
-  handleFileInputChange = (e: InputEvent) => {
+  handleFileInputChange = async (e: InputEvent) => {
     const input = e.target as HTMLInputElement;
     const file = input.files[0];
+
+    try {
+      const orientation = await this.getOrientation(file);
+      console.log('Got orientation', orientation);
+      this.photoOrientation = orientation;
+    } catch (e) {
+    }
+
     this.handlePhoto && this.handlePhoto(file);
   }
 
+  handleVideoMetadata = (e: Event) => {
+    console.log('Video metadata', e);
+  }
 
   iconExit() {
     return `data:image/svg+xml,%3Csvg version='1.1' id='Layer_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewBox='0 0 512 512' enable-background='new 0 0 512 512' xml:space='preserve'%3E%3Cg id='Icon_5_'%3E%3Cg%3E%3Cpath fill='%23FFFFFF' d='M402.2,134L378,109.8c-1.6-1.6-4.1-1.6-5.7,0L258.8,223.4c-1.6,1.6-4.1,1.6-5.7,0L139.6,109.8 c-1.6-1.6-4.1-1.6-5.7,0L109.8,134c-1.6,1.6-1.6,4.1,0,5.7l113.5,113.5c1.6,1.6,1.6,4.1,0,5.7L109.8,372.4c-1.6,1.6-1.6,4.1,0,5.7 l24.1,24.1c1.6,1.6,4.1,1.6,5.7,0l113.5-113.5c1.6-1.6,4.1-1.6,5.7,0l113.5,113.5c1.6,1.6,4.1,1.6,5.7,0l24.1-24.1 c1.6-1.6,1.6-4.1,0-5.7L288.6,258.8c-1.6-1.6-1.6-4.1,0-5.7l113.5-113.5C403.7,138.1,403.7,135.5,402.2,134z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E`;
+  }
+
+  iconPhotos() {
+    return (
+      <svg xmlns='http://www.w3.org/2000/svg' width='512' height='512' viewBox='0 0 512 512'><title>ionicons-v5-e</title><path d='M450.29,112H142c-34,0-62,27.51-62,61.33V418.67C80,452.49,108,480,142,480H450c34,0,62-26.18,62-60V173.33C512,139.51,484.32,112,450.29,112Zm-77.15,61.34a46,46,0,1,1-46.28,46A46.19,46.19,0,0,1,373.14,173.33Zm-231.55,276c-17,0-29.86-13.75-29.86-30.66V353.85l90.46-80.79a46.54,46.54,0,0,1,63.44,1.83L328.27,337l-113,112.33ZM480,418.67a30.67,30.67,0,0,1-30.71,30.66H259L376.08,333a46.24,46.24,0,0,1,59.44-.16L480,370.59Z'/><path d='M384,32H64A64,64,0,0,0,0,96V352a64.11,64.11,0,0,0,48,62V152a72,72,0,0,1,72-72H446A64.11,64.11,0,0,0,384,32Z'/></svg>
+    );
   }
 
   iconConfirm() {
@@ -290,6 +390,9 @@ export class CameraPWA {
 
 
   render() {
+    // const acceptStyles = { transform: `rotate(${-this.rotation}deg)` };
+    const acceptStyles = {};
+
     return (
       <div class="camera-wrapper">
         <div class="camera-header">
@@ -309,7 +412,7 @@ export class CameraPWA {
           </section>
         </div>
 
-        {this.hasCamera === false && (
+        {(this.hasCamera === false || !!this.deviceError) && (
           <div class="no-device">
             <h2>{this.noDevicesText}</h2>
 
@@ -320,13 +423,19 @@ export class CameraPWA {
               type="file"
               id="_pwa-elements-camera-input"
               onChange={this.handleFileInputChange}
+              accept="image/*"
               class="select-file-button" />
           </div>
         )}
         {/* Show the taken photo for the Accept UI*/}
         {this.photo ? (
         <div class="accept">
-          <div class="accept-image" style={{backgroundImage: `url(${this.photoSrc})`}}></div>
+          <div
+            class="accept-image"
+            style={{
+              backgroundImage: `url(${this.photoSrc})`,
+              ...acceptStyles
+            }} />
         </div>
         ) : (
           <div class="camera-video">
@@ -335,7 +444,11 @@ export class CameraPWA {
             </div>
             )}
             {this.hasImageCapture() ? (
-            <video ref={(el: HTMLVideoElement) => this.videoElement = el} autoplay playsinline></video>
+            <video
+              ref={(el: HTMLVideoElement) => this.videoElement = el}
+              onLoadedMetaData={this.handleVideoMetadata}
+              autoplay
+              playsinline />
             ) : (
             <canvas ref={(el: HTMLCanvasElement) => this.canvasElement = el} width="100%" height="100%"></canvas>
             )}
@@ -346,10 +459,21 @@ export class CameraPWA {
         {this.hasCamera && (
         <div class="camera-footer">
           {!this.photo ? ([
-          <div class="shutter" onClick={(e) => this.handleShutterClick(e)}>
+          <div class="pick-image" onClick={this.handlePickFile}>
+            <label htmlFor="_pwa-elements-file-pick">
+              {this.iconPhotos()}
+            </label>
+            <input
+              type="file"
+              id="_pwa-elements-file-pick"
+              onChange={this.handleFileInputChange}
+              accept="image/*"
+              class="pick-image-button" />
+          </div>,
+          <div class="shutter" onClick={this.handleShutterClick}>
             <div class="shutter-button"></div>
           </div>,
-          <div class="rotate" onClick={(e) => this.handleRotateClick(e)}>
+          <div class="rotate" onClick={this.handleRotateClick}>
             <img src={this.iconReverseCamera()} />
           </div>,
           ]) : (
