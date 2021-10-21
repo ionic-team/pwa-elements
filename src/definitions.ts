@@ -11,6 +11,8 @@ export interface PhotoCapabilities {
   fillLightMode: string[];
 }
 
+export type FacingMode = 'user' | 'environment';
+
 export type FlashMode = "auto" | "off" | "flash";
 
 export interface ActionSheetOption {

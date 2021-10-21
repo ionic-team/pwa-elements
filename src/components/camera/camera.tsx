@@ -1,6 +1,6 @@
 import { h, Component, Element, Prop, State } from '@stencil/core';
 
-import { FlashMode } from '../../definitions';
+import { FacingMode, FlashMode } from '../../definitions';
 
 import './imagecapture';
 
@@ -17,7 +17,7 @@ export class CameraPWA {
 
   @Prop({ context: 'isServer' }) private isServer: boolean;
 
-  @Prop() facingMode: string = 'user';
+  @Prop() facingMode: FacingMode = 'user';
 
   @Prop() handlePhoto: (photo: Blob) => void;
   @Prop() handleNoDeviceError: (e?: any) => void;
