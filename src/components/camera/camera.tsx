@@ -243,35 +243,22 @@ export class CameraPWA {
     });
   }
 
+  getFacingMode(stream) {
+    const track = stream && stream.getTracks()[0];
+    if (track) {
+      let c = track.getConstraints() || track.getCapabilities() || {facingMode: []};
+      return Array.isArray(c.facingMode) ? c.facingMode[0] : c.facingMode;
+    }
+    return;
+  }
+
   rotate() {
     this.stopStream();
-
-    const track = this.stream && this.stream.getTracks()[0];
-    if (!track) {
-      return;
-    }
-
-    let c = track.getConstraints();
-    let facingMode = c.facingMode;
-
-    if (!facingMode) {
-      let c = track.getCapabilities();
-      facingMode = c.facingMode[0];
-    }
-
-    if (facingMode === 'environment') {
-      this.initCamera({
-        video: {
-          facingMode: 'user'
-        }
-      });
-    } else {
-      this.initCamera({
-        video: {
-          facingMode: 'environment'
-        }
-      });
-    }
+    this.initCamera({
+      video: {
+        facingMode: this.getFacingMode(this.stream) === 'user' ? 'environment' : 'user'  
+      }
+    });
   }
 
   setFlashMode(mode: FlashMode) {
@@ -317,14 +304,13 @@ export class CameraPWA {
   }
 
   handleCancelPhoto = (_e: Event) => {
-    const track = this.stream && this.stream.getTracks()[0];
-    let c = track && track.getConstraints();
+    const facingMode = this.getFacingMode(this.stream);
     this.photo = null;
 
-    if (c) {
+    if (facingMode) {
       this.initCamera({
         video: {
-          facingMode: c.facingMode
+          facingMode
         }
       });
     } else {
