@@ -9,6 +9,7 @@ export class PWACameraModal {
   @Element() el;
   @Event() onPhoto: EventEmitter;
   @Event() noDeviceError: EventEmitter;
+  @Prop() facingMode: string = 'user';
   @Prop() noDevicesText = 'No camera found';
   @Prop() noDevicesButtonText = 'Choose image';
 
@@ -43,6 +44,7 @@ export class PWACameraModal {
         <div class="content">
           <pwa-camera
             onClick={e => this.handleComponentClick(e)}
+            facingMode={this.facingMode}
             handlePhoto={this.handlePhoto}
             handleNoDeviceError={this.handleNoDeviceError}
             noDevicesButtonText={this.noDevicesButtonText}
