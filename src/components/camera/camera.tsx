@@ -176,7 +176,7 @@ export class CameraPWA {
 
     const orientation = await this.getOrientation(photo);
 
-    console.log('Got orientation', orientation);
+    console.debug('Got orientation', orientation);
 
     this.photoOrientation = orientation;
 
@@ -277,7 +277,7 @@ export class CameraPWA {
   }
 
   setFlashMode(mode: FlashMode) {
-    console.log('New flash mode: ', mode);
+    console.debug('New flash mode: ', mode);
     this.flashMode = mode;
   }
 
@@ -302,7 +302,7 @@ export class CameraPWA {
   }
 
   handleShutterClick = (_e: Event) => {
-    console.log()
+    console.debug('shutter click');
     this.capture();
   }
 
@@ -344,7 +344,7 @@ export class CameraPWA {
 
     try {
       const orientation = await this.getOrientation(file);
-      console.log('Got orientation', orientation);
+      console.debug('Got orientation', orientation);
       this.photoOrientation = orientation;
     } catch (e) {
     }
@@ -353,7 +353,7 @@ export class CameraPWA {
   }
 
   handleVideoMetadata = (e: Event) => {
-    console.log('Video metadata', e);
+    console.debug('Video metadata', e);
   }
 
   iconExit() {
