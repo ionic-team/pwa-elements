@@ -29,7 +29,7 @@
   "homepage": "https://github.com/ionic-team/ionic-pwa-elements",
   "devDependencies": {
     "@stencil/core": "^1.8.11",
-    "np": "^5.2.1",
+    "np": "^7.6.0",
     "workbox-build": "^4.3.1"
   }
 }
