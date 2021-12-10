@@ -151,7 +151,9 @@ export class CameraPWA {
   }
 
   stopStream() {
-    this.videoElement.srcObject = null;
+    if (this.videoElement) {
+      this.videoElement.srcObject = null;
+    }
     this.stream && this.stream.getTracks().forEach(track => track.stop());
   }
 
