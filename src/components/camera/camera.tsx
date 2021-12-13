@@ -325,6 +325,7 @@ export class CameraPWA {
     const track = this.stream && this.stream.getTracks()[0];
     let c = track && track.getConstraints();
     this.photo = null;
+    this.photoSrc = null;
 
     if (c) {
       this.initCamera({
