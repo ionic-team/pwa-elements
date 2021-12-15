@@ -10,9 +10,9 @@ export class PWACameraModal {
   @Element() el;
   @Event() onPhoto: EventEmitter;
   @Event() noDeviceError: EventEmitter;
+  @Prop() facingMode: FacingMode = 'user';
   @Prop() noDevicesText = 'No camera found';
   @Prop() noDevicesButtonText = 'Choose image';
-  @Prop() facingMode: FacingMode = 'user';
 
   handlePhoto = async (photo: Blob) => {
     this.onPhoto.emit(photo);
