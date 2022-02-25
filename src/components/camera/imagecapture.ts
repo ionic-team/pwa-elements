@@ -21,7 +21,7 @@ declare var window;
 
 export let ImageCapture = window.ImageCapture;
 
-if (typeof ImageCapture === 'undefined') {
+if (typeof ImageCapture === "undefined") {
   ImageCapture = class {
     _videoStreamTrack: any;
     videoElement: any;
@@ -30,40 +30,39 @@ if (typeof ImageCapture === 'undefined') {
     canvasElement: any;
     canvas2dContext: any;
 
-
     /**
      * TODO https://www.w3.org/TR/image-capture/#constructors
      *
      * @param {MediaStreamTrack} videoStreamTrack - A MediaStreamTrack of the 'video' kind
      */
     constructor(videoStreamTrack) {
-      if (videoStreamTrack.kind !== 'video')
-        throw new DOMException('NotSupportedError');
+      if (videoStreamTrack.kind !== "video")
+        throw new DOMException("NotSupportedError");
 
       this._videoStreamTrack = videoStreamTrack;
-      if (!('readyState' in this._videoStreamTrack)) {
+      if (!("readyState" in this._videoStreamTrack)) {
         // Polyfill for Firefox
-        this._videoStreamTrack.readyState = 'live';
+        this._videoStreamTrack.readyState = "live";
       }
 
       // MediaStream constructor not available until Chrome 55 - https://www.chromestatus.com/feature/5912172546752512
       this._previewStream = new MediaStream([videoStreamTrack]);
-      this.videoElement = document.createElement('video');
-      this.videoElementPlaying = new Promise(resolve => {
-        this.videoElement.addEventListener('playing', resolve);
+      this.videoElement = document.createElement("video");
+      this.videoElementPlaying = new Promise((resolve) => {
+        this.videoElement.addEventListener("playing", resolve);
       });
       if (HTMLMediaElement) {
-        this.videoElement.srcObject = this._previewStream;  // Safari 11 doesn't allow use of createObjectURL for MediaStream
+        this.videoElement.srcObject = this._previewStream; // Safari 11 doesn't allow use of createObjectURL for MediaStream
       } else {
         this.videoElement.src = URL.createObjectURL(this._previewStream);
       }
       this.videoElement.muted = true;
-      this.videoElement.setAttribute('playsinline', ''); // Required by Safari on iOS 11. See https://webkit.org/blog/6784
+      this.videoElement.setAttribute("playsinline", ""); // Required by Safari on iOS 11. See https://webkit.org/blog/6784
       this.videoElement.play();
 
-      this.canvasElement = document.createElement('canvas');
+      this.canvasElement = document.createElement("canvas");
       // TODO Firefox has https://developer.mozilla.org/en-US/docs/Web/API/OffscreenCanvas
-      this.canvas2dContext = this.canvasElement.getContext('2d');
+      this.canvas2dContext = this.canvasElement.getContext("2d");
     }
 
     /**
@@ -84,21 +83,23 @@ if (typeof ImageCapture === 'undefined') {
       return new Promise(function executorGPC(resolve, reject) {
         // TODO see https://github.com/w3c/mediacapture-image/issues/97
         const MediaSettingsRange = {
-          current: 0, min: 0, max: 0,
+          current: 0,
+          min: 0,
+          max: 0,
         };
         resolve({
           exposureCompensation: MediaSettingsRange,
-          exposureMode: 'none',
-          fillLightMode: ['none'],
-          focusMode: 'none',
+          exposureMode: "none",
+          fillLightMode: ["none"],
+          focusMode: "none",
           imageHeight: MediaSettingsRange,
           imageWidth: MediaSettingsRange,
           iso: MediaSettingsRange,
           redEyeReduction: false,
-          whiteBalanceMode: 'none',
+          whiteBalanceMode: "none",
           zoom: MediaSettingsRange,
         });
-        reject(new DOMException('OperationError'));
+        reject(new DOMException("OperationError"));
       });
     }
 
@@ -124,8 +125,8 @@ if (typeof ImageCapture === 'undefined') {
       return new Promise(function executorTP(resolve, reject) {
         // `If the readyState of the MediaStreamTrack provided in the constructor is not live,
         // return a promise rejected with a new DOMException whose name is "InvalidStateError".`
-        if (self._videoStreamTrack.readyState !== 'live') {
-          return reject(new DOMException('InvalidStateError'));
+        if (self._videoStreamTrack.readyState !== "live") {
+          return reject(new DOMException("InvalidStateError"));
         }
         self.videoElementPlaying.then(() => {
           try {
@@ -134,7 +135,7 @@ if (typeof ImageCapture === 'undefined') {
             self.canvas2dContext.drawImage(self.videoElement, 0, 0);
             self.canvasElement.toBlob(resolve);
           } catch (error) {
-            reject(new DOMException('UnknownError'));
+            reject(new DOMException("UnknownError"));
           }
         });
       });
@@ -151,8 +152,8 @@ if (typeof ImageCapture === 'undefined') {
       return new Promise(function executorGF(resolve, reject) {
         // `If the readyState of the MediaStreamTrack provided in the constructor is not live,
         // return a promise rejected with a new DOMException whose name is "InvalidStateError".`
-        if (self._videoStreamTrack.readyState !== 'live') {
-          return reject(new DOMException('InvalidStateError'));
+        if (self._videoStreamTrack.readyState !== "live") {
+          return reject(new DOMException("InvalidStateError"));
         }
         self.videoElementPlaying.then(() => {
           try {
@@ -162,7 +163,7 @@ if (typeof ImageCapture === 'undefined') {
             // TODO polyfill https://developer.mozilla.org/en-US/docs/Web/API/ImageBitmapFactories/createImageBitmap for IE
             resolve(window.createImageBitmap(self.canvasElement));
           } catch (error) {
-            reject(new DOMException('UnknownError'));
+            reject(new DOMException("UnknownError"));
           }
         });
       });

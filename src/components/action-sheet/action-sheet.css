@@ -10,7 +10,8 @@
 
   user-select: none;
 
-  font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Roboto", sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Roboto",
+    sans-serif;
 }
 
 .wrapper {
@@ -19,7 +20,7 @@
   align-items: center;
   justify-content: center;
   background-color: rgba(0, 0, 0, 0);
-  transition: 400ms background-color cubic-bezier(.36,.66,.04,1);
+  transition: 400ms background-color cubic-bezier(0.36, 0.66, 0.04, 1);
 }
 
 .wrapper.open {
@@ -41,8 +42,8 @@
 .content {
   width: 568px;
   align-self: flex-end;
-  background-color:#fff;
-  transition: 400ms transform cubic-bezier(.36,.66,.04,1);
+  background-color: #fff;
+  transition: 400ms transform cubic-bezier(0.36, 0.66, 0.04, 1);
   transform: translateY(100%);
 }
 
@@ -73,7 +74,5 @@
 }
 
 .action-sheet-button:hover {
-  background-color: #F6F6F6;
+  background-color: #f6f6f6;
 }
-
-

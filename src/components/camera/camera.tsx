@@ -1,28 +1,28 @@
-import { h, Component, Element, Prop, State } from '@stencil/core';
+import { h, Component, Element, Prop, State } from "@stencil/core";
 
-import { FlashMode } from '../../definitions';
+import { FlashMode } from "../../definitions";
 
-import './imagecapture';
+import "./imagecapture";
 
 declare var window: any;
 
 @Component({
-  tag: 'pwa-camera',
-  styleUrl: 'camera.css',
-  assetsDir: 'icons',
-  shadow: true
+  tag: "pwa-camera",
+  styleUrl: "camera.css",
+  assetsDirs: ["icons"],
+  shadow: true,
 })
 export class CameraPWA {
   @Element() el;
 
-  @Prop({ context: 'isServer' }) private isServer: boolean;
+  @Prop() isServer: boolean;
 
-  @Prop() facingMode: string = 'user';
+  @Prop() facingMode: string = "user";
 
   @Prop() handlePhoto: (photo: Blob) => void;
   @Prop() handleNoDeviceError: (e?: any) => void;
-  @Prop() noDevicesText = 'No camera found';
-  @Prop() noDevicesButtonText = 'Choose image';
+  @Prop() noDevicesText = "No camera found";
+  @Prop() noDevicesButtonText = "Choose image";
 
   @State() photo: any;
   @State() photoSrc: any;
@@ -55,7 +55,7 @@ export class CameraPWA {
   // Flash modes for camera
   flashModes: FlashMode[] = [];
   // Current flash mode
-  flashMode: FlashMode = 'off';
+  flashMode: FlashMode = "off";
 
   async componentDidLoad() {
     if (this.isServer) {
@@ -64,8 +64,8 @@ export class CameraPWA {
 
     this.defaultConstraints = {
       video: {
-        facingMode: this.facingMode
-      }
+        facingMode: this.facingMode,
+      },
     };
 
     // Figure out how many cameras we have
@@ -75,13 +75,13 @@ export class CameraPWA {
     await this.initCamera();
   }
 
-  componentDidUnload() {
+  disconnectedCallback() {
     this.stopStream();
     this.photoSrc && URL.revokeObjectURL(this.photoSrc);
   }
 
   hasImageCapture() {
-    return 'ImageCapture' in window;
+    return "ImageCapture" in window;
   }
 
   /**
@@ -90,11 +90,11 @@ export class CameraPWA {
   async queryDevices() {
     try {
       const devices = await navigator.mediaDevices.enumerateDevices();
-      const videoDevices = devices.filter(d => d.kind == 'videoinput')
+      const videoDevices = devices.filter((d) => d.kind == "videoinput");
 
       this.hasCamera = !!videoDevices.length;
       this.hasMultipleCameras = videoDevices.length > 1;
-    } catch(e) {
+    } catch (e) {
       this.deviceError = e;
     }
   }
@@ -108,11 +108,11 @@ export class CameraPWA {
       const stream = await navigator.mediaDevices.getUserMedia({
         video: true,
         audio: false,
-        ...constraints
+        ...constraints,
       });
 
       this.initStream(stream);
-    } catch(e) {
+    } catch (e) {
       this.deviceError = e;
       this.handleNoDeviceError && this.handleNoDeviceError(e);
     }
@@ -126,7 +126,7 @@ export class CameraPWA {
       this.imageCapture = new window.ImageCapture(stream.getVideoTracks()[0]);
       await this.initPhotoCapabilities(this.imageCapture);
     } else {
-      this.deviceError = 'No image capture';
+      this.deviceError = "No image capture";
       this.handleNoDeviceError && this.handleNoDeviceError();
     }
 
@@ -138,11 +138,12 @@ export class CameraPWA {
     const c = await imageCapture.getPhotoCapabilities();
 
     if (c.fillLightMode && c.fillLightMode.length > 1) {
-      this.flashModes = c.fillLightMode.map(m => m);
+      this.flashModes = c.fillLightMode.map((m) => m);
 
       // Try to recall the current flash mode
       if (this.flashMode) {
-        this.flashMode = this.flashModes[this.flashModes.indexOf(this.flashMode)] || 'off';
+        this.flashMode =
+          this.flashModes[this.flashModes.indexOf(this.flashMode)] || "off";
         this.flashIndex = this.flashModes.indexOf(this.flashMode) || 0;
       } else {
         this.flashIndex = 0;
@@ -154,21 +155,22 @@ export class CameraPWA {
     if (this.videoElement) {
       this.videoElement.srcObject = null;
     }
-    this.stream && this.stream.getTracks().forEach(track => track.stop());
+    this.stream && this.stream.getTracks().forEach((track) => track.stop());
   }
 
   async capture() {
     if (this.hasImageCapture()) {
       try {
         const photo = await this.imageCapture.takePhoto({
-          fillLightMode: this.flashModes.length > 1 ? this.flashMode : undefined
+          fillLightMode:
+            this.flashModes.length > 1 ? this.flashMode : undefined,
         });
-        
+
         await this.flashScreen();
 
         this.promptAccept(photo);
       } catch (e) {
-        console.error('Unable to take photo!', e);
+        console.error("Unable to take photo!", e);
       }
     }
     this.stopStream();
@@ -179,7 +181,7 @@ export class CameraPWA {
 
     const orientation = await this.getOrientation(photo);
 
-    console.debug('Got orientation', orientation);
+    console.debug("Got orientation", orientation);
 
     this.photoOrientation = orientation;
 
@@ -203,18 +205,20 @@ export class CameraPWA {
           break;
       }
     }
-    
+
     this.photoSrc = URL.createObjectURL(photo);
   }
 
   private getOrientation(file): Promise<number> {
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       const reader = new FileReader();
 
       reader.onload = (event) => {
         const view = new DataView((event.target as any).result as ArrayBuffer);
 
-        if (view.getUint16(0, false) !== 0xFFD8) { return resolve(-2); }
+        if (view.getUint16(0, false) !== 0xffd8) {
+          return resolve(-2);
+        }
 
         const length = view.byteLength;
         let offset = 2;
@@ -223,21 +227,25 @@ export class CameraPWA {
           const marker = view.getUint16(offset, false);
           offset += 2;
 
-          if (marker === 0xFFE1) {
-            if (view.getUint32(offset += 2, false) !== 0x45786966) {
+          if (marker === 0xffe1) {
+            if (view.getUint32((offset += 2), false) !== 0x45786966) {
               return resolve(-1);
             }
-            const little = view.getUint16(offset += 6, false) === 0x4949;
+            const little = view.getUint16((offset += 6), false) === 0x4949;
             offset += view.getUint32(offset + 4, little);
             const tags = view.getUint16(offset, little);
             offset += 2;
 
             for (let i = 0; i < tags; i++) {
-              if (view.getUint16(offset + (i * 12), little) === 0x0112) {
-                return resolve(view.getUint16(offset + (i * 12) + 8, little));
+              if (view.getUint16(offset + i * 12, little) === 0x0112) {
+                return resolve(view.getUint16(offset + i * 12 + 8, little));
               }
             }
-          } else if ((marker & 0xFF00) !== 0xFF00) { break; } else { offset += view.getUint16(offset, false); }
+          } else if ((marker & 0xff00) !== 0xff00) {
+            break;
+          } else {
+            offset += view.getUint16(offset, false);
+          }
         }
         return resolve(-1);
       };
@@ -264,23 +272,23 @@ export class CameraPWA {
       }
     }
 
-    if (facingMode === 'environment') {
+    if (facingMode === "environment") {
       this.initCamera({
         video: {
-          facingMode: 'user'
-        }
+          facingMode: "user",
+        },
       });
     } else {
       this.initCamera({
         video: {
-          facingMode: 'environment'
-        }
+          facingMode: "environment",
+        },
       });
     }
   }
 
   setFlashMode(mode: FlashMode) {
-    console.debug('New flash mode: ', mode);
+    console.debug("New flash mode: ", mode);
     this.flashMode = mode;
   }
 
@@ -292,7 +300,7 @@ export class CameraPWA {
   }
 
   async flashScreen() {
-    return new Promise((resolve, _reject) => {
+    return new Promise<void>((resolve, _reject) => {
       this.showShutterOverlay = true;
       setTimeout(() => {
         this.showShutterOverlay = false;
@@ -301,25 +309,24 @@ export class CameraPWA {
     });
   }
 
-  handlePickFile = (_e: Event) => {
-  }
+  handlePickFile = (_e: Event) => {};
 
   handleShutterClick = (_e: Event) => {
-    console.debug('shutter click');
+    console.debug("shutter click");
     this.capture();
-  }
+  };
 
   handleRotateClick = (_e: Event) => {
     this.rotate();
-  }
+  };
 
   handleClose = (_e: Event) => {
     this.handlePhoto && this.handlePhoto(null);
-  }
+  };
 
   handleFlashClick = (_e: Event) => {
     this.cycleFlash();
-  }
+  };
 
   handleCancelPhoto = (_e: Event) => {
     const track = this.stream && this.stream.getTracks()[0];
@@ -330,17 +337,17 @@ export class CameraPWA {
     if (c) {
       this.initCamera({
         video: {
-          facingMode: c.facingMode
-        }
+          facingMode: c.facingMode,
+        },
       });
     } else {
       this.initCamera();
     }
-  }
+  };
 
   handleAcceptPhoto = (_e: Event) => {
     this.handlePhoto && this.handlePhoto(this.photo);
-  }
+  };
 
   handleFileInputChange = async (e: InputEvent) => {
     const input = e.target as HTMLInputElement;
@@ -348,17 +355,16 @@ export class CameraPWA {
 
     try {
       const orientation = await this.getOrientation(file);
-      console.debug('Got orientation', orientation);
+      console.debug("Got orientation", orientation);
       this.photoOrientation = orientation;
-    } catch (e) {
-    }
+    } catch (e) {}
 
     this.handlePhoto && this.handlePhoto(file);
-  }
+  };
 
   handleVideoMetadata = (e: Event) => {
-    console.debug('Video metadata', e);
-  }
+    console.debug("Video metadata", e);
+  };
 
   iconExit() {
     return `data:image/svg+xml,%3Csvg version='1.1' id='Layer_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewBox='0 0 512 512' enable-background='new 0 0 512 512' xml:space='preserve'%3E%3Cg id='Icon_5_'%3E%3Cg%3E%3Cpath fill='%23FFFFFF' d='M402.2,134L378,109.8c-1.6-1.6-4.1-1.6-5.7,0L258.8,223.4c-1.6,1.6-4.1,1.6-5.7,0L139.6,109.8 c-1.6-1.6-4.1-1.6-5.7,0L109.8,134c-1.6,1.6-1.6,4.1,0,5.7l113.5,113.5c1.6,1.6,1.6,4.1,0,5.7L109.8,372.4c-1.6,1.6-1.6,4.1,0,5.7 l24.1,24.1c1.6,1.6,4.1,1.6,5.7,0l113.5-113.5c1.6-1.6,4.1-1.6,5.7,0l113.5,113.5c1.6,1.6,4.1,1.6,5.7,0l24.1-24.1 c1.6-1.6,1.6-4.1,0-5.7L288.6,258.8c-1.6-1.6-1.6-4.1,0-5.7l113.5-113.5C403.7,138.1,403.7,135.5,402.2,134z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E`;
@@ -366,7 +372,15 @@ export class CameraPWA {
 
   iconPhotos() {
     return (
-      <svg xmlns='http://www.w3.org/2000/svg' width='512' height='512' viewBox='0 0 512 512'><path d='M450.29,112H142c-34,0-62,27.51-62,61.33V418.67C80,452.49,108,480,142,480H450c34,0,62-26.18,62-60V173.33C512,139.51,484.32,112,450.29,112Zm-77.15,61.34a46,46,0,1,1-46.28,46A46.19,46.19,0,0,1,373.14,173.33Zm-231.55,276c-17,0-29.86-13.75-29.86-30.66V353.85l90.46-80.79a46.54,46.54,0,0,1,63.44,1.83L328.27,337l-113,112.33ZM480,418.67a30.67,30.67,0,0,1-30.71,30.66H259L376.08,333a46.24,46.24,0,0,1,59.44-.16L480,370.59Z'/><path d='M384,32H64A64,64,0,0,0,0,96V352a64.11,64.11,0,0,0,48,62V152a72,72,0,0,1,72-72H446A64.11,64.11,0,0,0,384,32Z'/></svg>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="512"
+        height="512"
+        viewBox="0 0 512 512"
+      >
+        <path d="M450.29,112H142c-34,0-62,27.51-62,61.33V418.67C80,452.49,108,480,142,480H450c34,0,62-26.18,62-60V173.33C512,139.51,484.32,112,450.29,112Zm-77.15,61.34a46,46,0,1,1-46.28,46A46.19,46.19,0,0,1,373.14,173.33Zm-231.55,276c-17,0-29.86-13.75-29.86-30.66V353.85l90.46-80.79a46.54,46.54,0,0,1,63.44,1.83L328.27,337l-113,112.33ZM480,418.67a30.67,30.67,0,0,1-30.71,30.66H259L376.08,333a46.24,46.24,0,0,1,59.44-.16L480,370.59Z" />
+        <path d="M384,32H64A64,64,0,0,0,0,96V352a64.11,64.11,0,0,0,48,62V152a72,72,0,0,1,72-72H446A64.11,64.11,0,0,0,384,32Z" />
+      </svg>
     );
   }
 
@@ -394,7 +408,6 @@ export class CameraPWA {
     return `data:image/svg+xml,%3Csvg version='1.1' id='Layer_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewBox='0 0 512 512' style='enable-background:new 0 0 512 512;' xml:space='preserve'%3E%3Cstyle type='text/css'%3E .st0%7Bfill:%23FFFFFF;%7D%0A%3C/style%3E%3Cpath class='st0' d='M287.2,211c-1.6,0-2.7-1.3-2.4-2.7L328.4,5c1-4.4-5.8-6.9-8.9-3.2L77,293.8c-2.5,3-0.1,7.2,3.9,7.2h143.9 c1.6,0,2.7,1.3,2.4,2.7L183.6,507c-1,4.4,5.8,6.9,8.9,3.2l242.5-292c2.5-3,0.1-7.2-3.9-7.2L287.2,211L287.2,211z'/%3E%3Cg%3E%3Cpath class='st0' d='M321.3,186l74-186H438l74,186h-43.5l-11.9-32.5h-80.9l-12,32.5H321.3z M415.8,47.9l-27.2,70.7h54.9l-27.2-70.7 H415.8z'/%3E%3C/g%3E%3C/svg%3E`;
   }
 
-
   render() {
     // const acceptStyles = { transform: `rotate(${-this.rotation}deg)` };
     const acceptStyles = {};
@@ -403,16 +416,28 @@ export class CameraPWA {
       <div class="camera-wrapper">
         <div class="camera-header">
           <section class="items">
-            <div class="item close" onClick={e => this.handleClose(e)}>
+            <div class="item close" onClick={(e) => this.handleClose(e)}>
               <img src={this.iconExit()} />
             </div>
-            <div class="item flash" onClick={e => this.handleFlashClick(e)}>
+            <div class="item flash" onClick={(e) => this.handleFlashClick(e)}>
               {this.flashModes.length > 0 && (
-              <div>
-                {this.flashMode == 'off' ? <img src={this.iconFlashOff()} /> : ''}
-                {this.flashMode == 'auto' ? <img src={this.iconFlashAuto()} /> : ''}
-                {this.flashMode == 'flash' ? <img src={this.iconFlashOn()} /> : ''}
-              </div>
+                <div>
+                  {this.flashMode == "off" ? (
+                    <img src={this.iconFlashOff()} />
+                  ) : (
+                    ""
+                  )}
+                  {this.flashMode == "auto" ? (
+                    <img src={this.iconFlashAuto()} />
+                  ) : (
+                    ""
+                  )}
+                  {this.flashMode == "flash" ? (
+                    <img src={this.iconFlashOn()} />
+                  ) : (
+                    ""
+                  )}
+                </div>
               )}
             </div>
           </section>
@@ -430,69 +455,87 @@ export class CameraPWA {
               id="_pwa-elements-camera-input"
               onChange={this.handleFileInputChange}
               accept="image/*"
-              class="select-file-button" />
+              class="select-file-button"
+            />
           </div>
         )}
         {/* Show the taken photo for the Accept UI*/}
         {this.photoSrc ? (
-        <div class="accept">
-          <div
-            class="accept-image"
-            style={{
-              backgroundImage: `url(${this.photoSrc})`,
-              ...acceptStyles
-            }} />
-        </div>
+          <div class="accept">
+            <div
+              class="accept-image"
+              style={{
+                backgroundImage: `url(${this.photoSrc})`,
+                ...acceptStyles,
+              }}
+            />
+          </div>
         ) : (
           <div class="camera-video">
-            {this.showShutterOverlay && (
-            <div class="shutter-overlay">
-            </div>
-            )}
+            {this.showShutterOverlay && <div class="shutter-overlay"></div>}
             {this.hasImageCapture() ? (
-            <video
-              ref={(el: HTMLVideoElement) => this.videoElement = el}
-              onLoadedMetaData={this.handleVideoMetadata}
-              autoplay
-              playsinline />
+              <video
+                ref={(el: HTMLVideoElement) => (this.videoElement = el)}
+                onLoadedMetaData={this.handleVideoMetadata}
+                autoplay
+                playsinline
+              />
             ) : (
-            <canvas ref={(el: HTMLCanvasElement) => this.canvasElement = el} width="100%" height="100%"></canvas>
+              <canvas
+                ref={(el: HTMLCanvasElement) => (this.canvasElement = el)}
+                width="100%"
+                height="100%"
+              ></canvas>
             )}
-            <canvas class="offscreen-image-render" ref={e => this.offscreenCanvas = e} width="100%" height="100%" />
+            <canvas
+              class="offscreen-image-render"
+              ref={(e) => (this.offscreenCanvas = e)}
+              width="100%"
+              height="100%"
+            />
           </div>
         )}
 
         {this.hasCamera && (
-        <div class="camera-footer">
-          {!this.photo ? ([
-          <div class="pick-image" onClick={this.handlePickFile}>
-            <label htmlFor="_pwa-elements-file-pick">
-              {this.iconPhotos()}
-            </label>
-            <input
-              type="file"
-              id="_pwa-elements-file-pick"
-              onChange={this.handleFileInputChange}
-              accept="image/*"
-              class="pick-image-button" />
-          </div>,
-          <div class="shutter" onClick={this.handleShutterClick}>
-            <div class="shutter-button"></div>
-          </div>,
-          <div class="rotate" onClick={this.handleRotateClick}>
-            <img src={this.iconReverseCamera()} />
-          </div>,
-          ]) : (
-          <section class="items">
-            <div class="item accept-cancel" onClick={e => this.handleCancelPhoto(e)}>
-              <img src={this.iconRetake()} />
-            </div>
-            <div class="item accept-use" onClick={e => this.handleAcceptPhoto(e)}>
-              <img src={this.iconConfirm()} />
-            </div>
-          </section>
-          )}
-        </div>
+          <div class="camera-footer">
+            {!this.photo ? (
+              [
+                <div class="pick-image" onClick={this.handlePickFile}>
+                  <label htmlFor="_pwa-elements-file-pick">
+                    {this.iconPhotos()}
+                  </label>
+                  <input
+                    type="file"
+                    id="_pwa-elements-file-pick"
+                    onChange={this.handleFileInputChange}
+                    accept="image/*"
+                    class="pick-image-button"
+                  />
+                </div>,
+                <div class="shutter" onClick={this.handleShutterClick}>
+                  <div class="shutter-button"></div>
+                </div>,
+                <div class="rotate" onClick={this.handleRotateClick}>
+                  <img src={this.iconReverseCamera()} />
+                </div>,
+              ]
+            ) : (
+              <section class="items">
+                <div
+                  class="item accept-cancel"
+                  onClick={(e) => this.handleCancelPhoto(e)}
+                >
+                  <img src={this.iconRetake()} />
+                </div>
+                <div
+                  class="item accept-use"
+                  onClick={(e) => this.handleAcceptPhoto(e)}
+                >
+                  <img src={this.iconConfirm()} />
+                </div>
+              </section>
+            )}
+          </div>
         )}
       </div>
     );

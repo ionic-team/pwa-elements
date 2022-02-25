@@ -1,12 +1,12 @@
-import { h, Event, EventEmitter, Component, Method, Prop } from '@stencil/core';
+import { h, Event, EventEmitter, Component, Method, Prop } from "@stencil/core";
 
 @Component({
-  tag: 'pwa-camera-modal',
-  styleUrl: 'camera-modal.css',
-  shadow: true
+  tag: "pwa-camera-modal",
+  styleUrl: "camera-modal.css",
+  shadow: true,
 })
 export class PWACameraModal {
-  @Prop() facingMode: string = 'user';
+  @Prop() facingMode: string = "user";
 
   @Event() onPhoto: EventEmitter;
   @Event() noDeviceError: EventEmitter;
@@ -15,10 +15,10 @@ export class PWACameraModal {
 
   @Method()
   async present() {
-    const camera = document.createElement('pwa-camera-modal-instance');
+    const camera = document.createElement("pwa-camera-modal-instance");
     camera.facingMode = this.facingMode;
 
-    camera.addEventListener('onPhoto', async (e: any) => {
+    camera.addEventListener("onPhoto", async (e: any) => {
       if (!this._modal) {
         return;
       }
@@ -26,7 +26,7 @@ export class PWACameraModal {
       this.onPhoto.emit(photo);
     });
 
-    camera.addEventListener('noDeviceError', async (e: any) => {
+    camera.addEventListener("noDeviceError", async (e: any) => {
       this.noDeviceError.emit(e);
     });
 
@@ -37,12 +37,14 @@ export class PWACameraModal {
 
   @Method()
   async dismiss() {
-    if (!this._modal) { return; }
+    if (!this._modal) {
+      return;
+    }
     this._modal && this._modal.parentNode.removeChild(this._modal);
     this._modal = null;
   }
 
   render() {
-    return (<div></div>);
+    return <div></div>;
   }
 }

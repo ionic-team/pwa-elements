@@ -3,7 +3,7 @@ import { h, Component, Prop, Element, State } from '@stencil/core';
 @Component({
   tag: 'pwa-toast',
   styleUrl: 'toast.css',
-  shadow: true
+  shadow: true,
 })
 export class PWAToast {
   @Element() el: HTMLElement;
@@ -16,15 +16,15 @@ export class PWAToast {
 
   hostData() {
     const classes = {
-      out: !!this.closing
-    }
+      out: !!this.closing,
+    };
 
     if (this.closing !== null) {
       classes['in'] = !this.closing;
     }
     return {
-      class: classes
-    }
+      class: classes,
+    };
   }
 
   componentDidLoad() {
@@ -33,7 +33,7 @@ export class PWAToast {
     });
     setTimeout(() => {
       this.close();
-    }, this.duration)
+    }, this.duration);
   }
 
   close() {
@@ -46,9 +46,7 @@ export class PWAToast {
   render() {
     return (
       <div class="wrapper">
-        <div class="toast">
-          {this.message}
-        </div>
+        <div class="toast">{this.message}</div>
       </div>
     );
   }
