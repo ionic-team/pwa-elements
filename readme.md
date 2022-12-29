@@ -21,12 +21,12 @@ for an example of how to use these components.
 
 ## Capacitor Usage
 
-Ionic PWA Elements were built primarily for developers using [Capacitor](http://capacitor.ionicframework.com/),
+Ionic PWA Elements were built primarily for developers using [Capacitor](https://capacitorjs.com/),
 our Native app container that allows web apps to run on nearly every platform
 with consistent APIs.
 
 Ionic PWA Elements offer web-UI experiences for Capacitor apps running in a browser
 as PWA, such that the API is identical for the PWA and the native app store app.
 
-See the [Capacitor PWA Elements](https://capacitor.ionicframework.com/docs/pwa-elements)
+See the [Capacitor PWA Elements](https://capacitorjs.com/docs/web/pwa-elements)
 page for more information on using this library in your Capacitor apps.
