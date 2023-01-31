@@ -27,6 +27,8 @@ export namespace Components {
   interface PwaCameraModal {
     'dismiss': () => Promise<void>;
     'facingMode': string;
+    'noDevicesButtonText'?: string;
+    'noDevicesText'?: string;
     'present': () => Promise<void>;
   }
   interface PwaCameraModalInstance {
@@ -97,6 +99,8 @@ declare namespace LocalJSX {
   }
   interface PwaCameraModal {
     'facingMode'?: string;
+    'noDevicesButtonText'?: string;
+    'noDevicesText'?: string;
     'onNoDeviceError'?: (event: CustomEvent<any>) => void;
     'onOnPhoto'?: (event: CustomEvent<any>) => void;
   }
