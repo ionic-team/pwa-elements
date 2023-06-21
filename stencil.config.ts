@@ -9,4 +9,7 @@ export const config: Config = {
     },
     { type: 'www' },
   ],
+  extras: {
+    enableImportInjection: true
+  }
 };
