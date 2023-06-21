@@ -2,10 +2,10 @@
   "name": "@ionic/pwa-elements",
   "version": "3.1.1",
   "description": "Stencil Component Starter",
-  "main": "dist/index.js",
+  "main": "dist/index.cjs.js",
   "unpkg": "dist/ionicpwaelements/ionicpwaelements.js",
   "types": "dist/types/index.d.ts",
-  "module": "dist/index.mjs",
+  "module": "dist/index.js",
   "collection": "dist/collection/collection-manifest.json",
   "files": [
     "dist/",
@@ -31,5 +31,9 @@
     "@stencil/core": "^3.4.0",
     "np": "^8.0.4",
     "workbox-build": "^7.0.0"
+  },
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=8.0.0"
   }
 }
