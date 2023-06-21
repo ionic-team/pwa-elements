@@ -1,4 +1,4 @@
-import { h, Component, Element, Prop, State } from '@stencil/core';
+import { h, Component, Element, Prop, State, Build } from '@stencil/core';
 
 import { FlashMode } from '../../definitions';
 
@@ -9,13 +9,11 @@ declare var window: any;
 @Component({
   tag: 'pwa-camera',
   styleUrl: 'camera.css',
-  assetsDir: 'icons',
+  assetsDirs: ['icons'],
   shadow: true
 })
 export class CameraPWA {
   @Element() el;
-
-  @Prop({ context: 'isServer' }) private isServer: boolean;
 
   @Prop() facingMode: string = 'user';
 
@@ -58,7 +56,7 @@ export class CameraPWA {
   flashMode: FlashMode = 'off';
 
   async componentDidLoad() {
-    if (this.isServer) {
+    if (Build.isServer) {
       return;
     }
 
@@ -75,7 +73,7 @@ export class CameraPWA {
     await this.initCamera();
   }
 
-  componentDidUnload() {
+  disconnectedCallback() {
     this.stopStream();
     this.photoSrc && URL.revokeObjectURL(this.photoSrc);
   }
@@ -292,7 +290,7 @@ export class CameraPWA {
   }
 
   async flashScreen() {
-    return new Promise((resolve, _reject) => {
+    return new Promise<void>((resolve, _reject) => {
       this.showShutterOverlay = true;
       setTimeout(() => {
         this.showShutterOverlay = false;
