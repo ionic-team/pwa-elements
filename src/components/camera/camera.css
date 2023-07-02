@@ -92,6 +92,8 @@ video {
   min-height: 100%;
   object-fit: cover;
   background-color: black;
+  -webkit-transform: initial;
+  transform: initial;
 }
 
 .pick-image {

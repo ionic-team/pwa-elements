@@ -9,6 +9,7 @@
 import { HTMLStencilElement, JSXBase } from '@stencil/core/internal';
 import {
   ActionSheetOption,
+  FacingMode,
 } from './definitions';
 
 export namespace Components {
@@ -18,7 +19,7 @@ export namespace Components {
     'options': ActionSheetOption[];
   }
   interface PwaCamera {
-    'facingMode': string;
+    'facingMode': FacingMode;
     'handleNoDeviceError': (e?: any) => void;
     'handlePhoto': (photo: Blob) => void;
     'noDevicesButtonText': string;
@@ -26,11 +27,11 @@ export namespace Components {
   }
   interface PwaCameraModal {
     'dismiss': () => Promise<void>;
-    'facingMode': string;
+    'facingMode': FacingMode;
     'present': () => Promise<void>;
   }
   interface PwaCameraModalInstance {
-    'facingMode': string;
+    'facingMode': FacingMode;
     'noDevicesButtonText': string;
     'noDevicesText': string;
   }
@@ -89,19 +90,19 @@ declare namespace LocalJSX {
     'options'?: ActionSheetOption[];
   }
   interface PwaCamera {
-    'facingMode'?: string;
+    'facingMode'?: FacingMode;
     'handleNoDeviceError'?: (e?: any) => void;
     'handlePhoto'?: (photo: Blob) => void;
     'noDevicesButtonText'?: string;
     'noDevicesText'?: string;
   }
   interface PwaCameraModal {
-    'facingMode'?: string;
+    'facingMode'?: FacingMode;
     'onNoDeviceError'?: (event: CustomEvent<any>) => void;
     'onOnPhoto'?: (event: CustomEvent<any>) => void;
   }
   interface PwaCameraModalInstance {
-    'facingMode'?: string;
+    'facingMode'?: FacingMode;
     'noDevicesButtonText'?: string;
     'noDevicesText'?: string;
     'onNoDeviceError'?: (event: CustomEvent<any>) => void;

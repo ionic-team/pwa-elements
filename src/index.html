@@ -29,6 +29,7 @@
     var b = document.querySelector('#camera-button');
     b.addEventListener('click', async (ev) => {
       const camera = document.createElement('pwa-camera-modal');
+      camera.facingMode = 'environment';
 
       document.body.appendChild(camera);
 

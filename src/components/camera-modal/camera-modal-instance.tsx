@@ -1,4 +1,5 @@
 import { h, Event, EventEmitter, Component, Listen, Element, Prop } from '@stencil/core';
+import { FacingMode } from '../../definitions';
 
 @Component({
   tag: 'pwa-camera-modal-instance',
@@ -9,7 +10,7 @@ export class PWACameraModal {
   @Element() el;
   @Event() onPhoto: EventEmitter;
   @Event() noDeviceError: EventEmitter;
-  @Prop() facingMode: string = 'user';
+  @Prop() facingMode: FacingMode = 'user';
   @Prop() noDevicesText = 'No camera found';
   @Prop() noDevicesButtonText = 'Choose image';
 
