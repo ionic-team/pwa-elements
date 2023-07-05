@@ -1,4 +1,4 @@
-import { h, Component, Element, Prop, State, Build } from '@stencil/core';
+import { h, Component, Element, Prop, State, Build, forceUpdate } from '@stencil/core';
 
 import { FlashMode } from '../../definitions';
 
@@ -129,7 +129,7 @@ export class CameraPWA {
     }
 
     // Always re-render
-    this.el.forceUpdate();
+    forceUpdate(this.el);
   }
 
   async initPhotoCapabilities(imageCapture: any) {
@@ -161,7 +161,7 @@ export class CameraPWA {
         const photo = await this.imageCapture.takePhoto({
           fillLightMode: this.flashModes.length > 1 ? this.flashMode : undefined
         });
-        
+
         await this.flashScreen();
 
         this.promptAccept(photo);
@@ -201,7 +201,7 @@ export class CameraPWA {
           break;
       }
     }
-    
+
     this.photoSrc = URL.createObjectURL(photo);
   }
 
