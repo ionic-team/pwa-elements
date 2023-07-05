@@ -1,4 +1,4 @@
-import { h, Component, Element, Prop, State } from '@stencil/core';
+import { h, Component, Element, Prop, State, Build, forceUpdate } from '@stencil/core';
 
 import { FlashMode } from '../../definitions';
 
@@ -9,13 +9,11 @@ declare var window: any;
 @Component({
   tag: 'pwa-camera',
   styleUrl: 'camera.css',
-  assetsDir: 'icons',
+  assetsDirs: ['icons'],
   shadow: true
 })
 export class CameraPWA {
   @Element() el;
-
-  @Prop({ context: 'isServer' }) private isServer: boolean;
 
   @Prop() facingMode: string = 'user';
 
@@ -58,7 +56,7 @@ export class CameraPWA {
   flashMode: FlashMode = 'off';
 
   async componentDidLoad() {
-    if (this.isServer) {
+    if (Build.isServer) {
       return;
     }
 
@@ -75,7 +73,7 @@ export class CameraPWA {
     await this.initCamera();
   }
 
-  componentDidUnload() {
+  disconnectedCallback() {
     this.stopStream();
     this.photoSrc && URL.revokeObjectURL(this.photoSrc);
   }
@@ -131,7 +129,7 @@ export class CameraPWA {
     }
 
     // Always re-render
-    this.el.forceUpdate();
+    forceUpdate(this.el);
   }
 
   async initPhotoCapabilities(imageCapture: any) {
@@ -163,7 +161,7 @@ export class CameraPWA {
         const photo = await this.imageCapture.takePhoto({
           fillLightMode: this.flashModes.length > 1 ? this.flashMode : undefined
         });
-        
+
         await this.flashScreen();
 
         this.promptAccept(photo);
@@ -203,7 +201,7 @@ export class CameraPWA {
           break;
       }
     }
-    
+
     this.photoSrc = URL.createObjectURL(photo);
   }
 
@@ -292,7 +290,7 @@ export class CameraPWA {
   }
 
   async flashScreen() {
-    return new Promise((resolve, _reject) => {
+    return new Promise<void>((resolve, _reject) => {
       this.showShutterOverlay = true;
       setTimeout(() => {
         this.showShutterOverlay = false;
