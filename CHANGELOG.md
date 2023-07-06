@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.2.1](https://github.com/ionic-team/pwa-elements/compare/v3.2.0...v3.2.1) (2023-07-06)
+
+### Bug Fixes
+
+**fix: enable es5 build output** ([#122](https://github.com/ionic-team/pwa-elements/issues/122))([c0d8831](https://github.com/ionic-team/pwa-elements/commit/c0d88311463f47ffe01ea8369372ff10d2f47f5e))
+
 ## [3.2.0](https://github.com/ionic-team/pwa-elements/compare/v3.1.0...v3.2.0) (2023-07-05)
 
 ### Bug Fixes
