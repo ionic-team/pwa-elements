@@ -9,6 +9,7 @@ export const config: Config = {
     },
     { type: 'www' },
   ],
+  buildEs5: true,
   extras: {
     enableImportInjection: true
   }
