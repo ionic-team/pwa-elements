@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.2.2](https://github.com/ionic-team/pwa-elements/compare/v3.2.1...v3.2.2) (2023-07-20)
+
+### Bug Fixes
+
+**fix: unexpected token when parsing module** ([#124](https://github.com/ionic-team/pwa-elements/issues/124))([2a51447](https://github.com/ionic-team/pwa-elements/commit/2a514479c0fb9341017bfa54ffee88c8bca79ad1))
+
 ## [3.2.1](https://github.com/ionic-team/pwa-elements/compare/v3.2.0...v3.2.1) (2023-07-06)
 
 ### Bug Fixes
