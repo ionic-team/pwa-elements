@@ -21,6 +21,13 @@ export class CameraPWA {
   @Prop() handleNoDeviceError: (e?: any) => void;
   @Prop() noDevicesText = 'No camera found';
   @Prop() noDevicesButtonText = 'Choose image';
+  /**
+   * The acceptable image input for selection when a camera is not available.
+   * Defaults to: `image/*`.
+   *
+   * @see https://html.spec.whatwg.org/multipage/input.html#attr-input-accept
+   */
+  @Prop() accept = 'image/*';
 
   @State() photo: any;
   @State() photoSrc: any;
@@ -427,7 +434,7 @@ export class CameraPWA {
               type="file"
               id="_pwa-elements-camera-input"
               onChange={this.handleFileInputChange}
-              accept="image/*"
+              accept={this.accept}
               class="select-file-button" />
           </div>
         )}

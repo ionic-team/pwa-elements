@@ -14,6 +14,11 @@ export namespace Components {
         "options": ActionSheetOption[];
     }
     interface PwaCamera {
+        /**
+          * The acceptable image input for selection when a camera is not available.  Defaults to: `image/*`.
+          * @see https://html.spec.whatwg.org/multipage/input.html#attr-input-accept
+         */
+        "accept": string;
         "facingMode": string;
         "handleNoDeviceError": (e?: any) => void;
         "handlePhoto": (photo: Blob) => void;
@@ -94,6 +99,11 @@ declare namespace LocalJSX {
         "options"?: ActionSheetOption[];
     }
     interface PwaCamera {
+        /**
+          * The acceptable image input for selection when a camera is not available.  Defaults to: `image/*`.
+          * @see https://html.spec.whatwg.org/multipage/input.html#attr-input-accept
+         */
+        "accept"?: string;
         "facingMode"?: string;
         "handleNoDeviceError"?: (e?: any) => void;
         "handlePhoto"?: (photo: Blob) => void;
