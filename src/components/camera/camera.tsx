@@ -18,6 +18,7 @@ export class CameraPWA {
   @Prop() facingMode: string = 'user';
 
   @Prop() handlePhoto: (photo: Blob) => void;
+  @Prop() hidePicker: boolean = false;
   @Prop() handleNoDeviceError: (e?: any) => void;
   @Prop() noDevicesText = 'No camera found';
   @Prop() noDevicesButtonText = 'Choose image';
@@ -463,7 +464,7 @@ export class CameraPWA {
         {this.hasCamera && (
         <div class="camera-footer">
           {!this.photo ? ([
-          <div class="pick-image" onClick={this.handlePickFile}>
+          !this.hidePicker && (<div class="pick-image" onClick={this.handlePickFile}>
             <label htmlFor="_pwa-elements-file-pick">
               {this.iconPhotos()}
             </label>
@@ -473,7 +474,7 @@ export class CameraPWA {
               onChange={this.handleFileInputChange}
               accept="image/*"
               class="pick-image-button" />
-          </div>,
+          </div>),
           <div class="shutter" onClick={this.handleShutterClick}>
             <div class="shutter-button"></div>
           </div>,
