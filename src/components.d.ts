@@ -17,16 +17,19 @@ export namespace Components {
         "facingMode": string;
         "handleNoDeviceError": (e?: any) => void;
         "handlePhoto": (photo: Blob) => void;
+        "hidePicker": boolean;
         "noDevicesButtonText": string;
         "noDevicesText": string;
     }
     interface PwaCameraModal {
         "dismiss": () => Promise<void>;
         "facingMode": string;
+        "hidePicker": boolean;
         "present": () => Promise<void>;
     }
     interface PwaCameraModalInstance {
         "facingMode": string;
+        "hidePicker": boolean;
         "noDevicesButtonText": string;
         "noDevicesText": string;
     }
@@ -97,16 +100,19 @@ declare namespace LocalJSX {
         "facingMode"?: string;
         "handleNoDeviceError"?: (e?: any) => void;
         "handlePhoto"?: (photo: Blob) => void;
+        "hidePicker"?: boolean;
         "noDevicesButtonText"?: string;
         "noDevicesText"?: string;
     }
     interface PwaCameraModal {
         "facingMode"?: string;
+        "hidePicker"?: boolean;
         "onNoDeviceError"?: (event: PwaCameraModalCustomEvent<any>) => void;
         "onOnPhoto"?: (event: PwaCameraModalCustomEvent<any>) => void;
     }
     interface PwaCameraModalInstance {
         "facingMode"?: string;
+        "hidePicker"?: boolean;
         "noDevicesButtonText"?: string;
         "noDevicesText"?: string;
         "onNoDeviceError"?: (event: PwaCameraModalInstanceCustomEvent<any>) => void;

@@ -7,6 +7,7 @@ import { h, Event, EventEmitter, Component, Method, Prop } from '@stencil/core';
 })
 export class PWACameraModal {
   @Prop() facingMode: string = 'user';
+  @Prop() hidePicker: boolean = false;
 
   @Event() onPhoto: EventEmitter;
   @Event() noDeviceError: EventEmitter;
@@ -17,6 +18,7 @@ export class PWACameraModal {
   async present() {
     const camera = document.createElement('pwa-camera-modal-instance');
     camera.facingMode = this.facingMode;
+    camera.hidePicker = this.hidePicker;
 
     camera.addEventListener('onPhoto', async (e: any) => {
       if (!this._modal) {
