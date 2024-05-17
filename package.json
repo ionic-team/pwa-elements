@@ -14,7 +14,7 @@
   "scripts": {
     "build": "stencil build",
     "start": "stencil build --dev --watch --serve",
-    "release": "np",
+    "release": "np --no-tests",
     "version": "npm run build"
   },
   "repository": {
