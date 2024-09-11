@@ -453,7 +453,8 @@ export class CameraPWA {
               ref={(el: HTMLVideoElement) => this.videoElement = el}
               onLoadedMetaData={this.handleVideoMetadata}
               autoplay
-              playsinline />
+              playsinline
+              muted />
             ) : (
             <canvas ref={(el: HTMLCanvasElement) => this.canvasElement = el} width="100%" height="100%"></canvas>
             )}
