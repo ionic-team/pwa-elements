@@ -75,12 +75,15 @@
     b.addEventListener('click', async (ev) => {
       const actionSheet = document.createElement('pwa-action-sheet');
       actionSheet.header = 'choose option';
-      actionSheet.cancelable = false;
+      actionSheet.cancelable = true;
       actionSheet.options = [{title: 'hi'},{title: 'bye', style: "DESTRUCTIVE"},{title: 'cancel', style: "CANCEL"}]
       document.body.appendChild(actionSheet);
       actionSheet.addEventListener('onSelection', async (e) => {
         const selection = e.detail;
         console.log('selected', selection);
+      })
+      actionSheet.addEventListener('onCanceled', async () => {
+        console.log('sheet was canceled');
       })
     });
   </script>

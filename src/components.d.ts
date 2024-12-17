@@ -93,6 +93,7 @@ declare namespace LocalJSX {
     interface PwaActionSheet {
         "cancelable"?: boolean;
         "header"?: string;
+        "onOnCanceled"?: (event: PwaActionSheetCustomEvent<any>) => void;
         "onOnSelection"?: (event: PwaActionSheetCustomEvent<any>) => void;
         "options"?: ActionSheetOption[];
     }

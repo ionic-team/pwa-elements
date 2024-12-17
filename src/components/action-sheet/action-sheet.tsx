@@ -18,6 +18,8 @@ export class PWAActionSheet {
 
   @Event() onSelection: EventEmitter;
 
+  @Event() onCanceled: EventEmitter;
+
   @State() open = false;
 
   componentDidLoad() {
@@ -28,6 +30,7 @@ export class PWAActionSheet {
 
   dismiss() {
     if (this.cancelable) {
+      this.onCanceled.emit();
       this.close();
     }
   }
